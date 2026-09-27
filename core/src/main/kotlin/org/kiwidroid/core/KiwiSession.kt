@@ -25,6 +25,8 @@ interface AudioSink : AutoCloseable {
     fun start(sourceRate: Double)
     /** Must not block the transport; the implementation owns a bounded playback queue. */
     fun offer(samples: ShortArray)
+    /** RSSI is independent of whether the caller chooses to hear the receiver PCM. */
+    fun observeRssi(rssiDbm: Double) {}
     fun checkHealth() {}
     override fun close()
 }
@@ -133,6 +135,7 @@ class KiwiSession(
                                                 sink.start(checkNotNull(handshake.sampleRate))
                                                 started = true
                                             }
+                                            sink.observeRssi(frame.rssiDbm)
                                             sink.offer(frame.samples)
                                             lastAudio = monotonicMs()
                                             lastRssi = frame.rssiDbm

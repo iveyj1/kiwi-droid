@@ -39,6 +39,7 @@ class PcmBuffer(private val capacity: Int) : AutoCloseable {
     private val lock = Object()
     private val chunks = ArrayDeque<ShortArray>()
     private var size = 0
+    private var headOffset = 0
     private var closed = false
     var droppedSamples: Long = 0
         private set
@@ -50,7 +51,8 @@ class PcmBuffer(private val capacity: Int) : AutoCloseable {
         val kept = if (samples.size > capacity) samples.takeLast(capacity).toShortArray() else samples
         droppedSamples += samples.size - kept.size
         while (size + kept.size > capacity) {
-            val dropped = chunks.removeFirst().size
+            val dropped = chunks.removeFirst().size - headOffset
+            headOffset = 0
             size -= dropped
             droppedSamples += dropped
         }
@@ -62,15 +64,43 @@ class PcmBuffer(private val capacity: Int) : AutoCloseable {
     fun take(minimumSamples: Int = 1): ShortArray? = synchronized(lock) {
         require(minimumSamples in 1..capacity)
         while (!closed && size < minimumSamples) lock.wait()
-        if (closed) null else chunks.removeFirst().also { size -= it.size }
+        if (closed) null else {
+            val chunk = chunks.removeFirst()
+            val result = if (headOffset == 0) chunk else chunk.copyOfRange(headOffset, chunk.size)
+            headOffset = 0
+            size -= result.size
+            result
+        }
+    }
+
+    /** Clocked mixer read: silence pads underflow without delaying locally generated tones. */
+    fun read(count: Int): ShortArray = synchronized(lock) {
+        require(count >= 0)
+        val result = ShortArray(count)
+        var written = 0
+        while (!closed && written < count && chunks.isNotEmpty()) {
+            val head = chunks.first()
+            val copied = minOf(count - written, head.size - headOffset)
+            head.copyInto(result, written, headOffset, headOffset + copied)
+            written += copied
+            size -= copied
+            headOffset += copied
+            if (headOffset == head.size) { chunks.removeFirst(); headOffset = 0 }
+        }
+        result
+    }
+
+    fun clear() = synchronized(lock) {
+        chunks.clear()
+        headOffset = 0
+        size = 0
     }
 
     fun queuedSamples(): Int = synchronized(lock) { size }
 
     override fun close() = synchronized(lock) {
         closed = true
-        chunks.clear()
-        size = 0
+        clear()
         lock.notifyAll()
     }
 }

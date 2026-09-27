@@ -15,9 +15,11 @@ class KiwiSessionTest {
     private class FakeSink : AudioSink {
         var rate: Double? = null
         var closed = false
+        var rssi: Double? = null
         val samples = CopyOnWriteArrayList<Short>()
         override fun start(sourceRate: Double) { rate = sourceRate }
         override fun offer(samples: ShortArray) { this.samples.addAll(samples.toList()) }
+        override fun observeRssi(rssiDbm: Double) { rssi = rssiDbm }
         override fun close() { closed = true }
     }
 
@@ -49,6 +51,7 @@ class KiwiSessionTest {
             try {
                 val metrics = withTimeout(5000) { received.await() }
                 assertEquals(-42.0, metrics.rssiDbm)
+                assertEquals(-42.0, sink.rssi)
                 assertEquals(11998.75, sink.rate)
                 assertContentEquals(shortArrayOf(-32768, -1, 0, 1, 32767), sink.samples.toShortArray())
                 assertEquals("/VER", server.takeRequest().path)

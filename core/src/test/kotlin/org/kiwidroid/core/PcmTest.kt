@@ -39,6 +39,28 @@ class PcmTest {
         assertNull(queue.take())
     }
 
+    @Test fun `clocked reads span packets preserve partial heads and pad silence`() {
+        val queue = PcmBuffer(8)
+        queue.offer(shortArrayOf(1, 2, 3))
+        queue.offer(shortArrayOf(4, 5))
+        assertContentEquals(shortArrayOf(1, 2), queue.read(2))
+        assertEquals(3, queue.queuedSamples())
+        assertContentEquals(shortArrayOf(3, 4, 5, 0), queue.read(4))
+        queue.offer(shortArrayOf(6, 7, 8))
+        queue.read(1)
+        assertContentEquals(shortArrayOf(7, 8), queue.take())
+        queue.offer(shortArrayOf(1, 2, 3, 4))
+        queue.read(2)
+        queue.offer(ShortArray(8) { 9 })
+        assertEquals(2, queue.droppedSamples)
+        assertContentEquals(ShortArray(8) { 9 }, queue.read(8))
+        queue.offer(shortArrayOf(1, 2))
+        queue.clear()
+        assertEquals(0, queue.queuedSamples())
+        assertContentEquals(ShortArray(2), queue.read(2))
+        queue.close()
+    }
+
     @Test fun `closing wakes a blocked consumer`() {
         val executor = Executors.newSingleThreadExecutor()
         try {
