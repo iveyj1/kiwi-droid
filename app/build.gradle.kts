@@ -6,6 +6,7 @@ plugins {
 android {
     namespace = "org.kiwidroid.app"
     compileSdk = 36
+    buildToolsVersion = "36.0.0"
     defaultConfig {
         applicationId = "org.kiwidroid.app"
         minSdk = 26
