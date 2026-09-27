@@ -10,16 +10,18 @@ internal class RssiExtremaLatch(private val settings: RssiToneSettings) {
     private var dip: Held? = null
     private var peak: Held? = null
     private var lastWasDip = false
+    // RSSI has 0.1 dB wire resolution; don't miss an exact boundary due to binary rounding.
+    private val threshold = settings.latchThresholdDb - 1e-9
 
     fun observe(rawDbm: Double, baselineDbm: Double, nowMs: Long) {
         expire(nowMs)
         if (settings.latchMode == RssiLatchMode.DIPS || settings.latchMode == RssiLatchMode.BOTH) {
-            if (baselineDbm - rawDbm >= settings.latchThresholdDb && (dip == null || rawDbm < dip!!.dbm)) {
+            if (baselineDbm - rawDbm >= threshold && (dip == null || rawDbm < dip!!.dbm)) {
                 dip = Held(rawDbm)
             }
         }
         if (settings.latchMode == RssiLatchMode.PEAKS || settings.latchMode == RssiLatchMode.BOTH) {
-            if (rawDbm - baselineDbm >= settings.latchThresholdDb && (peak == null || rawDbm > peak!!.dbm)) {
+            if (rawDbm - baselineDbm >= threshold && (peak == null || rawDbm > peak!!.dbm)) {
                 peak = Held(rawDbm)
             }
         }

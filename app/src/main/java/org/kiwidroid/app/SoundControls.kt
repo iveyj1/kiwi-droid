@@ -46,6 +46,9 @@ internal fun SoundEditor(initial: SoundSettings, currentRssi: Double?, onDismiss
     var smoothing by rememberSaveable { mutableStateOf(initial.tones.smoothingMs.toString()) }
     var hysteresis by rememberSaveable { mutableStateOf(initial.tones.hysteresisDb.toString()) }
     var waveform by rememberSaveable { mutableStateOf(initial.tones.waveform) }
+    var latchMode by rememberSaveable { mutableStateOf(initial.tones.latchMode) }
+    var latchHold by rememberSaveable { mutableStateOf(initial.tones.latchHoldMs.toString()) }
+    var latchThreshold by rememberSaveable { mutableStateOf(initial.tones.latchThresholdDb.toString()) }
     var error by rememberSaveable { mutableStateOf<String?>(null) }
 
     fun save() {
@@ -58,7 +61,8 @@ internal fun SoundEditor(initial: SoundSettings, currentRssi: Double?, onDismiss
                 intervalMs = integer(interval, "Repeat interval"), fadeMs = integer(fade, "Fade"),
                 smoothingMs = integer(smoothing, "Smoothing"),
                 hysteresisDb = requireNotNull(hysteresis.trim().toDoubleOrNull()) { "Enter hysteresis in dB" },
-                waveform = waveform,
+                waveform = waveform, latchMode = latchMode, latchHoldMs = integer(latchHold, "Latch hold"),
+                latchThresholdDb = requireNotNull(latchThreshold.trim().toDoubleOrNull()) { "Enter latch threshold in dB" },
             ))
             if (onSave(config)) onDismiss()
         } catch (e: IllegalArgumentException) { error = e.message ?: "Invalid sound setting" }
@@ -114,6 +118,17 @@ internal fun SoundEditor(initial: SoundSettings, currentRssi: Double?, onDismiss
                     Text("Chromatic steps are about 0.83 dB with the default map. Continuous pitch reveals changes smaller than a semitone.",
                         style = MaterialTheme.typography.bodySmall)
                     HorizontalDivider()
+                    Text("Dip/peak latch", style = MaterialTheme.typography.titleMedium)
+                    Choice("Latch", latchMode.label, RssiLatchMode.entries.map { it.label }, true, Modifier.fillMaxWidth()) {
+                        latchMode = RssiLatchMode.entries[it]
+                    }
+                    SoundNumber("Latch hold (ms, from first beep)", latchHold, Modifier.testTag("latchHold")) { latchHold = it }
+                    SoundNumber("Latch threshold (dB)", latchThreshold, Modifier.testTag("latchThreshold"), decimal = true) { latchThreshold = it }
+                    Text("Captures raw one-sample RSSI dips/peaks before smoothing, relative to the preceding smoothed level. " +
+                        "Extremes survive until sounded at least once; hold time starts then. Both directions alternate beeps. " +
+                        "Pitch still follows the selected scale and range. Stale RSSI or changing tone settings clears the latch.",
+                        style = MaterialTheme.typography.bodySmall)
+                    HorizontalDivider()
                     Text("Beep timing and stability", style = MaterialTheme.typography.titleMedium)
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         SoundNumber("Length (ms)", duration, Modifier.weight(1f)) { duration = it }
@@ -123,7 +138,7 @@ internal fun SoundEditor(initial: SoundSettings, currentRssi: Double?, onDismiss
                     SoundNumber("RSSI smoothing (ms, 0 = none)", smoothing) { smoothing = it }
                     SoundNumber("Note hysteresis (dB)", hysteresis, decimal = true) { hysteresis = it }
                     Text("Pitch is held for each beep. Lower repeat/smoothing values respond faster. " +
-                        "Hysteresis prevents note chatter near a boundary; it does not apply to continuous pitch. " +
+                        "Hysteresis prevents note chatter near a boundary; latched extremes bypass smoothing/hysteresis. " +
                         "Beeps stop after two seconds without fresh RSSI, and on Stop/disconnect.",
                         style = MaterialTheme.typography.bodySmall)
                     Choice("Waveform", waveform.name.lowercase(), ToneWaveform.entries.map { it.name.lowercase() }, true,

@@ -8,6 +8,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.kiwidroid.core.Mode
 import org.kiwidroid.core.formatKhz
+import org.kiwidroid.core.RssiLatchMode
 import org.kiwidroid.core.SoundSettings
 import org.kiwidroid.core.parsePitchPoints
 
@@ -52,9 +53,16 @@ class RadioScreenTest {
             rule.onNodeWithTag("soundError").assertExists()
             val mapping = "-110=C3\n-90=C5\n-70=C7"
             rule.onNodeWithTag("pitchPoints").performTextReplacement(mapping)
+            rule.onNodeWithText("Latch:", substring = true).performScrollTo().performClick()
+            rule.onNodeWithText("Peaks only", useUnmergedTree = true).performClick()
+            rule.onNodeWithTag("latchHold").performScrollTo().performTextReplacement("1500")
+            rule.onNodeWithTag("latchThreshold").performScrollTo().performTextReplacement("2.5")
             rule.onNodeWithTag("saveSound").performClick()
             rule.runOnIdle {
                 org.junit.Assert.assertEquals(parsePitchPoints(mapping), radio.state.value.settings.sound.tones.points)
+                org.junit.Assert.assertEquals(RssiLatchMode.PEAKS, radio.state.value.settings.sound.tones.latchMode)
+                org.junit.Assert.assertEquals(1500, radio.state.value.settings.sound.tones.latchHoldMs)
+                org.junit.Assert.assertEquals(2.5, radio.state.value.settings.sound.tones.latchThresholdDb, 0.0001)
             }
             rule.activityRule.scenario.recreate()
             rule.onNodeWithTag("radioAudioSwitch").performScrollTo().assertIsOff()

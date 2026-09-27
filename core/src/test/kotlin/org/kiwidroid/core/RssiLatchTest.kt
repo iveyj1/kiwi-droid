@@ -73,6 +73,14 @@ class RssiLatchTest {
         }
     }
 
+    @Test fun `tenth-dB threshold equality tolerates binary rounding`() {
+        val latch = RssiExtremaLatch(RssiToneSettings(latchThresholdDb = 0.1))
+        latch.observe(-90.1, -90.0, 1)
+        latch.observe(-89.9, -90.0, 2)
+        assertEquals(-90.1, latch.next(3))
+        assertEquals(-89.9, latch.next(4))
+    }
+
     @Test fun `equal observations do not prolong hold and a stronger extreme gets a new full hold`() {
         val latch = RssiExtremaLatch(RssiToneSettings(latchHoldMs = 100))
         latch.observe(-100.0, -90.0, 0)

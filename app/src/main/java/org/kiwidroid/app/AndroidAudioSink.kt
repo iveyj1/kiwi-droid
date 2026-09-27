@@ -12,7 +12,7 @@ import org.kiwidroid.core.*
 /** A single clocked output mixes independent radio and RSSI sounds, including in the background. */
 class AndroidAudioSink(private val settings: () -> SoundSettings = { SoundSettings() }) : AudioSink {
     private val queue = PcmBuffer(Protocol.OUTPUT_RATE / 5) // at most 200 ms queued radio audio
-    private val reading = AtomicReference<RssiReading?>()
+    private val tones = RssiToneSynth()
     private var resampler: PcmResampler? = null
     private var worker: Thread? = null
     private val failure = AtomicReference<Throwable?>()
@@ -41,7 +41,6 @@ class AndroidAudioSink(private val settings: () -> SoundSettings = { SoundSettin
         worker = thread(name = "kiwi-audio", isDaemon = true) {
             try {
                 Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO)
-                val tones = RssiToneSynth()
                 val blockSize = Protocol.OUTPUT_RATE / 100 // 10 ms; AudioTrack writes pace this loop
                 var radioReady = false
                 var fadeSamples = 0
@@ -62,7 +61,7 @@ class AndroidAudioSink(private val settings: () -> SoundSettings = { SoundSettin
                         }
                         if (queue.queuedSamples() == 0) { radioReady = false; fadeSamples = 0 }
                     }
-                    val tonePcm = tones.render(blockSize, sound.tones, reading.get(), monotonicMs())
+                    val tonePcm = tones.render(blockSize, sound.tones, monotonicMs())
                     val samples = mixSound(radioPcm, tonePcm, sound)
                     var offset = 0
                     while (offset < samples.size && !closed) {
@@ -82,7 +81,7 @@ class AndroidAudioSink(private val settings: () -> SoundSettings = { SoundSettin
     }
 
     override fun observeRssi(rssiDbm: Double) {
-        reading.set(RssiReading(rssiDbm, monotonicMs()))
+        tones.observe(RssiReading(rssiDbm, monotonicMs()), settings().tones)
     }
 
     override fun offer(samples: ShortArray) {
@@ -99,7 +98,6 @@ class AndroidAudioSink(private val settings: () -> SoundSettings = { SoundSettin
     override fun close() {
         if (closed) return
         closed = true
-        reading.set(null)
         queue.close()
         runCatching { track?.pause() }
         worker?.join(1000)

@@ -68,7 +68,9 @@ class BackgroundPlaybackTest {
                     val bytes = ByteBuffer.allocate(10 + 512 * 2).apply {
                         put("SND".toByteArray()); put(0.toByte())
                         order(ByteOrder.LITTLE_ENDIAN); putInt(seq)
-                        order(ByteOrder.BIG_ENDIAN); putShort((850 + seq % 10).toShort())
+                        // One-frame raw RSSI excursions exercise the dip/peak receive path.
+                        val smeter = when (seq % 40) { 10 -> 650; 20 -> 1050; else -> 850 + seq % 10 }
+                        order(ByteOrder.BIG_ENDIAN); putShort(smeter.toShort())
                     }.array()
                     ws.send(bytes.toByteString())
                 }

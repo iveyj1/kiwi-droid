@@ -56,6 +56,9 @@ internal object SettingsCodec {
             put("smoothingMs", tones.smoothingMs)
             put("hysteresisDb", tones.hysteresisDb)
             put("waveform", tones.waveform.name)
+            put("latchMode", tones.latchMode.name)
+            put("latchHoldMs", tones.latchHoldMs)
+            put("latchThresholdDb", tones.latchThresholdDb)
         })
     }.toString()
 
@@ -93,6 +96,9 @@ internal object SettingsCodec {
             smoothingMs = obj.getValue("smoothingMs").jsonPrimitive.int,
             hysteresisDb = obj.getValue("hysteresisDb").jsonPrimitive.double,
             waveform = ToneWaveform.valueOf(obj.getValue("waveform").jsonPrimitive.content),
+            latchMode = obj["latchMode"]?.jsonPrimitive?.content?.let(RssiLatchMode::valueOf) ?: RssiLatchMode.BOTH,
+            latchHoldMs = obj["latchHoldMs"]?.jsonPrimitive?.int ?: 1000,
+            latchThresholdDb = obj["latchThresholdDb"]?.jsonPrimitive?.double ?: 1.0,
         ),
     )
 }

@@ -39,6 +39,21 @@ Scale choices:
 
 Only scale notes inside the endpoint note range are used. Exact ties choose the lower note. Invalid/empty/non-increasing mappings and scale/range combinations without any notes are rejected before saving.
 
+## Dip/peak latch
+
+Enabled by default in 0.4.0: **Dips and peaks**, **1 dB threshold**, **1000 ms hold**. Configure it under **Sound settings → Dip/peak latch**; modes are Off, Dips only, Peaks only, and Dips and peaks.
+
+Every received RSSI value is examined before smoothing, even when several SND frames arrive between audio writes. A dip/peak qualifies when the raw value is at least the threshold below/above the preceding smoothed RSSI. The first reading establishes a baseline and is not an event. This detects received signal excursions, not missing network packets.
+
+- The lowest qualifying dip and highest qualifying peak are retained in two bounded slots. Less-extreme events merge into the held extreme rather than forming an unbounded queue.
+- At a beep boundary, a held extreme replaces the normal smoothed pitch. If both directions are pending, successive beeps alternate dip/peak; neither can starve the other.
+- An unsounded extreme cannot expire just because the hold time is shorter than the repeat interval. Hold starts at its first beep, and that beep completes normally. More-extreme replacements get their own first beep and hold; repeated equal observations do not extend an existing hold.
+- When holds expire, the normal smoothed level returns. Recovery from a dip may qualify as a peak relative to the still-low smoothed baseline (and vice versa).
+- Latched pitch bypasses smoothing and note hysteresis, but still uses the selected scale and mapping endpoints. A small excursion quantized to the same note, or a clamped out-of-range value, may not sound different. Use continuous pitch or recenter the mapping for finer discrimination.
+- Disabling tones, changing tone settings, a stale RSSI gap (two seconds), disconnect, Stop, or receiver switching clears pending extremes. Receiver mute alone does not clear them. No old events replay after reconnection.
+
+Hold is configurable from 100–10000 ms; threshold from 0.1–60 dB. Lower the threshold to capture smaller received changes, at the cost of latching normal signal noise/fading. The upgrade preserves existing tone calibration/gains/enabled state and supplies these new latch defaults. Single-sample detection is verified in tests where both the excursion and recovery arrive before the next render.
+
 ## Sound parameters
 
 | Parameter | Default | Purpose |
@@ -52,14 +67,14 @@ Only scale notes inside the endpoint note range are used. Exact ties choose the 
 | Note hysteresis | 0.15 dB | Extra excursion past a note boundary needed before changing notes. |
 | Waveform | Sine | Sine or brighter triangle wave. |
 
-Pitch is sampled at the start of each beep and held for its duration. Decrease the repeat interval and smoothing for faster cable-fault response; longer settings can hide brief transients. Hysteresis reduces chatter around a quantization boundary; it is ignored in continuous-pitch mode. To hear subtle changes, try continuous pitch with low/zero smoothing. These are repeating level indications, not a guarantee of detecting every short contact interruption.
+Pitch is selected at the start of each beep and held for its duration. With the latch enabled, qualifying raw extremes take precedence over the smoothed level. Decrease the repeat interval to hear pending events sooner. With the latch off, longer intervals/smoothing can hide brief transients. Hysteresis reduces chatter around a quantization boundary; it is ignored in continuous-pitch mode and for latched extremes. The latch captures qualifying received RSSI values, not RF events that occurred between server measurements.
 
 Length is 20–2000 ms; interval is 50–5000 ms and must exceed length by at least 10 ms. Fade is 1–50 ms and at most half the beep length. Smoothing is 0–2000 ms; hysteresis is 0–3 dB. All settings persist. Upgrading from pre-tone versions preserves tuning/server settings and starts with tones disabled and receiver audio enabled.
 
 ## Timing, freshness, and mixing
 
-RSSI is delivered directly from valid SND frames to the audio sink, independently of the 5 Hz UI refresh. The audio writer runs 10 ms blocks at 48 kHz. A single AudioTrack mixes resampled receiver PCM and locally synthesized beeps; signed PCM saturates safely if their sum exceeds full scale. Reduce one or both gains if simultaneous radio/beeps sound distorted.
+RSSI is delivered directly from valid SND frames to the audio sink, independently of the 5 Hz UI refresh. Receipt updates the latch/smoother under a short lock shared with tone rendering, rather than overwriting a single latest-reading slot. The audio writer runs 10 ms blocks at 48 kHz. A single AudioTrack mixes resampled receiver PCM and locally synthesized beeps; signed PCM saturates safely if their sum exceeds full scale. Reduce one or both gains if simultaneous radio/beeps sound distorted.
 
 Muting receiver audio clears its queued PCM, so unmuting does not replay a backlog. The already-submitted AudioTrack buffer adds roughly 100 ms (device-dependent) to changes. The output clock is independent of network packets: stalls cannot leave a stuck beep playing indefinitely. Tones silence after two seconds without fresh RSSI, and Stop/error/receiver switching tears down the old generator with the old session. Existing audio-focus-loss and headphone-disconnect behavior applies to both sounds.
 
-Unit tests verify frequency ratios, scale selection, custom interpolation, oscillator/envelope/cadence, smoothing, hysteresis, stale silence, gain/clipping, PCM queue behavior, and settings migration. The phone test uses muted receiver PCM and zero-volume enabled tones to validate routing/lifecycle without making test sounds; audible cable behavior still needs listening checks with real signals.
+Unit tests verify frequency ratios, scale selection, custom interpolation, oscillator/envelope/cadence, smoothing, hysteresis, single-sample dip/peak capture, alternating/expiring holds, burst delivery and stale/reset behavior, gain/clipping, PCM queue behavior, and settings migration. The phone test uses muted receiver PCM and zero-volume enabled tones to validate routing/lifecycle without making test sounds; audible cable behavior still needs listening checks with real signals.

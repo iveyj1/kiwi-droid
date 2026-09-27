@@ -43,6 +43,15 @@
 - Post-test service absent and playback wake lock released. Tests restored original controls/sound settings.
 - No real receiver contacted and no audible test tones played. Real cable-fault audibility/response, blended radio+tones, and long-run audio quality remain manual listening checks.
 
+## Received RSSI dip/peak latch — 0.4.0
+
+- Added raw-sample latch modes Off/Dips/Peaks/Both, configurable dB threshold and hold. Default Both, 1 dB, 1000 ms from the first sounded beep.
+- Replaced latest-value RSSI handoff with synchronized per-receipt observation. Bursts cannot overwrite a transient before the audio thread sees it. Raw extrema bypass smoothing/hysteresis but retain the configured scale/range.
+- Bounded minimum/maximum slots alternate at beep boundaries; unsounded extremes do not expire before their first beep. Staleness/config changes/disable/session teardown clear them.
+- `./tools/check.sh`: 41 core tests, 6 settings tests, APK and lint passed. Added single-sample dip/peak-then-recovery tests before any intervening render, min/max selection, fairness, hold expiry, mode/threshold controls, stale gaps, settings resets/migration, receipt/render timestamp race coverage, and exact 0.1 dB threshold boundary rounding.
+- `./tools/test-phone.sh`: both tests passed on Pixel 3 XL / Android 12. UI test selected Peaks only and saved/restored custom hold/threshold. Silent background receiver test injected one-frame RSSI dips/peaks, retained one SND connection with radio muted, and stopped cleanly from the notification.
+- Auditory checks of real cable/contact transients remain user listening tests. A detected RSSI excursion can still map to the same note if it is below scale resolution or beyond the mapping endpoints.
+
 ## Next manual checks
 
 Use an authorized receiver on the phone's network. Start with low media volume.

@@ -26,7 +26,7 @@ class SettingsTest {
             enabled = true, points = parsePitchPoints("-112.25=C3\n-95.5=F#4\n-73.125=C7"),
             scale = MusicalScale.CUSTOM, root = 2, customOffsets = listOf(0, 3, 7), volumePercent = 8,
             durationMs = 60, intervalMs = 150, fadeMs = 5, smoothingMs = 30, hysteresisDb = 0.25,
-            waveform = ToneWaveform.TRIANGLE,
+            waveform = ToneWaveform.TRIANGLE, latchMode = RssiLatchMode.DIPS, latchHoldMs = 2500, latchThresholdDb = 2.5,
         ))
         val settings = Settings(sound = sound)
         assertEquals(settings, SettingsCodec.decode(SettingsCodec.encode(settings)))
@@ -40,6 +40,19 @@ class SettingsTest {
         assertEquals(previous, restored)
         assertTrue(restored.sound.radioEnabled)
         assertFalse(restored.sound.tones.enabled)
+    }
+
+    @Test fun `pre-latch sound settings retain calibration and gain with new latch defaults`() {
+        val previous = Settings(sound = SoundSettings(radioEnabled = false, tones = RssiToneSettings(enabled = true,
+            points = defaultPitchPoints(-85.0), volumePercent = 7)))
+        val current = Json.parseToJsonElement(SettingsCodec.encode(previous)).jsonObject
+        val oldSound = JsonObject(current.getValue("sound").jsonObject - setOf("latchMode", "latchHoldMs", "latchThresholdDb"))
+        val oldJson = JsonObject(current + ("sound" to oldSound)).toString()
+        val restored = SettingsCodec.decode(oldJson)
+        assertEquals(previous, restored)
+        assertEquals(RssiLatchMode.BOTH, restored.sound.tones.latchMode)
+        assertEquals(1000, restored.sound.tones.latchHoldMs)
+        assertEquals(1.0, restored.sound.tones.latchThresholdDb)
     }
 
     @Test fun `defaults match proposed local receiver set`() {
