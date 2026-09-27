@@ -72,6 +72,9 @@ data class RssiToneSettings(
     val smoothingMs: Int = 100,
     val hysteresisDb: Double = 0.15,
     val waveform: ToneWaveform = ToneWaveform.SINE,
+    val latchMode: RssiLatchMode = RssiLatchMode.BOTH,
+    val latchHoldMs: Int = 1000,
+    val latchThresholdDb: Double = 1.0,
 ) {
     init {
         require(points.size in 2..16) { "Use 2–16 mapping points" }
@@ -97,6 +100,8 @@ data class RssiToneSettings(
         require(fadeMs in 1..50 && fadeMs * 2 <= durationMs) { "Fade must be 1–50 ms and at most half the beep length" }
         require(smoothingMs in 0..2000) { "Smoothing must be 0–2000 ms" }
         require(hysteresisDb.isFinite() && hysteresisDb in 0.0..3.0) { "Hysteresis must be 0–3 dB" }
+        require(latchHoldMs in 100..10000) { "Latch hold must be 100–10000 ms" }
+        require(latchThresholdDb.isFinite() && latchThresholdDb in 0.1..60.0) { "Latch threshold must be 0.1–60 dB" }
     }
 }
 
@@ -143,7 +148,7 @@ class RssiPitchMapping(private val settings: RssiToneSettings) {
 
 data class RssiReading(val dbm: Double, val receivedAtMs: Long)
 
-/** Solely audio-thread owned. Latest readings may be published atomically by the transport. */
+/** Receipt and rendering share a short lock: no received RSSI sample is overwritten before latching. */
 class RssiToneSynth(private val sampleRate: Int = Protocol.OUTPUT_RATE) {
     private var settings: RssiToneSettings? = null
     private var mapping: RssiPitchMapping? = null
@@ -154,26 +159,34 @@ class RssiToneSynth(private val sampleRate: Int = Protocol.OUTPUT_RATE) {
     private var cycleSample = 0
     private var phase = 0.0
     private var beepFrequency = 0.0
+    private var latch: RssiExtremaLatch? = null
+    internal var soundingMidi: Double? = null
+        private set
 
     init { require(sampleRate >= 8000) }
 
-    fun render(count: Int, config: RssiToneSettings, reading: RssiReading?, nowMs: Long): ShortArray {
-        require(count >= 0)
-        val output = ShortArray(count)
+    private fun configure(config: RssiToneSettings) {
         if (settings != config) {
-            reset()
             settings = config
             mapping = RssiPitchMapping(config)
-        }
-        if (!config.enabled || reading == null || !reading.dbm.isFinite() ||
-            nowMs - reading.receivedAtMs !in 0 until STALE_MS) {
             reset()
-            return output
         }
+    }
+
+    /** Called for EVERY valid SND frame, including multiple frames received between audio writes. */
+    @Synchronized
+    fun observe(reading: RssiReading, config: RssiToneSettings) {
+        configure(config)
+        if (!config.enabled || !reading.dbm.isFinite()) { reset(); return }
+        val previousTime = previousReading?.receivedAtMs
+        if (previousTime != null && reading.receivedAtMs < previousTime) return
+        if (previousTime != null && reading.receivedAtMs - previousTime >= STALE_MS) reset()
         val map = checkNotNull(mapping)
         if (reading != previousReading) {
             val previous = previousReading
             val old = smoothed
+            // Compare raw RSSI with the baseline BEFORE this sample enters the smoother.
+            if (old != null) latch?.observe(reading.dbm, old, reading.receivedAtMs)
             smoothed = if (old == null || previous == null || config.smoothingMs == 0) reading.dbm else {
                 val dt = (reading.receivedAtMs - previous.receivedAtMs).coerceAtLeast(0)
                 val alpha = 1.0 - exp(-dt.toDouble() / config.smoothingMs)
@@ -190,12 +203,36 @@ class RssiToneSynth(private val sampleRate: Int = Protocol.OUTPUT_RATE) {
                 else -> oldNote
             }
         }
+    }
+
+    /** Convenience for callers with one observation per block; production uses observe() on receipt. */
+    @Synchronized
+    fun render(count: Int, config: RssiToneSettings, reading: RssiReading?, nowMs: Long): ShortArray {
+        configure(config)
+        if (reading == null) reset() else observe(reading, config)
+        return render(count, config, nowMs)
+    }
+
+    @Synchronized
+    fun render(count: Int, config: RssiToneSettings, nowMs: Long): ShortArray {
+        require(count >= 0)
+        configure(config)
+        val output = ShortArray(count)
+        val reading = previousReading
+        if (!config.enabled || reading == null || nowMs - reading.receivedAtMs >= STALE_MS) {
+            reset()
+            return output
+        }
+        // Receipt can win the lock after the writer obtained nowMs; that newer sample is fresh.
+        val renderTime = maxOf(nowMs, reading.receivedAtMs)
         val interval = sampleRate * config.intervalMs / 1000
         val duration = sampleRate * config.durationMs / 1000
         val fade = sampleRate * config.fadeMs / 1000
         for (index in output.indices) {
             if (cycleSample == 0) {
-                beepFrequency = noteFrequency(checkNotNull(targetMidi))
+                val extreme = latch?.next(renderTime + index * 1000L / sampleRate)
+                soundingMidi = if (extreme == null) checkNotNull(targetMidi) else checkNotNull(mapping).midi(extreme)
+                beepFrequency = noteFrequency(checkNotNull(soundingMidi))
                 phase = 0.0
             }
             if (cycleSample < duration) {
@@ -219,6 +256,8 @@ class RssiToneSynth(private val sampleRate: Int = Protocol.OUTPUT_RATE) {
         cycleSample = 0
         phase = 0.0
         beepFrequency = 0.0
+        soundingMidi = null
+        latch = settings?.let(::RssiExtremaLatch)
     }
 
     companion object { const val STALE_MS = 2000L }
