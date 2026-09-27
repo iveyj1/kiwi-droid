@@ -1,0 +1,2 @@
+# Google/Pixel USB devices. Install only if normal-user ADB lacks permissions.
+SUBSYSTEM=="usb", ATTR{idVendor}=="18d1", MODE="0660", GROUP="plugdev", TAG+="uaccess"

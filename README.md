@@ -23,6 +23,6 @@ Tools live under `~/.local/share/kiwi-droid/`, not in the repository. The bootst
 
 APK: `app/build/outputs/apk/debug/app-debug.apk`. Development builds use Android's debug signing key.
 
-If Linux reports `no permissions`, install your distribution's Android udev rules and grant the normal user device access, then reconnect. Do not run ADB as root. Android 11+ wireless debugging is an alternative (`adb pair host:pairing-port`, then `adb connect host:debug-port`).
+If Linux reports `no permissions` for a Google/Pixel phone, run `./tools/fix-usb-permissions.sh` from your normal account. It prompts for sudo, installs the included vendor-specific udev rule, and reapplies USB permissions. The account must already belong to `plugdev`. Reconnect the cable if necessary. For other phone vendors, use your distribution's Android udev rules. Do not run ADB as root. Android 11+ wireless debugging is an alternative (`adb pair host:pairing-port`, then `adb connect host:debug-port`).
 
 Do not commit local SDKs, credentials, signing keys, device identifiers, or raw private receiver captures.
