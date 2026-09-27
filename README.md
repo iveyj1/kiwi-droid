@@ -12,6 +12,12 @@ Playback continues when you switch apps, dismiss the activity, or turn the scree
 
 Supports no-password receivers, 0–30 MHz tuning, and uncompressed mono audio (~86 MB/hour before overhead). LAN entries require the appropriate Wi-Fi/VPN. HTTP/WS is explicitly permitted and unencrypted; HTTPS/WSS retains normal certificate validation and is never downgraded. No redirects or automatic reconnects. MediaSession notifications are exempt from Android 13's notification runtime permission; no permission prompt is needed for these playback controls.
 
+## Audible RSSI
+
+Enable **RSSI beeps** and disable **Receiver audio** for tone-only cable troubleshooting. Default pitch rises one octave per 10 dB. **Sound settings** offers editable dBm-to-note points, musical scales/root/custom intervals, beep and receiver gains, timing/fades, smoothing, hysteresis, and sine/triangle waveforms. **RSSI → C5** centers the map on the current reading. Settings persist and changes apply without reconnecting.
+
+Muting receiver audio keeps the SND connection for RSSI; data use is unchanged. Tones stop on stale RSSI, Stop, or disconnect. See [docs/RSSI_SOUND.md](docs/RSSI_SOUND.md) for mapping details and tuning for cable faults.
+
 ## Build tools
 
 Requires Linux x86_64 for the supplied bootstrap, `curl`, `tar`, `unzip`, and `sha256sum`.
@@ -44,7 +50,7 @@ If Linux reports `no permissions` for a Google/Pixel phone, run `./tools/fix-usb
 
 The phone script installs in place to preserve settings, then runs UI checks followed by a silent loopback receiver test. It interrupts playback, restores the original controls/receiver list, and ends with the phone locked. Leave the phone untouched during testing; unlock it afterward. No real receiver is contacted. Running the whole Gradle connected-test suite on a PIN-locked device can block UI checks after the screen-off test; the script deliberately runs UI checks first.
 
-Validated: 17 core JVM tests, 3 settings tests, Android lint (no errors), debug APK build, UI tests and 33 seconds of screen-off streaming with notification Stop on a Pixel 3 XL / Android 12. The user also reported successful live foreground listening. Longer live background sessions, Doze/OEM battery policies, and newer Android versions remain to be checked; see [docs/VALIDATION.md](docs/VALIDATION.md).
+Validated: 29 core JVM tests, 5 settings tests, Android lint (no errors), debug APK build, sound-controls/UI tests and 33 seconds of screen-off tone-only routing (test tone gain zero) with notification Stop on a Pixel 3 XL / Android 12. The user also reported successful live foreground listening. Longer live background sessions, Doze/OEM battery policies, and newer Android versions remain to be checked; see [docs/VALIDATION.md](docs/VALIDATION.md).
 
 Source layout: `core/` is Android-independent protocol/transport/PCM code; `app/` contains Compose controls, process-scoped settings/state, and a media playback service owning the session, audio focus, notification, power locks, and AudioTrack output. The implementation follows `~/kiwi` protocol documentation; test vectors are independently generated, not copied receiver captures.
 

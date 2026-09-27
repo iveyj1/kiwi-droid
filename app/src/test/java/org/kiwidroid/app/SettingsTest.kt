@@ -1,6 +1,7 @@
 package org.kiwidroid.app
 
 import kotlin.test.*
+import kotlinx.serialization.json.*
 import org.kiwidroid.core.*
 
 class SettingsTest {
@@ -18,6 +19,27 @@ class SettingsTest {
             Settings(receivers = listOf(Receiver("A", "http://example.com"), Receiver("B", "http://example.com/")))
         }
         assertFailsWith<IllegalArgumentException> { SettingsCodec.decode("""{"version":2}""") }
+    }
+
+    @Test fun `all sound settings survive persistence`() {
+        val sound = SoundSettings(radioEnabled = false, radioVolumePercent = 34, tones = RssiToneSettings(
+            enabled = true, points = parsePitchPoints("-112.25=C3\n-95.5=F#4\n-73.125=C7"),
+            scale = MusicalScale.CUSTOM, root = 2, customOffsets = listOf(0, 3, 7), volumePercent = 8,
+            durationMs = 60, intervalMs = 150, fadeMs = 5, smoothingMs = 30, hysteresisDb = 0.25,
+            waveform = ToneWaveform.TRIANGLE,
+        ))
+        val settings = Settings(sound = sound)
+        assertEquals(settings, SettingsCodec.decode(SettingsCodec.encode(settings)))
+        assertEquals(sound.tones.points, parsePitchPoints(formatPitchPoints(sound.tones.points)))
+    }
+
+    @Test fun `pre-tone settings retain all controls and use safe sound defaults`() {
+        val previous = Settings(tuning = Tuning(335000, Mode.CW), stepHz = 17, selected = 2)
+        val oldJson = JsonObject(Json.parseToJsonElement(SettingsCodec.encode(previous)).jsonObject - "sound").toString()
+        val restored = SettingsCodec.decode(oldJson)
+        assertEquals(previous, restored)
+        assertTrue(restored.sound.radioEnabled)
+        assertFalse(restored.sound.tones.enabled)
     }
 
     @Test fun `defaults match proposed local receiver set`() {

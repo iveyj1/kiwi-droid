@@ -116,6 +116,9 @@ class RadioController(private val application: Application) {
         require(step != null && step in 1..MAX_FREQUENCY_HZ) { "Step must be a whole number from 1 to 30000000 Hz" }
         it.copy(stepHz = step)
     }
+    fun setSound(sound: SoundSettings) = change { it.copy(sound = sound) }
+    fun setRadioAudio(enabled: Boolean) = change { it.copy(sound = it.sound.copy(radioEnabled = enabled)) }
+    fun setRssiTones(enabled: Boolean) = change { it.copy(sound = it.sound.copy(tones = it.sound.tones.copy(enabled = enabled))) }
     fun selectReceiver(index: Int) = change { it.copy(selected = index) }
     fun saveReceiver(index: Int?, name: String, url: String): Boolean = change {
         val receiver = Receiver(name.trim(), Receiver.endpoint(url.trim()).toString())

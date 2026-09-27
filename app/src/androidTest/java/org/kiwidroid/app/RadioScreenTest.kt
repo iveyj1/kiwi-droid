@@ -8,6 +8,8 @@ import org.junit.Rule
 import org.junit.Test
 import org.kiwidroid.core.Mode
 import org.kiwidroid.core.formatKhz
+import org.kiwidroid.core.SoundSettings
+import org.kiwidroid.core.parsePitchPoints
 
 /** Offline device smoke test: never presses Play or contacts any receiver. */
 class RadioScreenTest {
@@ -21,7 +23,7 @@ class RadioScreenTest {
         rule.waitUntil(5000) { radio.state.value.loaded }
         val original = radio.state.value.settings
         try {
-            instrumentation.runOnMainSync { radio.stop(); radio.setMode(Mode.AM) }
+            instrumentation.runOnMainSync { radio.stop(); radio.setMode(Mode.AM); radio.setSound(SoundSettings()) }
             rule.onNodeWithTag("frequency").performTextReplacement("5000.000")
             rule.onNodeWithText("Tune").performClick()
             rule.onNodeWithTag("tuned").assertTextEquals("Tuned: 5000.000 kHz")
@@ -42,12 +44,28 @@ class RadioScreenTest {
             rule.onNodeWithText("Tune").performClick()
             rule.onNodeWithTag("error").assertExists()
             rule.onNodeWithTag("tuned").assertTextEquals("Tuned: 5000.000 kHz")
+            rule.onNodeWithTag("radioAudioSwitch").performScrollTo().assertIsOn().performClick().assertIsOff()
+            rule.onNodeWithTag("rssiToneSwitch").performScrollTo().assertIsOff().performClick().assertIsOn()
+            rule.onNodeWithText("Sound settings").performScrollTo().performClick()
+            rule.onNodeWithTag("pitchPoints").performScrollTo().performTextReplacement("-90=C4\n-100=C5")
+            rule.onNodeWithTag("saveSound").performClick()
+            rule.onNodeWithTag("soundError").assertExists()
+            val mapping = "-110=C3\n-90=C5\n-70=C7"
+            rule.onNodeWithTag("pitchPoints").performTextReplacement(mapping)
+            rule.onNodeWithTag("saveSound").performClick()
+            rule.runOnIdle {
+                org.junit.Assert.assertEquals(parsePitchPoints(mapping), radio.state.value.settings.sound.tones.points)
+            }
+            rule.activityRule.scenario.recreate()
+            rule.onNodeWithTag("radioAudioSwitch").performScrollTo().assertIsOff()
+            rule.onNodeWithTag("rssiToneSwitch").performScrollTo().assertIsOn()
         } finally {
             instrumentation.runOnMainSync {
                 radio.setMode(Mode.AM)
                 radio.tune(formatKhz(original.tuning.frequencyHz))
                 radio.setMode(original.tuning.mode)
                 radio.setStep(original.stepHz.toString())
+                radio.setSound(original.sound)
             }
         }
     }

@@ -2,6 +2,8 @@
 
 > Implementation amendment (0.2.0): after successful initial listening, the user requested background/screen-off playback. This now uses a media playback foreground service, MediaSession notification with Stop, and active-listening CPU/Wi-Fi locks. The foreground-only exclusions below describe the original MVP, not the current app. See `README.md` and `docs/VALIDATION.md` for current behavior and test evidence.
 
+> Implementation amendment (0.3.0): the user requested audible RSSI for cable troubleshooting. Independent radio mute and RSSI beeps now share the background audio service, with a default 10 dB/octave musical mapping and configurable mapping points/scales/sound parameters. See `docs/RSSI_SOUND.md`.
+
 ## Objective
 
 Build a small native Android app for listening to a selected KiwiSDR receiver: choose a server, enter a frequency, step up/down, select a demodulation mode, play audio, and see live received signal strength (RSSI).

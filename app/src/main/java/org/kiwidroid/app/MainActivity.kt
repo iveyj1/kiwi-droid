@@ -48,6 +48,7 @@ private fun RadioScreen(state: RadioUiState, model: RadioViewModel) {
     var editorOpen by rememberSaveable { mutableStateOf(false) }
     var editingIndex by rememberSaveable { mutableStateOf<Int?>(null) }
     var stepOpen by rememberSaveable { mutableStateOf(false) }
+    var soundOpen by rememberSaveable { mutableStateOf(false) }
     val focus = LocalFocusManager.current
     fun tune() { if (model.tune(frequency)) focus.clearFocus() }
 
@@ -97,6 +98,12 @@ private fun RadioScreen(state: RadioUiState, model: RadioViewModel) {
                 metrics.sourceRate, metrics.missingFrames, metrics.adcOverflows), style = MaterialTheme.typography.bodySmall)
             state.message?.let { Text(it, color = MaterialTheme.colorScheme.error, modifier = Modifier.testTag("error")) }
             HorizontalDivider()
+            SoundSwitch("Receiver audio", settings.sound.radioEnabled, state.loaded, "radioAudioSwitch") { model.setRadioAudio(it) }
+            SoundSwitch("RSSI beeps", settings.sound.tones.enabled, state.loaded, "rssiToneSwitch") { model.setRssiTones(it) }
+            OutlinedButton(onClick = { soundOpen = true }, enabled = state.loaded, modifier = Modifier.fillMaxWidth()) { Text("Sound settings") }
+            if (!settings.sound.radioEnabled) Text("Receiver audio muted locally; RSSI and the network stream remain active.",
+                style = MaterialTheme.typography.bodySmall)
+            HorizontalDivider()
             Text("Playback continues in the background and with the screen off. Stop here or in the media notification. Use the phone’s media volume.",
                 style = MaterialTheme.typography.bodySmall)
             Text("Uncompressed audio uses about 86 MB/hour, plus overhead." +
@@ -127,13 +134,16 @@ private fun RadioScreen(state: RadioUiState, model: RadioViewModel) {
             if (model.saveReceiver(editingIndex, name, url)) { editorOpen = false; serversOpen = true }
         })
 
+    if (soundOpen) SoundEditor(settings.sound,
+        state.metrics?.takeUnless { it.stale }?.rssiDbm, onDismiss = { soundOpen = false }, onSave = model::setSound)
+
     if (stepOpen) StepEditor(settings.stepHz, state.message, onDismiss = { stepOpen = false }) {
         if (model.setStep(it)) stepOpen = false
     }
 }
 
 @Composable
-private fun Choice(label: String, selected: String, options: List<String>, enabled: Boolean,
+internal fun Choice(label: String, selected: String, options: List<String>, enabled: Boolean,
                    modifier: Modifier = Modifier, onSelect: (Int) -> Unit) {
     var open by remember { mutableStateOf(false) }
     Box(modifier) {

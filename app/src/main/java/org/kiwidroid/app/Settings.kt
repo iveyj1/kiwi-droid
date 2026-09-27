@@ -15,6 +15,7 @@ data class Settings(
     val selected: Int = 0,
     val tuning: Tuning = Tuning(),
     val stepHz: Long = 100,
+    val sound: SoundSettings = SoundSettings(),
 ) {
     init {
         require(receivers.isNotEmpty() && receivers.size <= 50)
@@ -37,6 +38,25 @@ internal object SettingsCodec {
         put("frequencyHz", settings.tuning.frequencyHz)
         put("mode", settings.tuning.mode.name)
         put("stepHz", settings.stepHz)
+        put("sound", buildJsonObject {
+            put("radioEnabled", settings.sound.radioEnabled)
+            put("radioVolume", settings.sound.radioVolumePercent)
+            val tones = settings.sound.tones
+            put("tonesEnabled", tones.enabled)
+            put("points", buildJsonArray { tones.points.forEach { point -> add(buildJsonObject {
+                put("dbm", point.dbm); put("midi", point.midi)
+            }) } })
+            put("scale", tones.scale.name)
+            put("root", tones.root)
+            put("customOffsets", buildJsonArray { tones.customOffsets.forEach { add(it) } })
+            put("volume", tones.volumePercent)
+            put("durationMs", tones.durationMs)
+            put("intervalMs", tones.intervalMs)
+            put("fadeMs", tones.fadeMs)
+            put("smoothingMs", tones.smoothingMs)
+            put("hysteresisDb", tones.hysteresisDb)
+            put("waveform", tones.waveform.name)
+        })
     }.toString()
 
     fun decode(text: String): Settings {
@@ -51,8 +71,30 @@ internal object SettingsCodec {
             tuning = Tuning(obj.getValue("frequencyHz").jsonPrimitive.long,
                 Mode.valueOf(obj.getValue("mode").jsonPrimitive.content)),
             stepHz = obj.getValue("stepHz").jsonPrimitive.long,
+            sound = obj["sound"]?.jsonObject?.let(::decodeSound) ?: SoundSettings(),
         )
     }
+
+    private fun decodeSound(obj: JsonObject): SoundSettings = SoundSettings(
+        radioEnabled = obj.getValue("radioEnabled").jsonPrimitive.boolean,
+        radioVolumePercent = obj.getValue("radioVolume").jsonPrimitive.int,
+        tones = RssiToneSettings(
+            enabled = obj.getValue("tonesEnabled").jsonPrimitive.boolean,
+            points = obj.getValue("points").jsonArray.map {
+                PitchPoint(it.jsonObject.getValue("dbm").jsonPrimitive.double, it.jsonObject.getValue("midi").jsonPrimitive.int)
+            },
+            scale = MusicalScale.valueOf(obj.getValue("scale").jsonPrimitive.content),
+            root = obj.getValue("root").jsonPrimitive.int,
+            customOffsets = obj.getValue("customOffsets").jsonArray.map { it.jsonPrimitive.int },
+            volumePercent = obj.getValue("volume").jsonPrimitive.int,
+            durationMs = obj.getValue("durationMs").jsonPrimitive.int,
+            intervalMs = obj.getValue("intervalMs").jsonPrimitive.int,
+            fadeMs = obj.getValue("fadeMs").jsonPrimitive.int,
+            smoothingMs = obj.getValue("smoothingMs").jsonPrimitive.int,
+            hysteresisDb = obj.getValue("hysteresisDb").jsonPrimitive.double,
+            waveform = ToneWaveform.valueOf(obj.getValue("waveform").jsonPrimitive.content),
+        ),
+    )
 }
 
 class SettingsStore(private val context: Context) {

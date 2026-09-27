@@ -24,6 +24,8 @@ import org.junit.Rule
 import org.junit.Test
 import org.kiwidroid.core.Mode
 import org.kiwidroid.core.formatKhz
+import org.kiwidroid.core.SoundSettings
+import org.kiwidroid.core.RssiToneSettings
 
 /** Loopback receiver + real AudioTrack. No radio slots or audible test tones. */
 class BackgroundPlaybackTest {
@@ -80,9 +82,20 @@ class BackgroundPlaybackTest {
                     radio.selectReceiver(radio.state.value.settings.receivers.lastIndex)
                     radio.setMode(Mode.AM)
                     radio.tune("5000.000")
+                    // Exercise tone-only routing without audible test beeps on the user's phone.
+                    radio.setSound(SoundSettings(radioEnabled = false, tones = RssiToneSettings(enabled = true, volumePercent = 0)))
                     radio.play()
                 }
                 await { radio.state.value.status == "Playing" }
+                assertFalse(radio.state.value.settings.sound.radioEnabled)
+                assertTrue(radio.state.value.settings.sound.tones.enabled)
+                assertNotNull(radio.state.value.metrics?.rssiDbm)
+                instrumentation.runOnMainSync {
+                    radio.setRadioAudio(true)
+                    radio.setRadioAudio(false)
+                    radio.setRssiTones(false)
+                    radio.setRssiTones(true)
+                }
                 val manager = context.getSystemService(NotificationManager::class.java)
                 await { manager.activeNotifications.any { it.id == PlaybackService.NOTIFICATION_ID } }
                 device.pressHome()
@@ -110,6 +123,7 @@ class BackgroundPlaybackTest {
                     radio.setMode(original.tuning.mode)
                     if (added) radio.removeReceiver(radio.state.value.settings.receivers.lastIndex)
                     radio.selectReceiver(original.selected)
+                    radio.setSound(original.sound)
                 }
                 executor.shutdownNow()
                 runCatching { socket.get()?.close(1000, "Test complete") }

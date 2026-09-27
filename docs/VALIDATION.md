@@ -33,6 +33,16 @@
 - Both tests restore original controls. A PIN lock blocks subsequent UI automation; the script runs the UI test first and the screen-off test last. The phone must be unlocked before starting it.
 - Still needs extended live Wi-Fi/cellular background testing and checks on Android 13+ (including MediaSession notification exemption and Android 15+ audio-focus/foreground-service policy).
 
+## Audible RSSI — 0.3.0
+
+- Added independent receiver-audio and RSSI-beep switches, musical pitch mapping, a configurable sound editor, and backward-compatible sound settings persistence.
+- Default is chromatic notes, +10 dB/octave, C3 at −110 dBm through C7 at −70 dBm. Configurable mapping points/scales/root, sine/triangle waves, gains, beep length/period/fade, RSSI smoothing and note hysteresis.
+- Receiver audio mute is local; RSSI still arrives on the same SND connection. One clocked AudioTrack mixes radio PCM and tones. Stale readings silence tones within two seconds plus the output buffer.
+- `./tools/check.sh`: 29 core tests and 5 settings tests passed, APK built, lint no errors.
+- `./tools/test-phone.sh`: both tests passed on Pixel 3 XL / Android 12. UI checks exercised mute/beep switches, invalid/valid mapping edits, Save, and activity recreation. Screen-off test enabled tones at zero gain with receiver audio muted, exercised sound toggles without reconnecting, confirmed fresh RSSI and keepalives after 33 seconds, then stopped via the notification.
+- Post-test service absent and playback wake lock released. Tests restored original controls/sound settings.
+- No real receiver contacted and no audible test tones played. Real cable-fault audibility/response, blended radio+tones, and long-run audio quality remain manual listening checks.
+
 ## Next manual checks
 
 Use an authorized receiver on the phone's network. Start with low media volume.
@@ -44,6 +54,7 @@ Use an authorized receiver on the phone's network. Start with low media volume.
 5. Disconnect Wi-Fi: RSSI should go stale in two seconds, with a stream error after about ten seconds. Retry is manual.
 6. Listen for 30 minutes, checking latency, dropouts, responsiveness, device heat, and receiver slot cleanup.
 7. Repeat on an API-26-era and a current Android device. Verify a valid HTTPS/WSS receiver and rejection of an invalid certificate.
+8. Enable RSSI beeps at low volume, mute receiver audio, center the map with RSSI → C5, and compare known signal/cable changes. Confirm louder RSSI produces higher notes, custom scale/cadence controls work, stale tones cease, radio can be restored without reconnecting, and both sounds stop from the notification.
 
 ## Remaining implementation/validation risks
 
