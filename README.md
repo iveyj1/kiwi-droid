@@ -8,7 +8,9 @@ Select a receiver (edit the list under **Servers**), enter a frequency in **kHz*
 
 RSSI comes from incoming SND frames; there is no waterfall connection. Settings persist, but playback never starts automatically. Switching receivers replaces the session; tuning/mode changes reuse it. CW displays the wanted signal frequency and applies an 800 Hz heterodyne offset internally.
 
-This first build is foreground-only: backgrounding, screen lock, lost audio focus, or headphone disconnection stops playback. It supports no-password receivers, 0–30 MHz tuning, and uncompressed mono audio (~86 MB/hour before overhead). LAN entries require the appropriate Wi-Fi/VPN. HTTP/WS is explicitly permitted and unencrypted; HTTPS/WSS retains normal certificate validation and is never downgraded. No redirects or automatic reconnects.
+Playback continues when you switch apps, dismiss the activity, or turn the screen off. A media notification/lock-screen control shows the receiver and frequency; **Stop** releases the connection. Lost audio focus (including calls/other audio apps) or headphone disconnection still stops playback. A media playback foreground service owns audio/network resources; CPU and Wi-Fi locks are held only while listening. Background streaming consumes battery and data. Playback never automatically resumes after a process kill or reboot.
+
+Supports no-password receivers, 0–30 MHz tuning, and uncompressed mono audio (~86 MB/hour before overhead). LAN entries require the appropriate Wi-Fi/VPN. HTTP/WS is explicitly permitted and unencrypted; HTTPS/WSS retains normal certificate validation and is never downgraded. No redirects or automatic reconnects. MediaSession notifications are exempt from Android 13's notification runtime permission; no permission prompt is needed for these playback controls.
 
 ## Build tools
 
@@ -37,15 +39,13 @@ If Linux reports `no permissions` for a Google/Pixel phone, run `./tools/fix-usb
 
 ```sh
 ./tools/check.sh
-source tools/env.sh
-./gradlew :app:connectedDebugAndroidTest  # offline UI smoke test on attached phone
-./tools/install-phone.sh                 # test runner may uninstall the app on completion
+./tools/test-phone.sh [serial]  # unlock phone first; takes about 45 seconds
 ```
 
-The device smoke test changes frequency/step/mode, checks input validation and activity recreation, and never presses Play. It leaves ordinary tuning defaults, so do not run it while listening.
+The phone script installs in place to preserve settings, then runs UI checks followed by a silent loopback receiver test. It interrupts playback, restores the original controls/receiver list, and ends with the phone locked. Leave the phone untouched during testing; unlock it afterward. No real receiver is contacted. Running the whole Gradle connected-test suite on a PIN-locked device can block UI checks after the screen-off test; the script deliberately runs UI checks first.
 
-Validated: 17 core JVM tests, 3 settings tests, Android lint (no errors), debug APK build, and one offline UI test on a Pixel 3 XL / Android 12. Live receiver/audio listening and extended lifecycle/network tests remain to be validated; see [docs/VALIDATION.md](docs/VALIDATION.md).
+Validated: 17 core JVM tests, 3 settings tests, Android lint (no errors), debug APK build, UI tests and 33 seconds of screen-off streaming with notification Stop on a Pixel 3 XL / Android 12. The user also reported successful live foreground listening. Longer live background sessions, Doze/OEM battery policies, and newer Android versions remain to be checked; see [docs/VALIDATION.md](docs/VALIDATION.md).
 
-Source layout: `core/` is Android-independent protocol/transport/PCM code; `app/` contains Compose controls, settings, audio focus, and AudioTrack output. The implementation follows `~/kiwi` protocol documentation; test vectors are independently generated, not copied receiver captures.
+Source layout: `core/` is Android-independent protocol/transport/PCM code; `app/` contains Compose controls, process-scoped settings/state, and a media playback service owning the session, audio focus, notification, power locks, and AudioTrack output. The implementation follows `~/kiwi` protocol documentation; test vectors are independently generated, not copied receiver captures.
 
 Do not commit local SDKs, credentials, signing keys, device identifiers, or raw private receiver captures.

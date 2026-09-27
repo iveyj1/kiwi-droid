@@ -1,5 +1,7 @@
 # Proposal: minimal KiwiSDR Android client
 
+> Implementation amendment (0.2.0): after successful initial listening, the user requested background/screen-off playback. This now uses a media playback foreground service, MediaSession notification with Stop, and active-listening CPU/Wi-Fi locks. The foreground-only exclusions below describe the original MVP, not the current app. See `README.md` and `docs/VALIDATION.md` for current behavior and test evidence.
+
 ## Objective
 
 Build a small native Android app for listening to a selected KiwiSDR receiver: choose a server, enter a frequency, step up/down, select a demodulation mode, play audio, and see live received signal strength (RSSI).

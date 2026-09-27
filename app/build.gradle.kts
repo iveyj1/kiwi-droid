@@ -11,8 +11,8 @@ android {
         applicationId = "org.kiwidroid.app"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
-        versionName = "0.1.0"
+        versionCode = 2
+        versionName = "0.2.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures { compose = true }
@@ -32,7 +32,6 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.4")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.9.4")
-    implementation("androidx.lifecycle:lifecycle-process:2.9.4")
     implementation("androidx.datastore:datastore-preferences:1.1.7")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
@@ -41,5 +40,7 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     androidTestImplementation("androidx.test:runner:1.7.0")
     androidTestImplementation("androidx.test.ext:junit:1.3.0")
+    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0")
+    androidTestImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }

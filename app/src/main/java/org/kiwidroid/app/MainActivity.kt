@@ -97,7 +97,7 @@ private fun RadioScreen(state: RadioUiState, model: RadioViewModel) {
                 metrics.sourceRate, metrics.missingFrames, metrics.adcOverflows), style = MaterialTheme.typography.bodySmall)
             state.message?.let { Text(it, color = MaterialTheme.colorScheme.error, modifier = Modifier.testTag("error")) }
             HorizontalDivider()
-            Text("Foreground listening only: backgrounding or locking the phone stops playback. Use the phone’s media volume.",
+            Text("Playback continues in the background and with the screen off. Stop here or in the media notification. Use the phone’s media volume.",
                 style = MaterialTheme.typography.bodySmall)
             Text("Uncompressed audio uses about 86 MB/hour, plus overhead." +
                 if (settings.receiver.cleartext) " This receiver uses unencrypted HTTP/WS." else " This receiver uses HTTPS/WSS.",
