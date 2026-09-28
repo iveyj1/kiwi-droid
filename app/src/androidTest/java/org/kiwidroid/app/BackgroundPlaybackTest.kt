@@ -2,6 +2,9 @@ package org.kiwidroid.app
 
 import android.app.KeyguardManager
 import android.app.NotificationManager
+import android.media.AudioAttributes
+import android.media.AudioFocusRequest
+import android.media.AudioManager
 import android.os.PowerManager
 import android.os.SystemClock
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -115,6 +118,21 @@ class BackgroundPlaybackTest {
                     val beforeCommands = modes.size
                     instrumentation.runOnMainSync { radio.setMode(mode) }
                     await { modes.size > beforeCommands && modes.last() == mode.wireName && radio.state.value.metrics?.channels == mode.channels }
+                }
+                // Competing focus owners simulate notification ducking and longer interruptions.
+                val audioManager = context.getSystemService(AudioManager::class.java)
+                for (gain in listOf(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT)) {
+                    val interruption = AudioFocusRequest.Builder(gain)
+                        .setAudioAttributes(AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).build())
+                        .setOnAudioFocusChangeListener { }.build()
+                    try {
+                        assertEquals(AudioManager.AUDIOFOCUS_REQUEST_GRANTED, audioManager.requestAudioFocus(interruption))
+                        await { radio.state.value.metrics?.playback?.focusSilenced == true }
+                        assertTrue(radio.state.value.running)
+                        assertEquals(2, server.requestCount)
+                    } finally { audioManager.abandonAudioFocusRequest(interruption) }
+                    await { radio.state.value.metrics?.playback?.focusSilenced == false }
+                    assertTrue(radio.state.value.running)
                 }
                 val manager = context.getSystemService(NotificationManager::class.java)
                 await { manager.activeNotifications.any { it.id == PlaybackService.NOTIFICATION_ID } }

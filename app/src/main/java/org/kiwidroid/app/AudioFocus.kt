@@ -11,10 +11,12 @@ import android.os.Handler
 import android.os.Looper
 import androidx.core.content.ContextCompat
 
-/** Background playback still stops for lost audio focus or a disconnected audio route. */
+/** Temporary interruptions silence output without losing the live receiver connection. */
 class AudioFocus(private val context: Context, private val stop: (String) -> Unit) {
     private val manager = context.getSystemService(AudioManager::class.java)
     private var registered = false
+    @Volatile var interrupted = false
+        private set
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             when (intent.action) {
@@ -26,12 +28,25 @@ class AudioFocus(private val context: Context, private val stop: (String) -> Uni
         .setAudioAttributes(AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA)
             .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build())
         .setOnAudioFocusChangeListener({ change ->
-            if (registered && change != AudioManager.AUDIOFOCUS_GAIN) stop("Audio focus lost")
+            if (registered) handleChange(change)
         }, Handler(Looper.getMainLooper()))
         .setWillPauseWhenDucked(true)
         .build()
 
+    internal fun handleChange(change: Int) {
+        when (change) {
+            AudioManager.AUDIOFOCUS_GAIN -> interrupted = false
+            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT,
+            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> interrupted = true
+            AudioManager.AUDIOFOCUS_LOSS -> {
+                interrupted = true
+                stop("Audio focus lost")
+            }
+        }
+    }
+
     fun acquire() {
+        interrupted = false
         check(manager.requestAudioFocus(request) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
             "Audio focus unavailable; stop other audio and try again"
         }
@@ -44,10 +59,11 @@ class AudioFocus(private val context: Context, private val stop: (String) -> Uni
     }
 
     fun release() {
-        manager.abandonAudioFocusRequest(request)
+        interrupted = true
         if (registered) {
-            context.unregisterReceiver(receiver)
             registered = false
+            context.unregisterReceiver(receiver)
         }
+        manager.abandonAudioFocusRequest(request)
     }
 }

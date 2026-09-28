@@ -14,12 +14,12 @@ enum class Mode(val wireName: String, val lowCut: Int, val highCut: Int,
     USB("usb", 0, 3000),
     LSB("lsb", -3000, 0),
     CW("cw", 600, 1000, centerTuning = true),
+    CWN("cwn", 470, 530, centerTuning = true),
     SAM("sam", -5000, 5000),
     SAU("sau", 0, 5000),
     SAL("sal", -5000, 0),
     SAS("sas", -5000, 5000, channels = 2),
     IQ("iq", -5000, 5000, channels = 2),
-    CWN("cwn", 470, 530, centerTuning = true),
     ;
     val defaultPassband: Passband get() = Passband(lowCut, highCut)
 }

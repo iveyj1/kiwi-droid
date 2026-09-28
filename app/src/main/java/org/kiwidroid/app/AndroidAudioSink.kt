@@ -10,8 +10,12 @@ import kotlin.concurrent.thread
 import org.kiwidroid.core.*
 
 /** A single clocked output mixes independent radio and RSSI sounds, including in the background. */
-class AndroidAudioSink(private val settings: () -> SoundSettings = { SoundSettings() }) : AudioSink {
+class AndroidAudioSink(
+    private val focusAllowed: () -> Boolean = { true },
+    private val settings: () -> SoundSettings = { SoundSettings() },
+) : AudioSink {
     private var radioBuffer: RadioJitterBuffer? = null
+    @Volatile private var focusSilenced = false
     @Volatile private var deviceUnderruns = 0
     @Volatile private var deviceBufferMs = 0
     private val tones = RssiToneSynth()
@@ -52,8 +56,19 @@ class AndroidAudioSink(private val settings: () -> SoundSettings = { SoundSettin
                 val silence = ShortArray(actualFrames * 2)
                 val primed = output.write(silence, 0, silence.size, AudioTrack.WRITE_NON_BLOCKING)
                 if (primed < 0) throw IOException("AudioTrack priming failed ($primed)")
+                var audible = focusAllowed()
+                output.setVolume(if (audible) 1f else 0f)
+                focusSilenced = !audible
                 output.play()
                 while (!closed) {
+                    val allowed = focusAllowed()
+                    if (allowed != audible) {
+                        // Hardware volume also silences PCM already queued in the native ring.
+                        output.setVolume(if (allowed) 1f else 0f)
+                        audible = allowed
+                        focusSilenced = !allowed
+                    }
+                    // Consume live PCM while silenced: no stale backlog or reconnect on focus gain.
                     val sound = settings()
                     val radioPcm = buffer.render(blockSize, sound.radioEnabled)
                     val tonePcm = tones.render(blockSize, sound.tones, monotonicMs())
@@ -94,6 +109,7 @@ class AndroidAudioSink(private val settings: () -> SoundSettings = { SoundSettin
     override fun playbackDiagnostics(): PlaybackDiagnostics? = radioBuffer?.diagnostics()?.copy(
         deviceUnderruns = deviceUnderruns,
         deviceBufferMs = deviceBufferMs,
+        focusSilenced = focusSilenced,
     )
 
     override fun checkHealth() {

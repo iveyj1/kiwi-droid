@@ -65,7 +65,7 @@ private fun RadioScreen(state: RadioUiState, model: RadioViewModel) {
             Text(settings.receiver.url, style = MaterialTheme.typography.bodySmall)
             Text(state.status, Modifier.testTag("status"), style = MaterialTheme.typography.titleMedium)
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(value = frequency, onValueChange = { frequency = it },
+                ReplacementTextField(value = frequency, onValueChange = { frequency = it },
                     label = { Text("Frequency (kHz)") }, singleLine = true,
                     enabled = state.loaded,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Go),
@@ -104,6 +104,8 @@ private fun RadioScreen(state: RadioUiState, model: RadioViewModel) {
                 "Source %.2f Hz · %d ch · missing frames %d · ADC overloads %d",
                 metrics.sourceRate, metrics.channels, metrics.missingFrames, metrics.adcOverflows), style = MaterialTheme.typography.bodySmall)
             metrics?.playback?.let { audio ->
+                if (audio.focusSilenced) Text("Temporarily silenced by other audio; resumes automatically.",
+                    style = MaterialTheme.typography.bodySmall)
                 Text("Local underruns ${audio.radioUnderruns} · device underruns ${audio.deviceUnderruns} · dropped audio ${audio.droppedAudioMs} ms",
                     Modifier.testTag("audioDiagnostics"), style = MaterialTheme.typography.bodySmall)
                 Text("Radio buffer ${audio.queuedAudioMs}/${audio.targetAudioMs} ms · device buffer ${audio.deviceBufferMs} ms" +
@@ -179,8 +181,8 @@ private fun ReceiverEditor(receiver: Receiver?, error: String?, onDismiss: () ->
     var url by rememberSaveable { mutableStateOf(receiver?.url ?: "http://") }
     AlertDialog(onDismissRequest = onDismiss, title = { Text(if (receiver == null) "Add receiver" else "Edit receiver") },
         text = { Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(name, { name = it }, label = { Text("Name") }, singleLine = true)
-            OutlinedTextField(url, { url = it }, label = { Text("HTTP/HTTPS base URL") }, singleLine = true,
+            ReplacementTextField(name, { name = it }, label = { Text("Name") }, singleLine = true)
+            ReplacementTextField(url, { url = it }, label = { Text("HTTP/HTTPS base URL") }, singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri))
             Text("Example: http://10.0.0.41:8073", style = MaterialTheme.typography.bodySmall)
             error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
@@ -193,7 +195,7 @@ private fun StepEditor(current: Long, error: String?, onDismiss: () -> Unit, onS
     var text by rememberSaveable { mutableStateOf(current.toString()) }
     AlertDialog(onDismissRequest = onDismiss, title = { Text("Tuning step") }, text = {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(text, { text = it }, label = { Text("Step (whole Hz)") }, singleLine = true,
+            ReplacementTextField(text, { text = it }, label = { Text("Step (whole Hz)") }, singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
             FlowRow(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                 listOf(10, 100, 1000, 5000).forEach { value -> TextButton(onClick = { onSave(value.toString()) }) { Text("$value Hz") } }

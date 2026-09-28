@@ -3,6 +3,10 @@ package org.kiwidroid.core
 import kotlin.test.*
 
 class ModesTest {
+    @Test fun `CWN immediately follows CW in the mode menu`() {
+        assertEquals(Mode.CWN, Mode.entries[Mode.entries.indexOf(Mode.CW) + 1])
+    }
+
     @Test fun `every requested mode has valid defaults and the right wire name`() {
         assertEquals(setOf("am", "usb", "lsb", "cw", "sam", "sau", "sal", "sas", "iq", "cwn"),
             Mode.entries.map { it.wireName }.toSet())

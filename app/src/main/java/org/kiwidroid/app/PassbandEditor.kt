@@ -24,9 +24,9 @@ internal fun PassbandEditor(mode: Mode, band: Passband, error: String?, onDismis
         Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Text("Signed audio/baseband limits in Hz, relative to the receiver carrier. " +
                 "Use negative cuts for LSB and positive cuts for USB. Limits: −6000 to +6000 Hz.")
-            OutlinedTextField(low, { low = it }, label = { Text("Lower limit (Hz)") }, singleLine = true,
+            ReplacementTextField(low, { low = it }, label = { Text("Lower limit (Hz)") }, singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Ascii), modifier = Modifier.testTag("passbandLow"))
-            OutlinedTextField(high, { high = it }, label = { Text("Upper limit (Hz)") }, singleLine = true,
+            ReplacementTextField(high, { high = it }, label = { Text("Upper limit (Hz)") }, singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Ascii), modifier = Modifier.testTag("passbandHigh"))
             if (mode.centerTuning) Text("CW/CWN: displayed frequency stays at the passband center. " +
                 "Changing the cuts also adjusts the receiver frequency offset.", style = MaterialTheme.typography.bodySmall)

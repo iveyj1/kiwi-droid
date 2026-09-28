@@ -9,6 +9,7 @@ data class PlaybackDiagnostics(
     val targetAudioMs: Int = 0,
     val deviceBufferMs: Int = 0,
     val buffering: Boolean = false,
+    val focusSilenced: Boolean = false,
 )
 
 /**

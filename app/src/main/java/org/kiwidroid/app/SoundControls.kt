@@ -91,7 +91,7 @@ internal fun SoundEditor(initial: SoundSettings, currentRssi: Double?, onDismiss
                     Text("Default: +10 dB = +1 octave (12 semitones). Stronger signals sound higher. " +
                         "Custom points interpolate in semitones; their spacing sets sensitivity. Pitch clamps at the endpoints.",
                         style = MaterialTheme.typography.bodySmall)
-                    OutlinedTextField(points, { points = it }, label = { Text("dBm=note, weakest first") }, minLines = 3,
+                    ReplacementTextField(points, { points = it }, label = { Text("dBm=note, weakest first") }, minLines = 3,
                         modifier = Modifier.fillMaxWidth().testTag("pitchPoints"))
                     Text("Examples: -100=C4, -90=C5. Sharps (F#4), flats (Bb3), or MIDI 36–108 are accepted.",
                         style = MaterialTheme.typography.bodySmall)
@@ -113,7 +113,7 @@ internal fun SoundEditor(initial: SoundSettings, currentRssi: Double?, onDismiss
                     if (scale != MusicalScale.CONTINUOUS && scale != MusicalScale.CHROMATIC) {
                         Choice("Scale root", NOTE_NAMES[root], NOTE_NAMES, true, Modifier.fillMaxWidth()) { root = it }
                     }
-                    if (scale == MusicalScale.CUSTOM) OutlinedTextField(offsets, { offsets = it },
+                    if (scale == MusicalScale.CUSTOM) ReplacementTextField(offsets, { offsets = it },
                         label = { Text("Semitones from root (0–11)") }, modifier = Modifier.fillMaxWidth())
                     Text("Chromatic steps are about 0.83 dB with the default map. Continuous pitch reveals changes smaller than a semitone.",
                         style = MaterialTheme.typography.bodySmall)
@@ -159,7 +159,7 @@ private fun VolumeControl(label: String, value: Int, onChange: (Int) -> Unit) {
 @Composable
 private fun SoundNumber(label: String, value: String, modifier: Modifier = Modifier, decimal: Boolean = false,
                         onChange: (String) -> Unit) {
-    OutlinedTextField(value, onChange, label = { Text(label) }, singleLine = true,
+    ReplacementTextField(value, onChange, label = { Text(label) }, singleLine = true,
         modifier = modifier.fillMaxWidth(), keyboardOptions = KeyboardOptions(
             keyboardType = if (decimal) KeyboardType.Decimal else KeyboardType.Number))
 }

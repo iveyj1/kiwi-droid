@@ -73,6 +73,16 @@
 - Audio test reported zero local underruns, zero device underruns, zero dropped audio, 342 ms queued radio, 420 ms target, and 320 ms native buffer (rounded down). Filter UI test restored the original per-mode cuts after testing; all test traffic was loopback/silent.
 - Real receiver demodulation/sideband separation/IQ listening checks remain; IQ output is resampled playback, not raw capture. See `MODES_AND_FILTERS.md`.
 
+## Editing and transient audio focus — 0.5.1
+
+- All edit boxes select existing text on focus entry, including frequency, step, receiver details, passbands, and sound settings. Later taps/keystrokes retain normal cursor editing. Shared field handles externally updated values and IME selection/composition state.
+- CWN immediately follows CW in the mode list; name-based persisted settings are unaffected.
+- Transient focus loss, including notification duck requests, silences the entire AudioTrack and restores its volume on focus gain. The receiver connection and live PCM consumption continue, preventing a stale backlog. Both radio and RSSI tones are silenced; saved sound settings remain unchanged. UI indicates temporary silencing.
+- Explicit Stop, permanent focus loss, headphone removal, process death, and reboot never trigger automatic playback restart.
+- `./tools/check.sh`: 61 core tests, 8 settings tests, APK build and lint passed.
+- All six phone tests passed on Pixel 8 Pro / Android 17. New tests verify actual tap/select/type behavior, cursor editing, refocus and external text updates, and transient-versus-permanent focus classification. The loopback service test requests competing Android transient/duck focus, verifies silencing and automatic restoration on the same connection, then verifies background playback and notification Stop.
+- Silent Bluetooth output test: zero local/device underruns, zero dropped audio; 502 ms queued, 420 ms target, 320 ms native buffer. Tests preserve user settings and do not contact live receivers.
+
 ## Next manual checks
 
 Use an authorized receiver on the phone's network. Start with low media volume.
@@ -80,7 +90,7 @@ Use an authorized receiver on the phone's network. Start with low media volume.
 1. Select Local Kiwi 41 (or edit to a reachable receiver), 5000.000 kHz AM, then Play. Confirm audio and changing RSSI; Stop must silence output and release the slot.
 2. Check known AM/USB/LSB/CW signals, frequency stepping and mode changes without reconnecting.
 3. Switch between two receivers while playing. Check that old audio/RSSI never leaks into the new session.
-4. Rotate while playing, then Home and screen lock: playback should continue and reopening the app should show the same session. Stop from the notification/lock-screen control must release it. Another audio app taking focus or unplugged headphones should still stop it.
+4. Rotate while playing, then Home and screen lock: playback should continue and reopening the app should show the same session. Stop from the notification/lock-screen control must release it. Transient notifications should silence output and restore it automatically; permanent audio-focus loss or unplugged headphones should stop it.
 5. Disconnect Wi-Fi: RSSI should go stale in two seconds, with a stream error after about ten seconds. Retry is manual.
 6. Listen for 30 minutes, checking latency, dropouts, responsiveness, device heat, and receiver slot cleanup.
 7. Repeat on an API-26-era and a current Android device. Verify a valid HTTPS/WSS receiver and rejection of an invalid certificate.

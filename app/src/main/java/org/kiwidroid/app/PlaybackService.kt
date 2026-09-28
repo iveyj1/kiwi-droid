@@ -79,7 +79,7 @@ class PlaybackService : Service() {
                         focus.acquire()
                         withContext(Dispatchers.IO) {
                             session.run(request.receiver, radio.tuning,
-                                AndroidAudioSink { radio.state.value.settings.sound }) { metrics ->
+                                AndroidAudioSink(focusAllowed = { !focus.interrupted }) { radio.state.value.settings.sound }) { metrics ->
                                 scope.launch { radio.received(request, metrics) }
                             }
                         }
