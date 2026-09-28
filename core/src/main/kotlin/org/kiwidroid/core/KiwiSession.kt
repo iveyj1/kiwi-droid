@@ -28,6 +28,7 @@ interface AudioSink : AutoCloseable {
     /** RSSI is independent of whether the caller chooses to hear the receiver PCM. */
     fun observeRssi(rssiDbm: Double) {}
     fun checkHealth() {}
+    fun playbackDiagnostics(): PlaybackDiagnostics? = null
     override fun close()
 }
 
@@ -37,6 +38,7 @@ data class SessionMetrics(
     val missingFrames: Long,
     val adcOverflows: Long,
     val sourceRate: Double,
+    val playback: PlaybackDiagnostics? = null,
 )
 
 /** One run == one connection. Caller cancels and joins it before switching receivers. */
@@ -167,7 +169,7 @@ class KiwiSession(
                         if (started) {
                             sink.checkHealth()
                             onMetrics(SessionMetrics(lastRssi, now - lastAudio >= 2000,
-                                sequences.missing, overflowCount, checkNotNull(handshake.sampleRate)))
+                                sequences.missing, overflowCount, checkNotNull(handshake.sampleRate), sink.playbackDiagnostics()))
                         }
                     }
                 }

@@ -20,6 +20,7 @@ class KiwiSessionTest {
         override fun start(sourceRate: Double) { rate = sourceRate }
         override fun offer(samples: ShortArray) { this.samples.addAll(samples.toList()) }
         override fun observeRssi(rssiDbm: Double) { rssi = rssiDbm }
+        override fun playbackDiagnostics() = PlaybackDiagnostics(radioUnderruns = 3, deviceUnderruns = 2, targetAudioMs = 300)
         override fun close() { closed = true }
     }
 
@@ -52,6 +53,9 @@ class KiwiSessionTest {
                 val metrics = withTimeout(5000) { received.await() }
                 assertEquals(-42.0, metrics.rssiDbm)
                 assertEquals(-42.0, sink.rssi)
+                assertEquals(3, metrics.playback?.radioUnderruns)
+                assertEquals(2, metrics.playback?.deviceUnderruns)
+                assertEquals(300, metrics.playback?.targetAudioMs)
                 assertEquals(11998.75, sink.rate)
                 assertContentEquals(shortArrayOf(-32768, -1, 0, 1, 32767), sink.samples.toShortArray())
                 assertEquals("/VER", server.takeRequest().path)
@@ -72,6 +76,7 @@ class KiwiSessionTest {
             server.enqueue(MockResponse().setBody("""{"ts":123}"""))
             server.enqueue(MockResponse().withWebSocketUpgrade(object : WebSocketListener() {
                 override fun onOpen(webSocket: WebSocket, response: Response) { webSocket.send("MSG too_busy=4") }
+                override fun onClosing(webSocket: WebSocket, code: Int, reason: String) { webSocket.close(code, reason) }
             }))
             val sink = FakeSink()
             val error = assertFailsWith<ProtocolException> {
