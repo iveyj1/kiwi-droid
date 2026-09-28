@@ -24,7 +24,7 @@ import okio.ByteString
 interface AudioSink : AutoCloseable {
     fun start(sourceRate: Double)
     /** Must not block the transport; the implementation owns a bounded playback queue. */
-    fun offer(samples: ShortArray)
+    fun offer(samples: ShortArray, channels: Int = 1)
     /** RSSI is independent of whether the caller chooses to hear the receiver PCM. */
     fun observeRssi(rssiDbm: Double) {}
     fun checkHealth() {}
@@ -39,6 +39,7 @@ data class SessionMetrics(
     val adcOverflows: Long,
     val sourceRate: Double,
     val playback: PlaybackDiagnostics? = null,
+    val channels: Int = 1,
 )
 
 /** One run == one connection. Caller cancels and joins it before switching receivers. */
@@ -106,6 +107,7 @@ class KiwiSession(
             var lastAudio = connectedAt
             var lastKeepalive = connectedAt
             var lastRssi: Double? = null
+            var lastChannels = 1
             var overflowCount = 0L
             timer = launch {
                 while (isActive) {
@@ -138,7 +140,8 @@ class KiwiSession(
                                                 started = true
                                             }
                                             sink.observeRssi(frame.rssiDbm)
-                                            sink.offer(frame.samples)
+                                            sink.offer(frame.samples, frame.channels)
+                                            lastChannels = frame.channels
                                             lastAudio = monotonicMs()
                                             lastRssi = frame.rssiDbm
                                             if (frame.adcOverflow) overflowCount++
@@ -169,7 +172,7 @@ class KiwiSession(
                         if (started) {
                             sink.checkHealth()
                             onMetrics(SessionMetrics(lastRssi, now - lastAudio >= 2000,
-                                sequences.missing, overflowCount, checkNotNull(handshake.sampleRate), sink.playbackDiagnostics()))
+                                sequences.missing, overflowCount, checkNotNull(handshake.sampleRate), sink.playbackDiagnostics(), lastChannels))
                         }
                     }
                 }

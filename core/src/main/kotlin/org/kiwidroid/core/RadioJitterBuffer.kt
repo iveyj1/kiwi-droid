@@ -19,6 +19,7 @@ data class PlaybackDiagnostics(
 class RadioJitterBuffer(
     private val sampleRate: Int,
     deviceBufferFrames: Int,
+    private val channels: Int = 1,
 ) : AutoCloseable {
     private val lock = Any()
     private val initialTarget: Int
@@ -34,14 +35,16 @@ class RadioJitterBuffer(
 
     init {
         require(sampleRate in 8000..192000)
+        require(channels == 1 || channels == 2)
         require(deviceBufferFrames in 0..sampleRate * 10)
         initialTarget = maxOf(sampleRate * 150 / 1000, deviceBufferFrames + sampleRate / 10)
         maximumTarget = maxOf(sampleRate, initialTarget) // adapt up to 1 s, or the device's larger minimum
         target = initialTarget
-        queue = PcmBuffer(maximumTarget + maxOf(deviceBufferFrames, sampleRate / 5))
+        queue = PcmBuffer((maximumTarget + maxOf(deviceBufferFrames, sampleRate / 5)) * channels)
     }
 
     fun offer(samples: ShortArray, radioEnabled: Boolean = true) = synchronized(lock) {
+        require(samples.size % channels == 0) { "Incomplete PCM sample frame" }
         setEnabled(radioEnabled)
         if (!closed && enabled) queue.offer(samples)
     }
@@ -49,17 +52,21 @@ class RadioJitterBuffer(
     fun render(count: Int, radioEnabled: Boolean = true): ShortArray = synchronized(lock) {
         require(count in 1..initialTarget)
         setEnabled(radioEnabled)
-        if (closed || !enabled) return@synchronized ShortArray(count)
+        if (closed || !enabled) return@synchronized ShortArray(count * channels)
         if (!ready) {
-            if (queue.queuedSamples() < target) return@synchronized ShortArray(count)
+            if (queue.queuedSamples() < target * channels) return@synchronized ShortArray(count * channels)
             ready = true
             fadePosition = 0
         }
-        val available = minOf(count, queue.queuedSamples())
-        val pcm = queue.read(count)
+        val available = minOf(count, queue.queuedSamples() / channels)
+        val pcm = queue.read(count * channels)
         for (index in 0 until available) {
             if (fadePosition >= fadeFrames) break
-            pcm[index] = (pcm[index] * (fadePosition++ / fadeFrames.toDouble())).toInt().toShort()
+            val gain = fadePosition++ / fadeFrames.toDouble()
+            for (channel in 0 until channels) {
+                val pos = index * channels + channel
+                pcm[pos] = (pcm[pos] * gain).toInt().toShort()
+            }
         }
         if (available < count) {
             underruns++
@@ -68,8 +75,10 @@ class RadioJitterBuffer(
             // Soften the partial tail rather than abruptly chopping it to silence.
             val tail = minOf(available, sampleRate / 200)
             for (index in 0 until tail) {
-                val pos = available - tail + index
-                pcm[pos] = (pcm[pos] * (tail - 1 - index) / tail.toDouble()).toInt().toShort()
+                for (channel in 0 until channels) {
+                    val pos = (available - tail + index) * channels + channel
+                    pcm[pos] = (pcm[pos] * (tail - 1 - index) / tail.toDouble()).toInt().toShort()
+                }
             }
         }
         pcm
@@ -78,8 +87,8 @@ class RadioJitterBuffer(
     fun diagnostics(): PlaybackDiagnostics = synchronized(lock) {
         PlaybackDiagnostics(
             radioUnderruns = underruns,
-            droppedAudioMs = queue.droppedSamples * 1000 / sampleRate,
-            queuedAudioMs = queue.queuedSamples() * 1000 / sampleRate,
+            droppedAudioMs = queue.droppedSamples * 1000 / (sampleRate * channels),
+            queuedAudioMs = queue.queuedSamples() * 1000 / (sampleRate * channels),
             targetAudioMs = target * 1000 / sampleRate,
             buffering = enabled && !ready && !closed,
         )
@@ -88,10 +97,15 @@ class RadioJitterBuffer(
     private fun setEnabled(value: Boolean) {
         if (enabled == value) return
         enabled = value
+        clear()
+        // Keep the learned jitter target when toggling mute, but never keep old PCM.
+    }
+
+    /** Drop old audio on a mono/stereo format transition without counting it as an underrun. */
+    fun clear() = synchronized(lock) {
         queue.clear()
         ready = false
         fadePosition = 0
-        // Keep the learned jitter target when toggling mute, but never keep old PCM.
     }
 
     override fun close() = synchronized(lock) {

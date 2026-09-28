@@ -15,6 +15,17 @@ fun sndPacket(seq: Long = 1, flags: Int = 0, smeter: Int = 850,
         samples.forEach { putShort(it) }
     }.array()
 
+fun stereoPacket(seq: Long = 1, flags: Int = 0x08,
+                 samples: ShortArray = shortArrayOf(-32768, 32767, -1234, 5678, 0, -1)): ByteArray =
+    ByteBuffer.allocate(20 + samples.size * 2).apply {
+        put("SND".toByteArray()); put(flags.toByte())
+        order(ByteOrder.LITTLE_ENDIAN); putInt(seq.toInt())
+        order(ByteOrder.BIG_ENDIAN); putShort(850.toShort())
+        put(3.toByte()); put(0.toByte())
+        order(ByteOrder.LITTLE_ENDIAN); putInt(0xf1234567.toInt()); putInt(987654321)
+        order(ByteOrder.BIG_ENDIAN); samples.forEach { putShort(it) }
+    }.array()
+
 class ProtocolTest {
     @Test fun `mixed endian PCM and RSSI match documented reference vector`() {
         val result = Protocol.snd(sndPacket(seq = 0x87654321))
@@ -27,11 +38,31 @@ class ProtocolTest {
         for (bytes in listOf(byteArrayOf(), "SND".toByteArray(), sndPacket().dropLast(1).toByteArray())) {
             assertFailsWith<ProtocolException> { Protocol.snd(bytes) }
         }
-        for (flags in listOf(0x08, 0x10, 0x80)) {
+        for (flags in listOf(0x10, 0x80)) {
             assertFailsWith<ProtocolException> { Protocol.snd(sndPacket(flags = flags)) }
         }
         assertTrue(Protocol.snd(sndPacket(flags = 2)).adcOverflow)
         assertEquals(6426.5, Protocol.snd(sndPacket(smeter = 65535)).rssiDbm)
+    }
+
+    @Test fun `stereo IQ header skips GPS metadata and preserves left right sample order`() {
+        val frame = Protocol.snd(stereoPacket(seq = 0xf1234567))
+        assertEquals(2, frame.channels)
+        assertEquals(3, frame.sampleFrames)
+        assertEquals(-42.0, frame.rssiDbm)
+        assertEquals(0xf1234567, frame.sequence)
+        assertEquals(SndGps(3, 0xf1234567, 987654321), frame.gps)
+        assertContentEquals(shortArrayOf(-32768, 32767, -1234, 5678, 0, -1), frame.samples)
+        assertEquals(1, Protocol.snd(sndPacket()).channels)
+        assertNull(Protocol.snd(sndPacket()).gps)
+    }
+
+    @Test fun `malformed stereo headers and incomplete pairs fail safely`() {
+        for (length in listOf(10, 19, 21, 22, 23)) {
+            assertFailsWith<ProtocolException> { Protocol.snd(stereoPacket().copyOf(length)) }
+        }
+        assertFailsWith<ProtocolException> { Protocol.snd(stereoPacket(flags = 0x18)) }
+        assertFailsWith<ProtocolException> { Protocol.snd(stereoPacket(flags = 0x88)) }
     }
 
     @Test fun `MSG flags separators and escaping`() {

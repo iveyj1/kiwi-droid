@@ -8,23 +8,53 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 /** The MVP supports ordinary 0–30 MHz receivers, not transverter offsets. */
 const val MAX_FREQUENCY_HZ = 30_000_000L
 
-enum class Mode(val wireName: String, val lowCut: Int, val highCut: Int, val offsetHz: Long = 0) {
+enum class Mode(val wireName: String, val lowCut: Int, val highCut: Int,
+                val channels: Int = 1, val centerTuning: Boolean = false) {
     AM("am", -5000, 5000),
     USB("usb", 0, 3000),
     LSB("lsb", -3000, 0),
-    CW("cw", 600, 1000, -800),
+    CW("cw", 600, 1000, centerTuning = true),
+    SAM("sam", -5000, 5000),
+    SAU("sau", 0, 5000),
+    SAL("sal", -5000, 0),
+    SAS("sas", -5000, 5000, channels = 2),
+    IQ("iq", -5000, 5000, channels = 2),
+    CWN("cwn", 470, 530, centerTuning = true),
+    ;
+    val defaultPassband: Passband get() = Passband(lowCut, highCut)
 }
 
-data class Tuning(val frequencyHz: Long = 5_000_000, val mode: Mode = Mode.AM) {
+/** Signed audio/baseband cuts for the supported ordinary 12 kHz receivers. */
+data class Passband(val lowHz: Int, val highHz: Int) {
     init {
+        require(lowHz in -6000..6000 && highHz in -6000..6000) { "Passband limits must be −6000 to +6000 Hz" }
+        require(lowHz < highHz) { "Lower passband limit must be below the upper limit" }
+    }
+}
+
+fun defaultPassbands(): Map<Mode, Passband> = Mode.entries.associateWith { it.defaultPassband }
+
+data class Tuning(val frequencyHz: Long = 5_000_000, val mode: Mode = Mode.AM,
+                  val passbands: Map<Mode, Passband> = defaultPassbands()) {
+    val passband: Passband get() = passbands.getValue(mode)
+    // Half-Hz units keep an odd sum of cuts centered exactly, without losing tune precision.
+    val radioFrequencyHalfHz: Long get() = frequencyHz * 2 -
+        if (mode.centerTuning) (passband.lowHz + passband.highHz).toLong() else 0L
+
+    init {
+        require(passbands.keys.containsAll(Mode.entries)) { "Missing per-mode passband settings" }
         require(frequencyHz in 0..MAX_FREQUENCY_HZ) { "Frequency must be 0–30000 kHz" }
-        require(frequencyHz + mode.offsetHz in 0..MAX_FREQUENCY_HZ) {
-            "CW frequency must be at least 0.800 kHz"
+        require(radioFrequencyHalfHz in 0..MAX_FREQUENCY_HZ * 2) {
+            "Mode/passband puts the receiver frequency outside 0–30000 kHz"
         }
     }
-    fun command(): String = "SET mod=${mode.wireName} low_cut=${mode.lowCut} " +
-        "high_cut=${mode.highCut} freq=${formatKhz(frequencyHz + mode.offsetHz)}"
+    fun command(): String {
+        val radioKhz = BigDecimal.valueOf(radioFrequencyHalfHz).divide(BigDecimal(2000))
+            .setScale(if (radioFrequencyHalfHz % 2 == 0L) 3 else 4).toPlainString()
+        return "SET mod=${mode.wireName} low_cut=${passband.lowHz} high_cut=${passband.highHz} freq=$radioKhz"
+    }
 
+    fun withPassband(value: Passband): Tuning = copy(passbands = passbands + (mode to value))
     fun step(amountHz: Long): Tuning = copy(frequencyHz = Math.addExact(frequencyHz, amountHz))
 }
 

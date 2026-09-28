@@ -9,8 +9,12 @@ import kotlinx.serialization.json.jsonObject
 
 class ProtocolException(message: String) : Exception(message)
 
-data class SndFrame(val flags: Int, val sequence: Long, val rssiDbm: Double, val samples: ShortArray) {
+data class SndGps(val lastSolution: Int, val seconds: Long, val nanoseconds: Long)
+
+data class SndFrame(val flags: Int, val sequence: Long, val rssiDbm: Double, val samples: ShortArray,
+                    val channels: Int = 1, val gps: SndGps? = null) {
     val adcOverflow: Boolean get() = flags and 0x02 != 0
+    val sampleFrames: Int get() = samples.size / channels
 }
 
 object Protocol {
@@ -47,15 +51,22 @@ object Protocol {
         if (tag(bytes) != "SND" || bytes.size < 10) throw ProtocolException("Truncated SND header")
         val flags = bytes[3].toInt() and 0xff
         if (flags and 0x10 != 0) throw ProtocolException("Compressed audio not supported")
-        if (flags and 0x08 != 0) throw ProtocolException("Stereo/IQ audio not supported")
         if (flags and 0x80 != 0) throw ProtocolException("Camping audio not supported")
-        if ((bytes.size - 10) % 2 != 0) throw ProtocolException("Odd PCM byte count")
+        val channels = if (flags and 0x08 != 0) 2 else 1
+        val pcmOffset = if (channels == 2) 20 else 10
+        if (bytes.size < pcmOffset) throw ProtocolException("Truncated stereo/IQ GPS header")
+        if ((bytes.size - pcmOffset) % (2 * channels) != 0) throw ProtocolException("Incomplete PCM sample frame")
         val buffer = ByteBuffer.wrap(bytes)
         val sequence = buffer.order(ByteOrder.LITTLE_ENDIAN).getInt(4).toLong() and 0xffffffffL
         val smeter = buffer.order(ByteOrder.BIG_ENDIAN).getShort(8).toInt() and 0xffff
-        buffer.position(10)
-        val pcm = ShortArray((bytes.size - 10) / 2) { buffer.short }
-        return SndFrame(flags, sequence, smeter * 0.1 - 127.0, pcm)
+        val gps = if (channels == 2) {
+            buffer.order(ByteOrder.LITTLE_ENDIAN)
+            SndGps(bytes[10].toInt() and 0xff, buffer.getInt(12).toLong() and 0xffffffffL,
+                buffer.getInt(16).toLong() and 0xffffffffL)
+        } else null
+        buffer.order(ByteOrder.BIG_ENDIAN).position(pcmOffset)
+        val pcm = ShortArray((bytes.size - pcmOffset) / 2) { buffer.short }
+        return SndFrame(flags, sequence, smeter * 0.1 - 127.0, pcm, channels, gps)
     }
 
     fun serverError(params: Map<String, String?>): String? = when {
