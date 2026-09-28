@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Installs in place (preserving settings), runs UI checks first, then screen-off playback.
+# Installs in place, runs UI and silent audio checks first, then screen-off playback.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 source tools/env.sh
@@ -13,7 +13,7 @@ adb "${args[@]}" install -r app/build/outputs/apk/debug/app-debug.apk
 adb "${args[@]}" install -r app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
 log=$(mktemp)
 trap 'rm -f "$log"' EXIT
-for test in RadioScreenTest BackgroundPlaybackTest; do
+for test in RadioScreenTest AudioPlaybackTest BackgroundPlaybackTest; do
     adb "${args[@]}" shell am instrument -w -r -e class "org.kiwidroid.app.$test" \
         org.kiwidroid.app.test/androidx.test.runner.AndroidJUnitRunner | tee "$log"
     # am instrument may return exit status 0 even when JUnit fails.

@@ -52,6 +52,17 @@
 - `./tools/test-phone.sh`: both tests passed on Pixel 3 XL / Android 12. UI test selected Peaks only and saved/restored custom hold/threshold. Silent background receiver test injected one-frame RSSI dips/peaks, retained one SND connection with radio muted, and stopped cleanly from the notification.
 - Auditory checks of real cable/contact transients remain user listening tests. A detected RSSI excursion can still map to the same note if it is below scale resolution or beyond the mapping endpoints.
 
+## Bluetooth playback buffering — 0.4.1
+
+- User reported repeated audio gaps on a Pixel 8 Pro / Android 17 (API 37), using Bluetooth earbuds, with no missing SND frames. AudioFlinger history showed the app's A2DP tracks used 15392 native frames (~321 ms) with zero hardware underruns. The old 50 ms priming/200 ms radio queue could not reliably cover that output scheduling.
+- Added device-sized radio priming (native buffer +100 ms, minimum 150 ms), bounded +50 ms adaptive recovery after real starvation, and no fade/rebuffer merely because a successful read exactly emptied the queue. Native output is prefilled with silence; tones stay independent of radio priming.
+- Added visible local radio starvation, AudioTrack underrun, dropped-PCM, and queue/device-size diagnostics. Missing SND frames remains a separate metric.
+- `./tools/check.sh`: 47 core tests and 6 settings tests passed, APK built, lint no errors. New tests cover bursty jittered delivery, exact drains, actual underflow/adaptation, bounded backlog, mute/close behavior, and diagnostics propagation. Fixed missing close acknowledgement in a flaky mock-busy-server test.
+- The first UI run exposed an Android 17 incompatibility in Compose's transitive Espresso 3.5.0 (`InputManager.getInstance` reflection). Explicit test-only Espresso 3.7.0 resolved it; no runtime app dependency change was needed.
+- `./tools/test-phone.sh`: all three tests passed on Pixel 8 Pro / Android 17 with Bluetooth connected: controls, 20-second actual AudioTrack/receiver-PCM pacing, and 33-second screen-off loopback streaming with notification Stop.
+- The silent AudioTrack test reported: local underruns **0**, device underruns **0**, discarded PCM **0 ms**, radio queue **519 ms**, target **420 ms**, native ring **320 ms** (integer-ms display). This verifies local buffering, not subjective Bluetooth sound quality.
+- Real-receiver listening confirmation and a longer run on the affected route remain. See `AUDIO_DIAGNOSTICS.md` for interpretation/trade-offs.
+
 ## Next manual checks
 
 Use an authorized receiver on the phone's network. Start with low media volume.
@@ -68,7 +79,7 @@ Use an authorized receiver on the phone's network. Start with low media volume.
 ## Remaining implementation/validation risks
 
 - Actual receivers must confirm the 48 kHz rate acknowledgement and server sample-rate behavior. PCM is resampled from the reported floating-point rate to 48 kHz; there is no drift-control PLL.
-- Queue capacity is 200 ms plus at least 100 ms AudioTrack buffering. Backlog drops old queue chunks; audible behavior under real network jitter needs tuning.
+- As of 0.4.1, queue/priming sizes depend on the actual AudioTrack buffer and adapt on starvation. Backlog remains bounded and drops are counted. This adds radio latency; long-run clock drift, real network jitter, and Bluetooth link behavior still need listening tests.
 - Startup/rebuffer audio fades in; Stop currently prioritizes immediate pause/flush over a cooperative fade-out.
 - Receiver metadata does not yet adjust the fixed 0–30 MHz tuning bounds; transverter/extended-frequency receivers are unsupported.
 - Passwords, ADPCM, public directory discovery, and waterfall are intentionally excluded. Background playback was added in 0.2.0 at the user's request.

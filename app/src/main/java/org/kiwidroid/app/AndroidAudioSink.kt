@@ -11,7 +11,9 @@ import org.kiwidroid.core.*
 
 /** A single clocked output mixes independent radio and RSSI sounds, including in the background. */
 class AndroidAudioSink(private val settings: () -> SoundSettings = { SoundSettings() }) : AudioSink {
-    private val queue = PcmBuffer(Protocol.OUTPUT_RATE / 5) // at most 200 ms queued radio audio
+    private var radioBuffer: RadioJitterBuffer? = null
+    @Volatile private var deviceUnderruns = 0
+    @Volatile private var deviceBufferMs = 0
     private val tones = RssiToneSynth()
     private var resampler: PcmResampler? = null
     private var worker: Thread? = null
@@ -31,36 +33,29 @@ class AndroidAudioSink(private val settings: () -> SoundSettings = { SoundSettin
             .setAudioFormat(AudioFormat.Builder().setSampleRate(Protocol.OUTPUT_RATE)
                 .setEncoding(AudioFormat.ENCODING_PCM_16BIT).setChannelMask(AudioFormat.CHANNEL_OUT_MONO).build())
             .setTransferMode(AudioTrack.MODE_STREAM)
-            .setBufferSizeInBytes(maxOf(minBuffer, Protocol.OUTPUT_RATE / 10 * 2))
+            .setBufferSizeInBytes(maxOf(minBuffer, Protocol.OUTPUT_RATE / 5 * 2)) // request >=200 ms; routes may enlarge it
             .build()
         if (output.state != AudioTrack.STATE_INITIALIZED) {
             output.release()
             throw IOException("AudioTrack initialization failed")
         }
+        val actualFrames = output.bufferSizeInFrames
+        deviceBufferMs = actualFrames * 1000 / Protocol.OUTPUT_RATE
+        val buffer = RadioJitterBuffer(Protocol.OUTPUT_RATE, actualFrames)
+        radioBuffer = buffer
         track = output
         worker = thread(name = "kiwi-audio", isDaemon = true) {
             try {
                 Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO)
                 val blockSize = Protocol.OUTPUT_RATE / 100 // 10 ms; AudioTrack writes pace this loop
-                var radioReady = false
-                var fadeSamples = 0
+                // Prime the native ring with silence before play(), avoiding startup hardware underruns.
+                val silence = ShortArray(actualFrames)
+                val primed = output.write(silence, 0, silence.size, AudioTrack.WRITE_NON_BLOCKING)
+                if (primed < 0) throw IOException("AudioTrack priming failed ($primed)")
                 output.play()
                 while (!closed) {
                     val sound = settings()
-                    if (!sound.radioEnabled) {
-                        queue.clear() // no old receiver audio waiting to play when unmuted
-                        radioReady = false
-                        fadeSamples = 0
-                    }
-                    if (sound.radioEnabled && !radioReady && queue.queuedSamples() >= 2400) radioReady = true
-                    val radioPcm = if (radioReady) queue.read(blockSize) else ShortArray(blockSize)
-                    if (radioReady) {
-                        for (index in radioPcm.indices) {
-                            if (fadeSamples >= 2400) break
-                            radioPcm[index] = (radioPcm[index] * (fadeSamples++ / 2400.0)).toInt().toShort()
-                        }
-                        if (queue.queuedSamples() == 0) { radioReady = false; fadeSamples = 0 }
-                    }
+                    val radioPcm = buffer.render(blockSize, sound.radioEnabled)
                     val tonePcm = tones.render(blockSize, sound.tones, monotonicMs())
                     val samples = mixSound(radioPcm, tonePcm, sound)
                     var offset = 0
@@ -69,6 +64,7 @@ class AndroidAudioSink(private val settings: () -> SoundSettings = { SoundSettin
                         if (written <= 0 && !closed) throw IOException("AudioTrack write failed ($written)")
                         if (written > 0) offset += written
                     }
+                    deviceUnderruns = output.underrunCount
                 }
             } catch (e: Exception) {
                 if (!closed) failure.set(e)
@@ -88,8 +84,13 @@ class AndroidAudioSink(private val settings: () -> SoundSettings = { SoundSettin
         checkHealth()
         // Preserve resampler phase even when muted; the sound switch never changes the SND session.
         val pcm = checkNotNull(resampler).convert(samples)
-        if (settings().radioEnabled) queue.offer(pcm) else queue.clear()
+        checkNotNull(radioBuffer).offer(pcm, settings().radioEnabled)
     }
+
+    override fun playbackDiagnostics(): PlaybackDiagnostics? = radioBuffer?.diagnostics()?.copy(
+        deviceUnderruns = deviceUnderruns,
+        deviceBufferMs = deviceBufferMs,
+    )
 
     override fun checkHealth() {
         failure.get()?.let { throw IOException("Audio playback failed: ${it.message}", it) }
@@ -98,7 +99,7 @@ class AndroidAudioSink(private val settings: () -> SoundSettings = { SoundSettin
     override fun close() {
         if (closed) return
         closed = true
-        queue.close()
+        radioBuffer?.close()
         runCatching { track?.pause() }
         worker?.join(1000)
         track = null

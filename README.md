@@ -20,6 +20,10 @@ A **dip/peak latch** captures one-sample received RSSI excursions before smoothi
 
 Muting receiver audio keeps the SND connection for RSSI; data use is unchanged. Tones stop on stale RSSI, Stop, or disconnect. See [docs/RSSI_SOUND.md](docs/RSSI_SOUND.md) for mapping details and tuning for cable faults.
 
+## Audio gaps and buffering
+
+Playback now sizes its radio prebuffer from the actual device/route buffer and adapts after local starvation. This handles larger Bluetooth output bursts at the cost of additional radio latency. The main screen reports **local underruns**, **device underruns**, discarded PCM, and buffer sizes separately from missing network frames. See [docs/AUDIO_DIAGNOSTICS.md](docs/AUDIO_DIAGNOSTICS.md).
+
 ## Build tools
 
 Requires Linux x86_64 for the supplied bootstrap, `curl`, `tar`, `unzip`, and `sha256sum`.
@@ -47,12 +51,12 @@ If Linux reports `no permissions` for a Google/Pixel phone, run `./tools/fix-usb
 
 ```sh
 ./tools/check.sh
-./tools/test-phone.sh [serial]  # unlock phone first; takes about 45 seconds
+./tools/test-phone.sh [serial]  # unlock phone first; takes about a minute
 ```
 
-The phone script installs in place to preserve settings, then runs UI checks followed by a silent loopback receiver test. It interrupts playback, restores the original controls/receiver list, and ends with the phone locked. Leave the phone untouched during testing; unlock it afterward. No real receiver is contacted. Running the whole Gradle connected-test suite on a PIN-locked device can block UI checks after the screen-off test; the script deliberately runs UI checks first.
+The phone script installs in place to preserve settings, then runs UI checks, a 20-second silent AudioTrack test on the current route, and a screen-off silent loopback receiver test. It interrupts playback, restores the original controls/receiver list, and ends with the phone locked. Leave the phone untouched during testing; unlock it afterward. No real receiver is contacted. Running the whole Gradle connected-test suite on a PIN-locked device can block UI checks after the screen-off test; the script deliberately runs UI checks first.
 
-Validated: 41 core JVM tests, 6 settings tests, Android lint (no errors), debug APK build, sound-controls/UI tests and 33 seconds of screen-off tone-only routing (test tone gain zero) with notification Stop on a Pixel 3 XL / Android 12. The user also reported successful live foreground listening. Longer live background sessions, Doze/OEM battery policies, and newer Android versions remain to be checked; see [docs/VALIDATION.md](docs/VALIDATION.md).
+Validated: 47 core JVM tests, 6 settings tests, Android lint (no errors), debug APK build, sound-controls/UI and screen-off playback tests. Device coverage includes Pixel 3 XL / Android 12 (earlier builds) and Pixel 8 Pro / Android 17 over Bluetooth (0.4.1). The latter passed a 20-second silent radio-PCM test with zero local/device underruns or dropped audio. Live listening confirmation of the Bluetooth fix and longer/background/Doze testing remain; see [docs/VALIDATION.md](docs/VALIDATION.md).
 
 Source layout: `core/` is Android-independent protocol/transport/PCM code; `app/` contains Compose controls, process-scoped settings/state, and a media playback service owning the session, audio focus, notification, power locks, and AudioTrack output. The implementation follows `~/kiwi` protocol documentation; test vectors are independently generated, not copied receiver captures.
 

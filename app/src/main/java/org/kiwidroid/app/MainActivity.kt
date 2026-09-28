@@ -96,6 +96,12 @@ private fun RadioScreen(state: RadioUiState, model: RadioViewModel) {
             if (metrics != null) Text(String.format(Locale.ROOT,
                 "Source %.2f Hz · missing frames %d · ADC overloads %d",
                 metrics.sourceRate, metrics.missingFrames, metrics.adcOverflows), style = MaterialTheme.typography.bodySmall)
+            metrics?.playback?.let { audio ->
+                Text("Local underruns ${audio.radioUnderruns} · device underruns ${audio.deviceUnderruns} · dropped audio ${audio.droppedAudioMs} ms",
+                    Modifier.testTag("audioDiagnostics"), style = MaterialTheme.typography.bodySmall)
+                Text("Radio buffer ${audio.queuedAudioMs}/${audio.targetAudioMs} ms · device buffer ${audio.deviceBufferMs} ms" +
+                    if (audio.buffering) " · buffering" else "", style = MaterialTheme.typography.bodySmall)
+            }
             state.message?.let { Text(it, color = MaterialTheme.colorScheme.error, modifier = Modifier.testTag("error")) }
             HorizontalDivider()
             SoundSwitch("Receiver audio", settings.sound.radioEnabled, state.loaded, "radioAudioSwitch") { model.setRadioAudio(it) }
