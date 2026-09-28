@@ -15,7 +15,7 @@ class AndroidAudioSink(private val settings: () -> SoundSettings = { SoundSettin
     @Volatile private var deviceUnderruns = 0
     @Volatile private var deviceBufferMs = 0
     private val tones = RssiToneSynth()
-    private var resampler: PcmResampler? = null
+    private var resampler: StereoPcmResampler? = null
     private var worker: Thread? = null
     private val failure = AtomicReference<Throwable?>()
     @Volatile private var track: AudioTrack? = null
@@ -23,17 +23,17 @@ class AndroidAudioSink(private val settings: () -> SoundSettings = { SoundSettin
 
     override fun start(sourceRate: Double) {
         check(worker == null && !closed)
-        resampler = PcmResampler(sourceRate)
+        resampler = StereoPcmResampler(sourceRate)
         val minBuffer = AudioTrack.getMinBufferSize(Protocol.OUTPUT_RATE,
-            AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT)
-        if (minBuffer <= 0) throw IOException("48 kHz mono audio is unavailable ($minBuffer)")
+            AudioFormat.CHANNEL_OUT_STEREO, AudioFormat.ENCODING_PCM_16BIT)
+        if (minBuffer <= 0) throw IOException("48 kHz stereo audio is unavailable ($minBuffer)")
         val output = AudioTrack.Builder()
             .setAudioAttributes(AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA)
                 .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build())
             .setAudioFormat(AudioFormat.Builder().setSampleRate(Protocol.OUTPUT_RATE)
-                .setEncoding(AudioFormat.ENCODING_PCM_16BIT).setChannelMask(AudioFormat.CHANNEL_OUT_MONO).build())
+                .setEncoding(AudioFormat.ENCODING_PCM_16BIT).setChannelMask(AudioFormat.CHANNEL_OUT_STEREO).build())
             .setTransferMode(AudioTrack.MODE_STREAM)
-            .setBufferSizeInBytes(maxOf(minBuffer, Protocol.OUTPUT_RATE / 5 * 2)) // request >=200 ms; routes may enlarge it
+            .setBufferSizeInBytes(maxOf(minBuffer, Protocol.OUTPUT_RATE / 5 * 4)) // request >=200 ms; routes may enlarge it
             .build()
         if (output.state != AudioTrack.STATE_INITIALIZED) {
             output.release()
@@ -41,7 +41,7 @@ class AndroidAudioSink(private val settings: () -> SoundSettings = { SoundSettin
         }
         val actualFrames = output.bufferSizeInFrames
         deviceBufferMs = actualFrames * 1000 / Protocol.OUTPUT_RATE
-        val buffer = RadioJitterBuffer(Protocol.OUTPUT_RATE, actualFrames)
+        val buffer = RadioJitterBuffer(Protocol.OUTPUT_RATE, actualFrames, channels = 2)
         radioBuffer = buffer
         track = output
         worker = thread(name = "kiwi-audio", isDaemon = true) {
@@ -49,7 +49,7 @@ class AndroidAudioSink(private val settings: () -> SoundSettings = { SoundSettin
                 Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO)
                 val blockSize = Protocol.OUTPUT_RATE / 100 // 10 ms; AudioTrack writes pace this loop
                 // Prime the native ring with silence before play(), avoiding startup hardware underruns.
-                val silence = ShortArray(actualFrames)
+                val silence = ShortArray(actualFrames * 2)
                 val primed = output.write(silence, 0, silence.size, AudioTrack.WRITE_NON_BLOCKING)
                 if (primed < 0) throw IOException("AudioTrack priming failed ($primed)")
                 output.play()
@@ -57,7 +57,7 @@ class AndroidAudioSink(private val settings: () -> SoundSettings = { SoundSettin
                     val sound = settings()
                     val radioPcm = buffer.render(blockSize, sound.radioEnabled)
                     val tonePcm = tones.render(blockSize, sound.tones, monotonicMs())
-                    val samples = mixSound(radioPcm, tonePcm, sound)
+                    val samples = mixStereoSound(radioPcm, tonePcm, sound)
                     var offset = 0
                     while (offset < samples.size && !closed) {
                         val written = output.write(samples, offset, samples.size - offset, AudioTrack.WRITE_BLOCKING)
@@ -80,11 +80,15 @@ class AndroidAudioSink(private val settings: () -> SoundSettings = { SoundSettin
         tones.observe(RssiReading(rssiDbm, monotonicMs()), settings().tones)
     }
 
-    override fun offer(samples: ShortArray) {
+    override fun offer(samples: ShortArray, channels: Int) {
         checkHealth()
-        // Preserve resampler phase even when muted; the sound switch never changes the SND session.
-        val pcm = checkNotNull(resampler).convert(samples)
-        checkNotNull(radioBuffer).offer(pcm, settings().radioEnabled)
+        val converter = checkNotNull(resampler)
+        val buffer = checkNotNull(radioBuffer)
+        val layoutChanged = converter.inputChannels != channels
+        // Preserve phase while muted; reset both channels together on a wire-format transition.
+        val pcm = converter.convert(samples, channels)
+        if (layoutChanged) buffer.clear()
+        buffer.offer(pcm, settings().radioEnabled)
     }
 
     override fun playbackDiagnostics(): PlaybackDiagnostics? = radioBuffer?.diagnostics()?.copy(

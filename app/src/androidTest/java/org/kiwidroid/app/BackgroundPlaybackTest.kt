@@ -9,6 +9,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
@@ -43,6 +44,8 @@ class BackgroundPlaybackTest {
         val socket = AtomicReference<WebSocket?>()
         val keepalives = AtomicInteger()
         val sequence = AtomicInteger()
+        val channels = AtomicInteger(1)
+        val modes = CopyOnWriteArrayList<String>()
         val closed = AtomicBoolean(false)
         val executor = Executors.newSingleThreadScheduledExecutor()
         var added = false
@@ -53,6 +56,11 @@ class BackgroundPlaybackTest {
                     if (text.startsWith("SET auth")) webSocket.send("MSG badp=0 audio_rate=12000 sample_rate=11999.0")
                     if (text == "SET compression=0") socket.set(webSocket)
                     if (text == "SET keepalive") keepalives.incrementAndGet()
+                    if (text.startsWith("SET mod=")) {
+                        val mode = text.substringAfter("SET mod=").substringBefore(' ')
+                        channels.set(if (mode == "sas" || mode == "iq") 2 else 1)
+                        modes.add(mode)
+                    }
                 }
                 override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
                     closed.set(true)
@@ -65,12 +73,17 @@ class BackgroundPlaybackTest {
             executor.scheduleAtFixedRate({
                 socket.get()?.let { ws ->
                     val seq = sequence.incrementAndGet()
-                    val bytes = ByteBuffer.allocate(10 + 512 * 2).apply {
-                        put("SND".toByteArray()); put(0.toByte())
+                    val channelCount = channels.get()
+                    val bytes = ByteBuffer.allocate((if (channelCount == 2) 20 else 10) + 512 * 2 * channelCount).apply {
+                        put("SND".toByteArray()); put((if (channelCount == 2) 8 else 0).toByte())
                         order(ByteOrder.LITTLE_ENDIAN); putInt(seq)
                         // One-frame raw RSSI excursions exercise the dip/peak receive path.
                         val smeter = when (seq % 40) { 10 -> 650; 20 -> 1050; else -> 850 + seq % 10 }
                         order(ByteOrder.BIG_ENDIAN); putShort(smeter.toShort())
+                        if (channelCount == 2) {
+                            put(0.toByte()); put(0.toByte())
+                            order(ByteOrder.LITTLE_ENDIAN); putInt(1234); putInt(123456789)
+                        }
                     }.array()
                     ws.send(bytes.toByteString())
                 }
@@ -97,6 +110,11 @@ class BackgroundPlaybackTest {
                     radio.setRadioAudio(false)
                     radio.setRssiTones(false)
                     radio.setRssiTones(true)
+                }
+                for (mode in listOf(Mode.SAS, Mode.IQ, Mode.CWN, Mode.SAM, Mode.SAU, Mode.SAL, Mode.IQ)) {
+                    val beforeCommands = modes.size
+                    instrumentation.runOnMainSync { radio.setMode(mode) }
+                    await { modes.size > beforeCommands && modes.last() == mode.wireName && radio.state.value.metrics?.channels == mode.channels }
                 }
                 val manager = context.getSystemService(NotificationManager::class.java)
                 await { manager.activeNotifications.any { it.id == PlaybackService.NOTIFICATION_ID } }

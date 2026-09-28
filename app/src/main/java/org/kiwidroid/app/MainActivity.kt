@@ -49,6 +49,7 @@ private fun RadioScreen(state: RadioUiState, model: RadioViewModel) {
     var editingIndex by rememberSaveable { mutableStateOf<Int?>(null) }
     var stepOpen by rememberSaveable { mutableStateOf(false) }
     var soundOpen by rememberSaveable { mutableStateOf(false) }
+    var passbandOpen by rememberSaveable { mutableStateOf(false) }
     val focus = LocalFocusManager.current
     fun tune() { if (model.tune(frequency)) focus.clearFocus() }
 
@@ -83,6 +84,12 @@ private fun RadioScreen(state: RadioUiState, model: RadioViewModel) {
             }
             Choice("Mode", settings.tuning.mode.name, Mode.entries.map { it.name }, state.loaded,
                 Modifier.fillMaxWidth()) { model.setMode(Mode.entries[it]) }
+            OutlinedButton(onClick = { passbandOpen = true }, enabled = state.loaded,
+                modifier = Modifier.fillMaxWidth().testTag("passband")) {
+                Text("Passband: ${settings.tuning.passband.lowHz} … ${settings.tuning.passband.highHz} Hz")
+            }
+            if (settings.tuning.mode == Mode.IQ) Text("IQ: I → left, Q → right (resampled playback, not demodulated audio or raw-IQ export). " +
+                "Disable RSSI beeps for clean I/Q playback.", style = MaterialTheme.typography.bodySmall)
             Button(onClick = { if (state.running) model.stop() else model.play() }, enabled = state.loaded,
                 modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp).testTag("playStop")) {
                 Text(if (state.running) "Stop" else if (state.status == "Error") "Retry" else "Play")
@@ -94,8 +101,8 @@ private fun RadioScreen(state: RadioUiState, model: RadioViewModel) {
             LinearProgressIndicator(progress = { if (rssi == null || metrics.stale) 0f
                 else ((rssi + 130) / 110).toFloat().coerceIn(0f, 1f) }, modifier = Modifier.fillMaxWidth())
             if (metrics != null) Text(String.format(Locale.ROOT,
-                "Source %.2f Hz · missing frames %d · ADC overloads %d",
-                metrics.sourceRate, metrics.missingFrames, metrics.adcOverflows), style = MaterialTheme.typography.bodySmall)
+                "Source %.2f Hz · %d ch · missing frames %d · ADC overloads %d",
+                metrics.sourceRate, metrics.channels, metrics.missingFrames, metrics.adcOverflows), style = MaterialTheme.typography.bodySmall)
             metrics?.playback?.let { audio ->
                 Text("Local underruns ${audio.radioUnderruns} · device underruns ${audio.deviceUnderruns} · dropped audio ${audio.droppedAudioMs} ms",
                     Modifier.testTag("audioDiagnostics"), style = MaterialTheme.typography.bodySmall)
@@ -112,7 +119,7 @@ private fun RadioScreen(state: RadioUiState, model: RadioViewModel) {
             HorizontalDivider()
             Text("Playback continues in the background and with the screen off. Stop here or in the media notification. Use the phone’s media volume.",
                 style = MaterialTheme.typography.bodySmall)
-            Text("Uncompressed audio uses about 86 MB/hour, plus overhead." +
+            Text("Uncompressed audio uses about ${if (settings.tuning.mode.channels == 2) 173 else 86} MB/hour, plus overhead." +
                 if (settings.receiver.cleartext) " This receiver uses unencrypted HTTP/WS." else " This receiver uses HTTPS/WSS.",
                 style = MaterialTheme.typography.bodySmall)
         }
@@ -139,6 +146,9 @@ private fun RadioScreen(state: RadioUiState, model: RadioViewModel) {
         onDismiss = { editorOpen = false }, onSave = { name, url ->
             if (model.saveReceiver(editingIndex, name, url)) { editorOpen = false; serversOpen = true }
         })
+
+    if (passbandOpen) PassbandEditor(settings.tuning.mode, settings.tuning.passband, state.message,
+        onDismiss = { passbandOpen = false }, onSave = model::setPassband)
 
     if (soundOpen) SoundEditor(settings.sound,
         state.metrics?.takeUnless { it.stale }?.rssiDbm, onDismiss = { soundOpen = false }, onSave = model::setSound)

@@ -13,7 +13,7 @@ adb "${args[@]}" install -r app/build/outputs/apk/debug/app-debug.apk
 adb "${args[@]}" install -r app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
 log=$(mktemp)
 trap 'rm -f "$log"' EXIT
-for test in RadioScreenTest AudioPlaybackTest BackgroundPlaybackTest; do
+for test in RadioScreenTest PassbandScreenTest AudioPlaybackTest BackgroundPlaybackTest; do
     adb "${args[@]}" shell am instrument -w -r -e class "org.kiwidroid.app.$test" \
         org.kiwidroid.app.test/androidx.test.runner.AndroidJUnitRunner | tee "$log"
     # am instrument may return exit status 0 even when JUnit fails.

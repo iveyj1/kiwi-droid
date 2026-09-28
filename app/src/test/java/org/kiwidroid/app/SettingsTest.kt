@@ -55,6 +55,25 @@ class SettingsTest {
         assertEquals(1.0, restored.sound.tones.latchThresholdDb)
     }
 
+    @Test fun `every mode keeps its own passband across persistence`() {
+        val bands = Mode.entries.associateWith { Passband(it.lowCut + 10, it.highCut - 10) }
+        val settings = Settings(tuning = Tuning(335000, Mode.SAS, bands))
+        val restored = SettingsCodec.decode(SettingsCodec.encode(settings))
+        assertEquals(settings, restored)
+        Mode.entries.forEach { assertEquals(bands.getValue(it), restored.tuning.copy(mode = it).passband) }
+    }
+
+    @Test fun `pre-passband preferences retain controls and fill missing mode defaults`() {
+        val previous = Settings(tuning = Tuning(335000, Mode.CW), stepHz = 17)
+        val json = Json.parseToJsonElement(SettingsCodec.encode(previous)).jsonObject
+        assertEquals(previous, SettingsCodec.decode(JsonObject(json - "passbands").toString()))
+        val partial = JsonObject(mapOf("CW" to buildJsonObject { put("lowHz", 700); put("highHz", 900) }))
+        val restored = SettingsCodec.decode(JsonObject(json + ("passbands" to partial)).toString())
+        assertEquals(Passband(700, 900), restored.tuning.passband)
+        assertEquals(Mode.CWN.defaultPassband, restored.tuning.copy(mode = Mode.CWN).passband)
+        assertEquals(17, restored.stepHz)
+    }
+
     @Test fun `defaults match proposed local receiver set`() {
         val defaults = Settings()
         assertEquals(4, defaults.receivers.size)

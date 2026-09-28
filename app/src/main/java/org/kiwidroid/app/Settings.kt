@@ -37,6 +37,11 @@ internal object SettingsCodec {
         put("selected", settings.selected)
         put("frequencyHz", settings.tuning.frequencyHz)
         put("mode", settings.tuning.mode.name)
+        put("passbands", buildJsonObject {
+            settings.tuning.passbands.forEach { (mode, band) -> put(mode.name, buildJsonObject {
+                put("lowHz", band.lowHz); put("highHz", band.highHz)
+            }) }
+        })
         put("stepHz", settings.stepHz)
         put("sound", buildJsonObject {
             put("radioEnabled", settings.sound.radioEnabled)
@@ -72,7 +77,12 @@ internal object SettingsCodec {
             },
             selected = obj.getValue("selected").jsonPrimitive.int,
             tuning = Tuning(obj.getValue("frequencyHz").jsonPrimitive.long,
-                Mode.valueOf(obj.getValue("mode").jsonPrimitive.content)),
+                Mode.valueOf(obj.getValue("mode").jsonPrimitive.content),
+                passbands = Mode.entries.associateWith { mode ->
+                    obj["passbands"]?.jsonObject?.get(mode.name)?.jsonObject?.let {
+                        Passband(it.getValue("lowHz").jsonPrimitive.int, it.getValue("highHz").jsonPrimitive.int)
+                    } ?: mode.defaultPassband
+                }),
             stepHz = obj.getValue("stepHz").jsonPrimitive.long,
             sound = obj["sound"]?.jsonObject?.let(::decodeSound) ?: SoundSettings(),
         )

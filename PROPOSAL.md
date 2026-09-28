@@ -4,6 +4,8 @@
 
 > Implementation amendment (0.3.0): the user requested audible RSSI for cable troubleshooting. Independent radio mute and RSSI beeps now share the background audio service, with a default 10 dB/octave musical mapping and configurable mapping points/scales/sound parameters. See `docs/RSSI_SOUND.md`.
 
+> Implementation amendment (0.5.0): per-mode lower/upper passband editing and SAM/SAU/SAL/SAS/IQ/CWN are now implemented, including stereo SND decoding and playback. The original IQ/stereo exclusions below are superseded for playback only, not raw capture/export. See `docs/MODES_AND_FILTERS.md`.
+
 ## Objective
 
 Build a small native Android app for listening to a selected KiwiSDR receiver: choose a server, enter a frequency, step up/down, select a demodulation mode, play audio, and see live received signal strength (RSSI).

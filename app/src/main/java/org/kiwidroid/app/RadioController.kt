@@ -111,6 +111,7 @@ class RadioController(private val application: Application) {
     fun tune(text: String): Boolean = change { it.copy(tuning = it.tuning.copy(frequencyHz = parseFrequencyKhz(text))) }
     fun step(direction: Int) = change { it.copy(tuning = it.tuning.step(it.stepHz * direction)) }
     fun setMode(mode: Mode) = change { it.copy(tuning = it.tuning.copy(mode = mode)) }
+    fun setPassband(band: Passband) = change { it.copy(tuning = it.tuning.withPassband(band)) }
     fun setStep(text: String): Boolean = change {
         val step = text.toLongOrNull()
         require(step != null && step in 1..MAX_FREQUENCY_HZ) { "Step must be a whole number from 1 to 30000000 Hz" }

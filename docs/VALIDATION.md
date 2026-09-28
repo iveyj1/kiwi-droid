@@ -61,7 +61,17 @@
 - The first UI run exposed an Android 17 incompatibility in Compose's transitive Espresso 3.5.0 (`InputManager.getInstance` reflection). Explicit test-only Espresso 3.7.0 resolved it; no runtime app dependency change was needed.
 - `./tools/test-phone.sh`: all three tests passed on Pixel 8 Pro / Android 17 with Bluetooth connected: controls, 20-second actual AudioTrack/receiver-PCM pacing, and 33-second screen-off loopback streaming with notification Stop.
 - The silent AudioTrack test reported: local underruns **0**, device underruns **0**, discarded PCM **0 ms**, radio queue **519 ms**, target **420 ms**, native ring **320 ms** (integer-ms display). This verifies local buffering, not subjective Bluetooth sound quality.
-- Real-receiver listening confirmation and a longer run on the affected route remain. See `AUDIO_DIAGNOSTICS.md` for interpretation/trade-offs.
+- The user subsequently reported the Bluetooth fix working well. Longer runs remain; see `AUDIO_DIAGNOSTICS.md` for interpretation/trade-offs.
+
+## Per-mode passbands and added modes — 0.5.0
+
+- Added signed lower/upper passband editing (−6000…+6000 Hz, lower < upper), remembered independently for every mode and restored on switching/relaunch. Existing preferences migrate to mode defaults without losing tuning or sound settings.
+- Added SAM, SAU, SAL, SAS, IQ, and CWN. CW/CWN wire tuning tracks the edited passband midpoint, including half-Hz midpoints. Existing CW defaults retain their 800 Hz offset; CWN defaults to 470–530 Hz (500 Hz offset).
+- Added stereo/IQ SND decoding with the 10-byte GPS header, per-frame layout handling across mode transitions, and independent channel resampling. One stereo AudioTrack duplicates mono, preserves SAS L/R and IQ I/Q, and centers RSSI tones. Radio jitter capacity/gains/diagnostics remain frame-based, retaining the Bluetooth fix.
+- `./tools/check.sh`: 60 core tests, 8 settings tests, APK build and lint passed. Coverage includes all mode commands, custom/invalid cuts, per-mode persistence/migration, GPS/PCM endianness, mono/stereo transitions on one socket, and channel isolation/alignment/mixing.
+- `./tools/test-phone.sh`: all four tests passed on Pixel 8 Pro / Android 17 with Bluetooth: controls, per-mode passband edit/validation/recall/preferences, 20-second mono-to-stereo output, and 33-second background IQ-format stream after exercising the new modes.
+- Audio test reported zero local underruns, zero device underruns, zero dropped audio, 342 ms queued radio, 420 ms target, and 320 ms native buffer (rounded down). Filter UI test restored the original per-mode cuts after testing; all test traffic was loopback/silent.
+- Real receiver demodulation/sideband separation/IQ listening checks remain; IQ output is resampled playback, not raw capture. See `MODES_AND_FILTERS.md`.
 
 ## Next manual checks
 
