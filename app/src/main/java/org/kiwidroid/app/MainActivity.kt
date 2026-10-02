@@ -34,14 +34,15 @@ class MainActivity : ComponentActivity() {
             MaterialTheme(colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme()) {
                 val model: RadioViewModel = viewModel()
                 val state by model.state.collectAsStateWithLifecycle()
-                RadioScreen(state, model)
+                val stations by model.stations.collectAsStateWithLifecycle()
+                RadioScreen(state, stations, model)
             }
         }
     }
 }
 
 @Composable
-private fun RadioScreen(state: RadioUiState, model: RadioViewModel) {
+private fun RadioScreen(state: RadioUiState, stations: StationDirectoryState, model: RadioViewModel) {
     val settings = state.settings
     var frequency by rememberSaveable(settings.tuning.frequencyHz) { mutableStateOf(formatKhz(settings.tuning.frequencyHz)) }
     var serversOpen by rememberSaveable { mutableStateOf(false) }
@@ -50,6 +51,7 @@ private fun RadioScreen(state: RadioUiState, model: RadioViewModel) {
     var stepOpen by rememberSaveable { mutableStateOf(false) }
     var soundOpen by rememberSaveable { mutableStateOf(false) }
     var passbandOpen by rememberSaveable { mutableStateOf(false) }
+    var stationsOpen by rememberSaveable { mutableStateOf(false) }
     val focus = LocalFocusManager.current
     fun tune() { if (model.tune(frequency)) focus.clearFocus() }
 
@@ -74,6 +76,8 @@ private fun RadioScreen(state: RadioUiState, model: RadioViewModel) {
                 Button(onClick = { tune() }, enabled = state.loaded, modifier = Modifier.padding(top = 8.dp)) { Text("Tune") }
             }
             Text("Tuned: ${formatKhz(settings.tuning.frequencyHz)} kHz", Modifier.testTag("tuned"))
+            if (settings.tuning.frequencyHz in MW_BAND_HZ) MwStationPanel(settings.tuning, stations,
+                settings.mwIncludePermits, state.loaded) { stationsOpen = true }
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Button(onClick = { model.step(-1) }, enabled = state.loaded,
                     modifier = Modifier.weight(1f).heightIn(min = 56.dp).testTag("stepDown")) { Text("−") }
@@ -151,6 +155,13 @@ private fun RadioScreen(state: RadioUiState, model: RadioViewModel) {
 
     if (passbandOpen) PassbandEditor(settings.tuning.mode, settings.tuning.passband, state.message,
         onDismiss = { passbandOpen = false }, onSave = model::setPassband)
+
+    if (stationsOpen) stations.db?.let { db ->
+        MwStationPicker(db, settings.tuning, settings.mwIncludePermits, model::setMwIncludePermits,
+            onDismiss = { stationsOpen = false }) { station ->
+            if (model.tuneToStation(station.khz)) stationsOpen = false
+        }
+    }
 
     if (soundOpen) SoundEditor(settings.sound,
         state.metrics?.takeUnless { it.stale }?.rssiDbm, onDismiss = { soundOpen = false }, onSave = model::setSound)

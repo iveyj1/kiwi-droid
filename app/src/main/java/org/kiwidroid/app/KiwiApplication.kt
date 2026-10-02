@@ -4,4 +4,5 @@ import android.app.Application
 
 class KiwiApplication : Application() {
     val radio: RadioController by lazy { RadioController(this) }
+    val stations: StationDirectory by lazy { StationDirectory(this) }
 }

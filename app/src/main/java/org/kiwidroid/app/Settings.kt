@@ -16,6 +16,8 @@ data class Settings(
     val tuning: Tuning = Tuning(),
     val stepHz: Long = 100,
     val sound: SoundSettings = SoundSettings(),
+    /** Show US construction permits (not yet on air) alongside licensed and notified MW stations. */
+    val mwIncludePermits: Boolean = false,
 ) {
     init {
         require(receivers.isNotEmpty() && receivers.size <= 50)
@@ -43,6 +45,7 @@ internal object SettingsCodec {
             }) }
         })
         put("stepHz", settings.stepHz)
+        put("mwIncludePermits", settings.mwIncludePermits)
         put("sound", buildJsonObject {
             put("radioEnabled", settings.sound.radioEnabled)
             put("radioVolume", settings.sound.radioVolumePercent)
@@ -85,6 +88,7 @@ internal object SettingsCodec {
                 }),
             stepHz = obj.getValue("stepHz").jsonPrimitive.long,
             sound = obj["sound"]?.jsonObject?.let(::decodeSound) ?: SoundSettings(),
+            mwIncludePermits = obj["mwIncludePermits"]?.jsonPrimitive?.boolean ?: false,
         )
     }
 

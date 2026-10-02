@@ -11,6 +11,14 @@ class SettingsTest {
         assertEquals(settings, SettingsCodec.decode(SettingsCodec.encode(settings)))
     }
 
+    @Test fun `MW permit filter persists and defaults off for older settings`() {
+        val settings = Settings(mwIncludePermits = true)
+        assertTrue(SettingsCodec.decode(SettingsCodec.encode(settings)).mwIncludePermits)
+        val older = Json.parseToJsonElement(SettingsCodec.encode(settings)).jsonObject
+            .let { JsonObject(it - "mwIncludePermits") }.toString()
+        assertFalse(SettingsCodec.decode(older).mwIncludePermits)
+    }
+
     @Test fun `invalid settings cannot become a connection`() {
         assertFailsWith<IllegalArgumentException> { Settings(receivers = emptyList()) }
         assertFailsWith<IllegalArgumentException> { Settings(selected = 42) }

@@ -110,6 +110,7 @@ class RadioController(private val application: Application) {
 
     fun tune(text: String): Boolean = change { it.copy(tuning = it.tuning.copy(frequencyHz = parseFrequencyKhz(text))) }
     fun step(direction: Int) = change { it.copy(tuning = it.tuning.step(it.stepHz * direction)) }
+    fun tuneToStation(khz: Int) = change { it.copy(tuning = it.tuning.toBroadcastChannel(khz)) }
     fun setMode(mode: Mode) = change { it.copy(tuning = it.tuning.copy(mode = mode)) }
     fun setPassband(band: Passband) = change { it.copy(tuning = it.tuning.withPassband(band)) }
     fun setStep(text: String): Boolean = change {
@@ -118,6 +119,7 @@ class RadioController(private val application: Application) {
         it.copy(stepHz = step)
     }
     fun setSound(sound: SoundSettings) = change { it.copy(sound = sound) }
+    fun setMwIncludePermits(include: Boolean) = change { it.copy(mwIncludePermits = include) }
     fun setRadioAudio(enabled: Boolean) = change { it.copy(sound = it.sound.copy(radioEnabled = enabled)) }
     fun setRssiTones(enabled: Boolean) = change { it.copy(sound = it.sound.copy(tones = it.sound.tones.copy(enabled = enabled))) }
     fun selectReceiver(index: Int) = change { it.copy(selected = index) }

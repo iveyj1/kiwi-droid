@@ -12,6 +12,10 @@ Playback continues when you switch apps, dismiss the activity, or turn the scree
 
 Supports no-password receivers, 0–30 MHz tuning, and uncompressed audio (~86 MB/hour mono, ~173 MB/hour SAS/IQ, before overhead). LAN entries require the appropriate Wi-Fi/VPN. HTTP/WS is explicitly permitted and unencrypted; HTTPS/WSS retains normal certificate validation and is never downgraded. No redirects or automatic reconnects. MediaSession notifications are exempt from Android 13's notification runtime permission; no permission prompt is needed for these playback controls.
 
+## MW stations
+
+Between 520 and 1710 kHz, the screen lists the North American AM stations on the channel(s) inside the current passband, from a bundled FCC table (US, Canada, Mexico, Cuba). **MW stations** searches by call, place, or kHz; tap a station to tune it. US construction permits are hidden unless enabled. Other bands keep the plain screen. See [docs/MW_STATIONS.md](docs/MW_STATIONS.md).
+
 ## Audible RSSI
 
 Enable **RSSI beeps** and disable **Receiver audio** for tone-only cable troubleshooting. Default pitch rises one octave per 10 dB. **Sound settings** offers editable dBm-to-note points, musical scales/root/custom intervals, beep and receiver gains, timing/fades, smoothing, hysteresis, and sine/triangle waveforms. **RSSI → C5** centers the map on the current reading. Settings persist and changes apply without reconnecting.
@@ -62,7 +66,7 @@ The phone script installs in place to preserve settings, then runs control/filte
 
 Edit boxes select their existing text when first focused; subsequent taps let you place the cursor normally. CWN appears directly below CW.
 
-Validated: 61 core JVM tests, 8 settings tests, Android lint (no errors), debug APK build, and six phone tests. Device coverage includes Pixel 3 XL / Android 12 (earlier builds) and Pixel 8 Pro / Android 17 over Bluetooth (0.5.1). The latter passed a 20-second silent mono/stereo test with zero local/device underruns or dropped audio. The user confirmed the previous Bluetooth fix works. Live listening checks of the newly added modes and longer/background/Doze testing remain; see [docs/VALIDATION.md](docs/VALIDATION.md).
+Validated: 75 core JVM tests, 9 settings tests, Android lint (no errors), debug APK build, and six phone tests. The MW station UI test (`MwStationScreenTest`) has not yet run on a phone. Device coverage includes Pixel 3 XL / Android 12 (earlier builds) and Pixel 8 Pro / Android 17 over Bluetooth (0.5.1). The latter passed a 20-second silent mono/stereo test with zero local/device underruns or dropped audio. The user confirmed the previous Bluetooth fix works. Live listening checks of the newly added modes and longer/background/Doze testing remain; see [docs/VALIDATION.md](docs/VALIDATION.md).
 
 Source layout: `core/` is Android-independent protocol/transport/PCM code; `app/` contains Compose controls, process-scoped settings/state, and a media playback service owning the session, audio focus, notification, power locks, and AudioTrack output. The implementation follows `~/kiwi` protocol documentation; test vectors are independently generated, not copied receiver captures.
 

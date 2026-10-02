@@ -15,3 +15,10 @@ dependencies {
     testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
 }
+// Build-time FCC conversion; see tools/update-mw-db.sh. Not part of the normal build.
+tasks.register<JavaExec>("importMwStations") {
+    description = "Converts FCC AM Query list output into the MW station table"
+    classpath = sourceSets["main"].runtimeClasspath
+    mainClass.set("org.kiwidroid.core.FccAmImportKt")
+    workingDir = rootDir
+}
