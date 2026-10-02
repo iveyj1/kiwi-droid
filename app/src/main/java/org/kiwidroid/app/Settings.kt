@@ -18,15 +18,27 @@ data class Settings(
     val sound: SoundSettings = SoundSettings(),
     /** Show US construction permits (not yet on air) alongside licensed and notified MW stations. */
     val mwIncludePermits: Boolean = false,
+    /** Antenna locations keyed by normalized receiver URL, kept outside [Receiver] so editing one never reconnects. */
+    val receiverLocations: Map<String, GeoPoint> = emptyMap(),
+    val favorites: List<MwFavorite> = emptyList(),
 ) {
     init {
         require(receivers.isNotEmpty() && receivers.size <= 50)
         require(selected in receivers.indices)
         require(stepHz in 1..MAX_FREQUENCY_HZ)
         require(receivers.map { it.baseUrl }.distinct().size == receivers.size) { "Receiver URL already exists" }
+        require(favorites.size <= MAX_FAVORITES) { "At most $MAX_FAVORITES favorites" }
+        require(favorites.map { it.facilityId to it.khz }.distinct().size == favorites.size) { "Duplicate favorite" }
     }
     val receiver get() = receivers[selected]
+    val receiverLocation: GeoPoint? get() = locationOf(receiver)
+    fun locationOf(receiver: Receiver): GeoPoint? = receiverLocations[receiver.locationKey]
+
+    companion object { const val MAX_FAVORITES = 200 }
 }
+
+/** `http://host:8073` and `http://host:8073/` are the same receiver. */
+val Receiver.locationKey: String get() = baseUrl.toString()
 
 internal object SettingsCodec {
     fun encode(settings: Settings): String = buildJsonObject {
@@ -46,6 +58,14 @@ internal object SettingsCodec {
         })
         put("stepHz", settings.stepHz)
         put("mwIncludePermits", settings.mwIncludePermits)
+        put("receiverLocations", buildJsonObject {
+            settings.receiverLocations.forEach { (url, point) -> put(url, buildJsonObject {
+                put("lat", point.latitude); put("lon", point.longitude)
+            }) }
+        })
+        put("favorites", buildJsonArray { settings.favorites.forEach { favorite -> add(buildJsonObject {
+            put("facility", favorite.facilityId); put("khz", favorite.khz); put("call", favorite.call)
+        }) } })
         put("sound", buildJsonObject {
             put("radioEnabled", settings.sound.radioEnabled)
             put("radioVolume", settings.sound.radioVolumePercent)
@@ -89,6 +109,15 @@ internal object SettingsCodec {
             stepHz = obj.getValue("stepHz").jsonPrimitive.long,
             sound = obj["sound"]?.jsonObject?.let(::decodeSound) ?: SoundSettings(),
             mwIncludePermits = obj["mwIncludePermits"]?.jsonPrimitive?.boolean ?: false,
+            receiverLocations = obj["receiverLocations"]?.jsonObject?.entries?.associate { (url, value) ->
+                Receiver.endpoint(url).toString() to
+                    GeoPoint(value.jsonObject.getValue("lat").jsonPrimitive.double, value.jsonObject.getValue("lon").jsonPrimitive.double)
+            } ?: emptyMap(),
+            favorites = obj["favorites"]?.jsonArray?.map {
+                val favorite = it.jsonObject
+                MwFavorite(favorite.getValue("facility").jsonPrimitive.int, favorite.getValue("khz").jsonPrimitive.int,
+                    favorite.getValue("call").jsonPrimitive.content)
+            } ?: emptyList(),
         )
     }
 

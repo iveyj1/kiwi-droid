@@ -22,7 +22,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import java.time.Instant
 import java.util.Locale
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.kiwidroid.core.*
 
 class MainActivity : ComponentActivity() {
@@ -53,6 +57,8 @@ private fun RadioScreen(state: RadioUiState, stations: StationDirectoryState, mo
     var passbandOpen by rememberSaveable { mutableStateOf(false) }
     var stationsOpen by rememberSaveable { mutableStateOf(false) }
     val focus = LocalFocusManager.current
+    // Station day/night authorization and sky-wave darkness change with time; re-rank once a minute.
+    val now by produceState(Instant.now()) { while (true) { delay(60_000); value = Instant.now() } }
     fun tune() { if (model.tune(frequency)) focus.clearFocus() }
 
     Scaffold { padding ->
@@ -76,8 +82,9 @@ private fun RadioScreen(state: RadioUiState, stations: StationDirectoryState, mo
                 Button(onClick = { tune() }, enabled = state.loaded, modifier = Modifier.padding(top = 8.dp)) { Text("Tune") }
             }
             Text("Tuned: ${formatKhz(settings.tuning.frequencyHz)} kHz", Modifier.testTag("tuned"))
+            MwFavoriteChips(settings.favorites, stations.db, state.loaded) { model.tuneToStation(it) }
             if (settings.tuning.frequencyHz in MW_BAND_HZ) MwStationPanel(settings.tuning, stations,
-                settings.mwIncludePermits, state.loaded) { stationsOpen = true }
+                settings.mwIncludePermits, settings.receiverLocation, now, state.loaded) { stationsOpen = true }
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Button(onClick = { model.step(-1) }, enabled = state.loaded,
                     modifier = Modifier.weight(1f).heightIn(min = 56.dp).testTag("stepDown")) { Text("−") }
@@ -137,6 +144,8 @@ private fun RadioScreen(state: RadioUiState, stations: StationDirectoryState, mo
                 settings.receivers.forEachIndexed { index, receiver ->
                     Text(receiver.name, style = MaterialTheme.typography.titleSmall)
                     Text(receiver.url, style = MaterialTheme.typography.bodySmall)
+                    Text(settings.locationOf(receiver)?.let { formatLocation(it) } ?: "Location not set",
+                        style = MaterialTheme.typography.bodySmall)
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         TextButton(onClick = { editingIndex = index; serversOpen = false; editorOpen = true }) { Text("Edit") }
                         TextButton(onClick = { model.removeReceiver(index) }, enabled = settings.receivers.size > 1) { Text("Remove") }
@@ -148,17 +157,20 @@ private fun RadioScreen(state: RadioUiState, stations: StationDirectoryState, mo
             enabled = settings.receivers.size < 50) { Text("Add") } },
         dismissButton = { TextButton(onClick = { serversOpen = false }) { Text("Done") } })
 
-    if (editorOpen) ReceiverEditor(settings.receivers.getOrNull(editingIndex ?: -1), state.message,
-        onDismiss = { editorOpen = false }, onSave = { name, url ->
-            if (model.saveReceiver(editingIndex, name, url)) { editorOpen = false; serversOpen = true }
-        })
+    if (editorOpen) settings.receivers.getOrNull(editingIndex ?: -1).let { receiver ->
+        ReceiverEditor(receiver, receiver?.let(settings::locationOf), state.message,
+            lookup = model::lookupReceiverLocation, onDismiss = { editorOpen = false },
+            onSave = { name, url, latitude, longitude ->
+                if (model.saveReceiver(editingIndex, name, url, latitude, longitude)) { editorOpen = false; serversOpen = true }
+            })
+    }
 
     if (passbandOpen) PassbandEditor(settings.tuning.mode, settings.tuning.passband, state.message,
         onDismiss = { passbandOpen = false }, onSave = model::setPassband)
 
     if (stationsOpen) stations.db?.let { db ->
-        MwStationPicker(db, settings.tuning, settings.mwIncludePermits, model::setMwIncludePermits,
-            onDismiss = { stationsOpen = false }) { station ->
+        MwStationPicker(db, settings.tuning, settings.mwIncludePermits, settings.favorites, settings.receiverLocation, now,
+            model::setMwIncludePermits, { model.toggleFavorite(it) }, onDismiss = { stationsOpen = false }) { station ->
             if (model.tuneToStation(station.khz)) stationsOpen = false
         }
     }
@@ -187,17 +199,48 @@ internal fun Choice(label: String, selected: String, options: List<String>, enab
 }
 
 @Composable
-private fun ReceiverEditor(receiver: Receiver?, error: String?, onDismiss: () -> Unit, onSave: (String, String) -> Unit) {
+private fun ReceiverEditor(receiver: Receiver?, location: GeoPoint?, error: String?, lookup: suspend (String) -> GeoPoint,
+                           onDismiss: () -> Unit, onSave: (String, String, String, String) -> Unit) {
     var name by rememberSaveable { mutableStateOf(receiver?.name ?: "") }
     var url by rememberSaveable { mutableStateOf(receiver?.url ?: "http://") }
+    var latitude by rememberSaveable { mutableStateOf(location?.latitude?.let(::formatDegrees) ?: "") }
+    var longitude by rememberSaveable { mutableStateOf(location?.longitude?.let(::formatDegrees) ?: "") }
+    var lookupStatus by remember { mutableStateOf<String?>(null) }
+    var looking by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
     AlertDialog(onDismissRequest = onDismiss, title = { Text(if (receiver == null) "Add receiver" else "Edit receiver") },
-        text = { Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        text = { Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             ReplacementTextField(name, { name = it }, label = { Text("Name") }, singleLine = true)
             ReplacementTextField(url, { url = it }, label = { Text("HTTP/HTTPS base URL") }, singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri))
             Text("Example: http://10.0.0.41:8073", style = MaterialTheme.typography.bodySmall)
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                ReplacementTextField(latitude, { latitude = it }, label = { Text("Latitude") }, singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Ascii),
+                    modifier = Modifier.weight(1f).testTag("receiverLatitude"))
+                ReplacementTextField(longitude, { longitude = it }, label = { Text("Longitude") }, singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Ascii),
+                    modifier = Modifier.weight(1f).testTag("receiverLongitude"))
+            }
+            Text("Antenna location in decimal degrees (west negative), used to rank MW stations. Leave blank if unknown.",
+                style = MaterialTheme.typography.bodySmall)
+            TextButton(enabled = !looking, onClick = {
+                looking = true
+                lookupStatus = "Asking receiver…"
+                scope.launch {
+                    lookupStatus = try {
+                        val point = lookup(url)
+                        latitude = formatDegrees(point.latitude); longitude = formatDegrees(point.longitude)
+                        "Filled from receiver GPS; Save to keep it."
+                    } catch (e: Exception) {
+                        if (e is CancellationException) throw e
+                        "Lookup failed: ${e.message ?: e.javaClass.simpleName}"
+                    } finally { looking = false }
+                }
+            }) { Text("From receiver") }
+            lookupStatus?.let { Text(it, style = MaterialTheme.typography.bodySmall) }
             error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
-        } }, confirmButton = { TextButton(onClick = { onSave(name, url) }) { Text("Save") } },
+        } }, confirmButton = { TextButton(onClick = { onSave(name, url, latitude, longitude) }) { Text("Save") } },
         dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } })
 }
 
@@ -216,3 +259,7 @@ private fun StepEditor(current: Long, error: String?, onDismiss: () -> Unit, onS
     }, confirmButton = { TextButton(onClick = { onSave(text) }) { Text("Save") } },
         dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } })
 }
+
+private fun formatDegrees(value: Double) = String.format(Locale.ROOT, "%.5f", value).trimEnd('0').trimEnd('.')
+
+private fun formatLocation(point: GeoPoint) = "${formatDegrees(point.latitude)}, ${formatDegrees(point.longitude)}"

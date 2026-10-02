@@ -68,9 +68,22 @@ fun mwChannelsInPassband(tuning: Tuning): List<Int> {
 fun Tuning.toBroadcastChannel(khz: Int): Tuning =
     copy(frequencyHz = khz * 1000L, mode = if (mode in setOf(Mode.CW, Mode.CWN, Mode.IQ)) Mode.AM else mode)
 
+/** Saved by facility ID and channel so it survives call-sign changes and later facility consolidation. */
+data class MwFavorite(val facilityId: Int, val khz: Int, val call: String) {
+    init { require(khz in MW_FIRST_CHANNEL_KHZ..MW_LAST_CHANNEL_KHZ) { "Favorite must be an MW channel" } }
+    fun matches(station: MwStation) = station.khz == khz && facilityId in station.facilityIds
+
+    companion object { fun of(station: MwStation) = MwFavorite(station.facilityId, station.khz, station.call) }
+}
+
 class MwStationDb(val stations: List<MwStation>, val metadata: Map<String, String> = emptyMap()) {
     private val byKhz = stations.groupBy { it.khz }
         .mapValues { (_, list) -> list.sortedWith(POWER_ORDER) }
+
+    private val byFacility = stations.flatMap { s -> s.facilityIds.map { (it to s.khz) to s } }.toMap()
+
+    /** Resolves current or merged facility IDs. */
+    fun station(facilityId: Int, khz: Int): MwStation? = byFacility[facilityId to khz]
 
     private val byFrequency = stations.sortedWith(compareBy<MwStation> { it.khz }.then(POWER_ORDER))
 

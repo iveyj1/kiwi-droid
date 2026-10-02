@@ -64,4 +64,70 @@ class MwStationScreenTest {
             }
         }
     }
+
+    @Test fun receiverLocationRanksAndFavoritesTuneFromAnyBand() {
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        val context = instrumentation.targetContext
+        assertFalse("Unlock phone first", context.getSystemService(KeyguardManager::class.java).isKeyguardLocked)
+        val app = context.applicationContext as KiwiApplication
+        val radio = app.radio
+        rule.waitUntil(5000) { radio.state.value.loaded }
+        rule.waitUntil(10000) { app.stations.state.value.db != null }
+        val original = radio.state.value.settings
+        val wbz = checkNotNull(app.stations.state.value.db).onChannel(1030).single { it.call == "WBZ" }
+        try {
+            instrumentation.runOnMainSync {
+                radio.stop(); radio.setMode(Mode.AM); radio.tune("1030.000")
+                radio.saveReceiver(original.selected, original.receiver.name, original.receiver.url)
+                if (radio.state.value.settings.favorites.any { it.matches(wbz) }) radio.toggleFavorite(wbz)
+            }
+            rule.onNodeWithText("Set this receiver's location", substring = true).performScrollTo().assertExists()
+
+            // Location is edited with the receiver and shown in the list; it does not change the receiver itself.
+            rule.onNodeWithText("Servers").performClick()
+            rule.onAllNodesWithText("Edit")[original.selected].performScrollTo().performClick()
+            rule.onNodeWithTag("receiverLatitude").performTextReplacement("44.1")
+            rule.onNodeWithTag("receiverLongitude").performTextReplacement("-85.5")
+            rule.onNodeWithText("Save").performClick()
+            rule.onNodeWithText("44.1, -85.5").performScrollTo().assertExists()
+            rule.onNodeWithText("Done").performClick()
+            rule.runOnIdle {
+                assertEquals(original.receiver, radio.state.value.settings.receiver)
+                assertEquals(org.kiwidroid.core.GeoPoint(44.1, -85.5), radio.state.value.settings.receiverLocation)
+            }
+            rule.onNodeWithTag("mwChannel").performScrollTo().assertTextContains(" km ", substring = true)
+
+            rule.onNodeWithTag("mwStations").performScrollTo().performClick()
+            rule.onNodeWithText("most likely first", substring = true).assertExists()
+            rule.onNodeWithTag("mwScopeAll").performClick()
+            rule.onNodeWithTag("mwSearch").performTextReplacement("WBZ")
+            rule.onNodeWithContentDescription("Add WBZ 1030 to favorites").performClick()
+            rule.onNodeWithText("Close").performClick()
+
+            // Favorites stay available outside the MW band, where the station panel is hidden.
+            instrumentation.runOnMainSync { radio.tune("5000.000") }
+            rule.onNodeWithTag("mwStations").assertDoesNotExist()
+            rule.onNodeWithText("1030 WBZ").performScrollTo().performClick()
+            rule.onNodeWithTag("tuned").assertTextEquals("Tuned: 1030.000 kHz")
+
+            rule.onNodeWithTag("mwStations").performScrollTo().performClick()
+            rule.onNodeWithTag("mwScopeFavorites").performClick()
+            rule.onNodeWithText("1 station · tap to tune").assertExists()
+            rule.onNodeWithContentDescription("Remove WBZ 1030 from favorites").performClick()
+            rule.onNodeWithText("0 stations · tap to tune").assertExists()
+            rule.onNodeWithText("Close").performClick()
+            rule.onNodeWithTag("favoriteChip").assertDoesNotExist()
+        } finally {
+            instrumentation.runOnMainSync {
+                val location = original.receiverLocation
+                radio.saveReceiver(original.selected, original.receiver.name, original.receiver.url,
+                    location?.latitude?.toString() ?: "", location?.longitude?.toString() ?: "")
+                val starred = radio.state.value.settings.favorites.any { it.matches(wbz) }
+                if (starred != original.favorites.any { it.matches(wbz) }) radio.toggleFavorite(wbz)
+                radio.setMode(Mode.AM)
+                radio.tune(formatKhz(original.tuning.frequencyHz))
+                radio.setMode(original.tuning.mode)
+            }
+        }
+    }
 }

@@ -3,6 +3,7 @@ package org.kiwidroid.app
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import org.kiwidroid.core.Mode
+import org.kiwidroid.core.MwStation
 import org.kiwidroid.core.Passband
 import org.kiwidroid.core.SoundSettings
 
@@ -24,6 +25,9 @@ class RadioViewModel(application: Application) : AndroidViewModel(application) {
     fun setRadioAudio(enabled: Boolean) = radio.setRadioAudio(enabled)
     fun setRssiTones(enabled: Boolean) = radio.setRssiTones(enabled)
     fun selectReceiver(index: Int) = radio.selectReceiver(index)
-    fun saveReceiver(index: Int?, name: String, url: String) = radio.saveReceiver(index, name, url)
+    fun saveReceiver(index: Int?, name: String, url: String, latitude: String, longitude: String) =
+        radio.saveReceiver(index, name, url, latitude, longitude)
+    fun toggleFavorite(station: MwStation) = radio.toggleFavorite(station)
+    suspend fun lookupReceiverLocation(url: String) = radio.lookupReceiverLocation(url)
     fun removeReceiver(index: Int) = radio.removeReceiver(index)
 }

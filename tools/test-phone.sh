@@ -17,6 +17,6 @@ for test in ReplacementTextFieldTest AudioFocusTest RadioScreenTest PassbandScre
     adb "${args[@]}" shell am instrument -w -r -e class "org.kiwidroid.app.$test" \
         org.kiwidroid.app.test/androidx.test.runner.AndroidJUnitRunner | tee "$log"
     # am instrument may return exit status 0 even when JUnit fails.
-    grep -q '^OK (1 test)' "$log" || { echo "$test did not pass." >&2; exit 1; }
+    grep -qE '^OK \([0-9]+ tests?\)' "$log" || { echo "$test did not pass." >&2; exit 1; }
 done
 printf '\nPhone tests passed. Unlock the phone to resume manual testing.\n'

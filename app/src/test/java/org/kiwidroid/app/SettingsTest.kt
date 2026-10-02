@@ -11,6 +11,25 @@ class SettingsTest {
         assertEquals(settings, SettingsCodec.decode(SettingsCodec.encode(settings)))
     }
 
+    @Test fun `receiver locations and MW favorites persist and default empty for older settings`() {
+        val receiver = Receiver("Test", "http://example.com:8073")
+        val settings = Settings(listOf(receiver), receiverLocations = mapOf(receiver.locationKey to GeoPoint(42.36, -71.06)),
+            favorites = listOf(MwFavorite(25444, 1030, "WBZ"), MwFavorite(29733, 700, "WLW")))
+        val decoded = SettingsCodec.decode(SettingsCodec.encode(settings))
+        assertEquals(settings, decoded)
+        assertEquals(GeoPoint(42.36, -71.06), decoded.receiverLocation)
+        assertEquals("http://example.com:8073/", receiver.locationKey)
+        val unslashed = JsonObject(Json.parseToJsonElement(SettingsCodec.encode(settings)).jsonObject +
+            ("receiverLocations" to buildJsonObject { put("http://example.com:8073", buildJsonObject { put("lat", 1.0); put("lon", 2.0) }) }))
+        assertEquals(GeoPoint(1.0, 2.0), SettingsCodec.decode(unslashed.toString()).receiverLocation)
+        val older = Json.parseToJsonElement(SettingsCodec.encode(settings)).jsonObject
+            .let { JsonObject(it - "receiverLocations" - "favorites") }.toString()
+        assertEquals(Settings(listOf(receiver)), SettingsCodec.decode(older))
+        assertFailsWith<IllegalArgumentException> {
+            Settings(favorites = listOf(MwFavorite(1, 1030, "A"), MwFavorite(1, 1030, "B")))
+        }
+    }
+
     @Test fun `MW permit filter persists and defaults off for older settings`() {
         val settings = Settings(mwIncludePermits = true)
         assertTrue(SettingsCodec.decode(SettingsCodec.encode(settings)).mwIncludePermits)

@@ -125,6 +125,18 @@ class MwStationsTest {
         assertEquals(db.onChannel(1030), db.search("1030"))
     }
 
+    @Test fun `favorites resolve through merged facility IDs`() {
+        val db = MwStationDb(stations)
+        val cftr = station("CFTR")
+        assertEquals(cftr, db.station(98798, 680))
+        assertEquals(cftr, db.station(790645, 680))
+        assertNull(db.station(790645, 690))
+        val old = MwFavorite(98798, 680, "CFTR-OLD")
+        assertTrue(old.matches(cftr))
+        assertEquals(MwFavorite(790645, 680, "CFTR"), MwFavorite.of(cftr))
+        assertFailsWith<IllegalArgumentException> { MwFavorite(1, 5000, "X") }
+    }
+
     @Test fun `search matches frequency call sign and place`() {
         val db = MwStationDb(stations)
         assertEquals(stations.filterNot { it.isPermit }.map { it.call }.sorted(), db.search("").map { it.call }.sorted())

@@ -123,11 +123,18 @@ class RadioController(private val application: Application) {
     fun setRadioAudio(enabled: Boolean) = change { it.copy(sound = it.sound.copy(radioEnabled = enabled)) }
     fun setRssiTones(enabled: Boolean) = change { it.copy(sound = it.sound.copy(tones = it.sound.tones.copy(enabled = enabled))) }
     fun selectReceiver(index: Int) = change { it.copy(selected = index) }
-    fun saveReceiver(index: Int?, name: String, url: String): Boolean = change {
-        val receiver = Receiver(name.trim(), Receiver.endpoint(url.trim()).toString())
+    /** Blank latitude and longitude clear the location; editing only the location does not reconnect. */
+    fun saveReceiver(index: Int?, name: String, url: String, latitude: String = "", longitude: String = ""): Boolean = change {
+        val endpoint = Receiver.endpoint(url.trim())
+        val previous = index?.let { i -> it.receivers[i] }
+        // Keep the stored spelling (e.g. no trailing slash) when unchanged, so the active session is not replaced.
+        val receiver = Receiver(name.trim(), previous?.url?.takeIf { old -> Receiver.endpoint(old) == endpoint } ?: endpoint.toString())
+        val location = if (latitude.isBlank() && longitude.isBlank()) null else GeoPoint.parse(latitude, longitude)
         val receivers = it.receivers.toMutableList()
-        if (index == null) receivers.add(receiver) else receivers[index] = receiver
-        it.copy(receivers = receivers)
+        val locations = it.receiverLocations.toMutableMap()
+        if (index == null) receivers.add(receiver) else locations.remove(receivers.set(index, receiver).locationKey)
+        if (location == null) locations.remove(receiver.locationKey) else locations[receiver.locationKey] = location
+        it.copy(receivers = receivers, receiverLocations = locations)
     }
     fun removeReceiver(index: Int): Boolean = change {
         require(it.receivers.size > 1) { "Keep at least one receiver" }
@@ -137,6 +144,21 @@ class RadioController(private val application: Application) {
             index == it.selected -> index.coerceAtMost(receivers.lastIndex)
             else -> it.selected
         }
-        it.copy(receivers = receivers, selected = selected)
+        it.copy(receivers = receivers, selected = selected, receiverLocations = it.receiverLocations - it.receivers[index].locationKey)
+    }
+
+    fun toggleFavorite(station: MwStation): Boolean = change {
+        val existing = it.favorites.filterNot { favorite -> favorite.matches(station) }
+        if (existing.size < it.favorites.size) it.copy(favorites = existing)
+        else {
+            require(existing.size < Settings.MAX_FAVORITES) { "At most ${Settings.MAX_FAVORITES} favorites" }
+            it.copy(favorites = existing + MwFavorite.of(station))
+        }
+    }
+
+    /** One explicit `/status` request for the URL being edited; nothing is saved until the user saves. */
+    suspend fun lookupReceiverLocation(url: String): GeoPoint {
+        val fields = ReceiverStatus.fetch(Receiver("Lookup", Receiver.endpoint(url.trim()).toString()))
+        return requireNotNull(ReceiverStatus.location(fields)) { "This receiver does not publish its GPS location" }
     }
 }
