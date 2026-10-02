@@ -70,9 +70,9 @@ fun Tuning.toBroadcastChannel(khz: Int): Tuning =
 
 class MwStationDb(val stations: List<MwStation>, val metadata: Map<String, String> = emptyMap()) {
     private val byKhz = stations.groupBy { it.khz }
-        .mapValues { (_, list) -> list.sortedWith(compareByDescending<MwStation> { it.maxKw }.thenBy { it.call }) }
+        .mapValues { (_, list) -> list.sortedWith(POWER_ORDER) }
 
-    private val byFrequency = stations.sortedWith(compareBy<MwStation> { it.khz }.thenByDescending { it.maxKw }.thenBy { it.call })
+    private val byFrequency = stations.sortedWith(compareBy<MwStation> { it.khz }.then(POWER_ORDER))
 
     /** Phase 1 has no receiver location, so stations on a channel are ordered by licensed power. */
     fun onChannel(khz: Int, includePermits: Boolean = false): List<MwStation> =
@@ -90,6 +90,10 @@ class MwStationDb(val stations: List<MwStation>, val metadata: Map<String, Strin
     }
 
     companion object {
+        /** Without a receiver location: peak power, then night power (full-time over daytimers), then class A first. */
+        val POWER_ORDER: Comparator<MwStation> = compareByDescending<MwStation> { it.maxKw }
+            .thenByDescending { it.nightKw ?: 0.0 }.thenBy { it.stationClass }.thenBy { it.call }
+
         const val HEADER = "facility\tcall\tkhz\tcountry\tstate\tcity\tclass\tday_kw\tnight_kw\tcritical_kw\tda\tlat\tlon\tstatus\tmerged"
 
         fun read(reader: Reader): MwStationDb {

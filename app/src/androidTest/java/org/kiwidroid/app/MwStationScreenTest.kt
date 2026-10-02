@@ -45,9 +45,13 @@ class MwStationScreenTest {
             // US construction permits stay hidden until requested, and the choice persists.
             rule.onNodeWithTag("mwStations").performScrollTo().performClick()
             rule.onNodeWithTag("mwScopeAll").performClick()
+            // WLBE is licensed on 790 kHz and holds a permit to move to 780 kHz.
             rule.onNodeWithTag("mwSearch").performTextReplacement("WLBE")
-            rule.onNodeWithText("0 stations · tap to tune").assertExists()
+            rule.onNodeWithText("1 station · tap to tune").assertExists()
+            rule.onNodeWithText("790 WLBE").assertExists()
+            rule.onNodeWithText("780 WLBE").assertDoesNotExist()
             rule.onNodeWithTag("mwPermits").performClick()
+            rule.onNodeWithText("2 stations · tap to tune").assertExists()
             rule.onNodeWithText("780 WLBE").assertExists()
             rule.runOnIdle { assertTrue(radio.state.value.settings.mwIncludePermits) }
             rule.onNodeWithText("Close").performClick()

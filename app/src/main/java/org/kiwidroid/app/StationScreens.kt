@@ -64,7 +64,7 @@ internal fun MwStationPicker(db: MwStationDb, tuning: Tuning, includePermits: Bo
                 FilterChip(includePermits, { onIncludePermits(!includePermits) }, { Text("Construction permits") },
                     modifier = Modifier.testTag("mwPermits"))
             }
-            Text("${results.size} stations · tap to tune", style = MaterialTheme.typography.bodySmall)
+            Text("${results.size} station${if (results.size == 1) "" else "s"} · tap to tune", style = MaterialTheme.typography.bodySmall)
             LazyColumn(Modifier.heightIn(max = 360.dp)) {
                 items(results, key = { "${it.facilityId}/${it.khz}" }) { station ->
                     Column(Modifier.fillMaxWidth().clickable { onSelect(station) }.padding(vertical = 6.dp)) {

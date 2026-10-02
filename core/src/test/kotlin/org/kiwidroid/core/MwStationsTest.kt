@@ -116,6 +116,15 @@ class MwStationsTest {
         }
     }
 
+    @Test fun `channel order prefers peak power, then full-time service, then class A`() {
+        fun s(call: String, day: Double?, night: Double?, cls: String) =
+            MwStation(call.hashCode(), call, 1030, "US", "", "", cls, day, night, null, false, false, 0.0, 0.0, MwStation.LICENSED)
+        val db = MwStationDb(listOf(s("KCTA", 50.0, null, "D"), s("KTWO", 50.0, 50.0, "B"), s("WBZ", 50.0, 50.0, "A"),
+            s("WCTS", 50.0, 4.0, "B"), s("XBIG", 100.0, null, "B"), s("WLOW", 1.0, 1.0, "A")))
+        assertEquals(listOf("XBIG", "WBZ", "KTWO", "WCTS", "KCTA", "WLOW"), db.onChannel(1030).map { it.call })
+        assertEquals(db.onChannel(1030), db.search("1030"))
+    }
+
     @Test fun `search matches frequency call sign and place`() {
         val db = MwStationDb(stations)
         assertEquals(stations.filterNot { it.isPermit }.map { it.call }.sorted(), db.search("").map { it.call }.sorted())
