@@ -7,7 +7,7 @@ if [[ $# -gt 1 ]]; then echo "Usage: $0 [adb-serial]" >&2; exit 1; fi
 args=()
 if [[ $# == 1 ]]; then args=(-s "$1"); fi
 adb "${args[@]}" get-state
-printf 'Unlock the phone before running. Tests interrupt playback and finish with the phone locked.\n'
+printf 'Unlock the phone before running. Allow about 3 minutes; tests interrupt playback and finish with the phone locked.\n'
 ./gradlew :app:assembleDebug :app:assembleDebugAndroidTest
 adb "${args[@]}" install -r app/build/outputs/apk/debug/app-debug.apk
 adb "${args[@]}" install -r app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk

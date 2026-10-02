@@ -83,6 +83,15 @@
 - All six phone tests passed on Pixel 8 Pro / Android 17. New tests verify actual tap/select/type behavior, cursor editing, refocus and external text updates, and transient-versus-permanent focus classification. The loopback service test requests competing Android transient/duck focus, verifies silencing and automatic restoration on the same connection, then verifies background playback and notification Stop.
 - Silent Bluetooth output test: zero local/device underruns, zero dropped audio; 502 ms queued, 420 ms target, 320 ms native buffer. Tests preserve user settings and do not contact live receivers.
 
+## Background playback regression — 0.5.2
+
+- Reproduced the user's background stutter on Pixel 8 Pro / Android 17. Android reported output starvation; the active receiver session ended with receive-queue overflow shortly after Home.
+- Strengthened the silent loopback test: receiver PCM remains enabled during background checks; 60 seconds behind Home plus 60 seconds screen-off; compare local/device underruns and dropped PCM, not only connection survival. Source packet pacing now matches 11999 Hz exactly rather than rounding to 43 ms.
+- The strengthened test failed on the debuggable build with receive-queue overflow. Stack samples showed resampling/mixing/math in both processing threads. With only runtime debugging disabled, the same test passed with zero device underruns, zero radio underruns, and zero dropped PCM (360 ms native ring, 460 ms radio target).
+- Normal builds now disable runtime debugging; signing key/package/APK path stay unchanged, preserving in-place updates and settings. `-Pdebuggable=true` is an explicit development-only opt-in. Audio buffers and algorithms are unchanged.
+- Final 0.5.2 build: 61 core tests, 8 settings tests, lint, app/test APK builds passed; APK manifest verified `debuggable=false`, installed in place. The full six-test UI suite was not rerun because the phone remained locked after the paired background test (last complete suite: 0.5.1).
+- This is a device-confirmed regression fix, not a guarantee against all scheduling/network/Bluetooth issues. Live listening confirmation and longer endurance checks remain.
+
 ## Next manual checks
 
 Use an authorized receiver on the phone's network. Start with low media volume.

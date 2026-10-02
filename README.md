@@ -22,7 +22,9 @@ Muting receiver audio keeps the SND connection for RSSI; data use is unchanged. 
 
 ## Audio gaps and buffering
 
-Playback now sizes its radio prebuffer from the actual device/route buffer and adapts after local starvation. This handles larger Bluetooth output bursts at the cost of additional radio latency. The main screen reports **local underruns**, **device underruns**, discarded PCM, and buffer sizes separately from missing network frames. See [docs/AUDIO_DIAGNOSTICS.md](docs/AUDIO_DIAGNOSTICS.md).
+0.5.2 fixes a separate background starvation issue by disabling runtime debugging in normal APKs; the strengthened two-minute background/screen-off test passed without underruns. See [docs/AUDIO_DIAGNOSTICS.md](docs/AUDIO_DIAGNOSTICS.md) for the reproduced failure and build/runtime comparison.
+
+Playback sizes its radio prebuffer from the actual device/route buffer and adapts after local starvation. This handles larger Bluetooth output bursts at the cost of additional radio latency. The main screen reports **local underruns**, **device underruns**, discarded PCM, and buffer sizes separately from missing network frames. See [docs/AUDIO_DIAGNOSTICS.md](docs/AUDIO_DIAGNOSTICS.md).
 
 ## Build tools
 
@@ -43,7 +45,7 @@ Tools live under `~/.local/share/kiwi-droid/`, not in the repository. The bootst
 3. Run `source tools/env.sh; adb devices -l`; the phone should show `device`, not `unauthorized`.
 4. Run `./tools/install-phone.sh [serial]` to build, install, and launch. Omit the serial when only one device is attached.
 
-APK: `app/build/outputs/apk/debug/app-debug.apk`. Development builds use Android's debug signing key.
+APK: `app/build/outputs/apk/debug/app-debug.apk`. It retains Android's debug signing key for compatible in-place updates, but **runtime debugging is disabled by default** as of 0.5.2 to prevent background audio starvation observed on Android 17. For debugger development only, build with `./gradlew :app:assembleDebug -Pdebuggable=true`; rebuild normally before installing/publishing for listening.
 
 Run `./copy-apk.sh` to copy the existing APK to `/mnt/main/public/kiwi-droid/kiwi-droid.apk`. It does not rebuild; run `./tools/check.sh` first when sources have changed.
 
@@ -56,7 +58,7 @@ If Linux reports `no permissions` for a Google/Pixel phone, run `./tools/fix-usb
 ./tools/test-phone.sh [serial]  # unlock phone first; takes about a minute
 ```
 
-The phone script installs in place to preserve settings, then runs control/filter UI checks, a 20-second silent mono-to-stereo AudioTrack test on the current route, and a screen-off silent loopback receiver test including SAS/IQ mode changes. It interrupts playback, restores the original controls/receiver list, and ends with the phone locked. Leave the phone untouched during testing; unlock it afterward. No real receiver is contacted. Running the whole Gradle connected-test suite on a PIN-locked device can block UI checks after the screen-off test; the script deliberately runs UI checks first.
+The phone script installs in place to preserve settings, then runs control/filter UI checks, a 20-second silent mono-to-stereo AudioTrack test on the current route, and a silent loopback receiver test including SAS/IQ mode changes, 60 seconds behind Home, and 60 seconds screen-off with the full audio path enabled. It interrupts playback, restores the original controls/receiver list, and ends with the phone locked. Leave the phone untouched during testing; unlock it afterward. No real receiver is contacted. Running the whole Gradle connected-test suite on a PIN-locked device can block UI checks after the screen-off test; the script deliberately runs UI checks first.
 
 Edit boxes select their existing text when first focused; subsequent taps let you place the cursor normally. CWN appears directly below CW.
 

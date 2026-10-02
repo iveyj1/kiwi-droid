@@ -90,7 +90,7 @@ class BackgroundPlaybackTest {
                     }.array()
                     ws.send(bytes.toByteString())
                 }
-            }, 0, 43, TimeUnit.MILLISECONDS)
+            }, 0, 512_000_000_000L / 11999, TimeUnit.NANOSECONDS)
             val endpoint = server.url("/").toString() // bind the mock server off the Android main thread
             try {
                 instrumentation.runOnMainSync {
@@ -136,16 +136,30 @@ class BackgroundPlaybackTest {
                 }
                 val manager = context.getSystemService(NotificationManager::class.java)
                 await { manager.activeNotifications.any { it.id == PlaybackService.NOTIFICATION_ID } }
+                instrumentation.runOnMainSync { radio.setRadioAudio(true) }
+                SystemClock.sleep(3000) // allow real PCM buffering/fade to settle before the baseline
+                val baseline = radio.state.value.metrics!!.playback!!
                 device.pressHome()
+                SystemClock.sleep(60_000) // background with display on, not just screen-off
+                assertTrue("Background stream stopped: ${radio.state.value.status}: ${radio.state.value.message}", radio.state.value.running)
                 device.sleep()
                 assertFalse(context.getSystemService(PowerManager::class.java).isInteractive)
                 val before = sequence.get()
-                SystemClock.sleep(33_000) // includes a protocol keepalive, not just buffered sound
-                assertTrue("Service stopped: ${radio.state.value}", radio.state.value.running)
+                SystemClock.sleep(60_000) // includes protocol keepalives, not just buffered sound
+                assertTrue("Service stopped: ${radio.state.value.status}: ${radio.state.value.message}", radio.state.value.running)
                 assertEquals("Playing", radio.state.value.status)
                 assertFalse(radio.state.value.metrics!!.stale)
                 assertTrue(sequence.get() - before > 600)
                 assertTrue("Expected initial and periodic keepalive", keepalives.get() >= 2)
+                val after = radio.state.value.metrics!!.playback!!
+                instrumentation.sendStatus(0, android.os.Bundle().apply {
+                    putBoolean("runtime_debuggable", context.applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE != 0)
+                    putString("background_audio_baseline", baseline.toString())
+                    putString("background_audio_after", after.toString())
+                })
+                assertEquals("Device underruns grew in background", baseline.deviceUnderruns, after.deviceUnderruns)
+                assertEquals("Radio underruns grew in background", baseline.radioUnderruns, after.radioUnderruns)
+                assertEquals("Dropped audio grew in background", baseline.droppedAudioMs, after.droppedAudioMs)
                 val notification = manager.activeNotifications.single { it.id == PlaybackService.NOTIFICATION_ID }.notification
                 assertNotNull(notification.extras.getParcelable<android.media.session.MediaSession.Token>("android.mediaSession"))
                 notification.actions.single { it.title == "Stop" }.actionIntent.send()

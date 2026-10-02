@@ -11,9 +11,16 @@ android {
         applicationId = "org.kiwidroid.app"
         minSdk = 26
         targetSdk = 36
-        versionCode = 7
-        versionName = "0.5.1"
+        versionCode = 8
+        versionName = "0.5.2"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        // Keep the original signing identity/APK path for in-place sideload updates, but avoid
+        // debuggable ART overhead in normal playback. Opt in only when attaching a debugger.
+        getByName("debug") {
+            isDebuggable = providers.gradleProperty("debuggable").map { it.toBooleanStrict() }.orElse(false).get()
+        }
     }
     buildFeatures { compose = true }
     compileOptions {

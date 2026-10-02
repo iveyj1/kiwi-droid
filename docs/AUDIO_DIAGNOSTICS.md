@@ -19,6 +19,14 @@ A connected Pixel 8 Pro (Android 17 / API 37) showed an A2DP AudioTrack allocati
 
 This trades some radio latency for resilience. Device/Bluetooth latency is additional; the displayed native ring size is not an end-to-end latency measurement. RSSI beeps are not delayed by the radio jitter queue, but still go through the native/Bluetooth output path.
 
+## Background CPU starvation fix in 0.5.2
+
+This was a separate failure from the 0.4.1 radio-buffer issue. On Pixel 8 Pro / Android 17, backgrounding the debuggable 0.5.1 build caused device underruns and eventually `Receive queue overflow; reconnect`. The service and CPU wake lock were present, and the writer already used audio thread priority. Sampled Java stacks showed the receiver and writer spending time in per-sample resampling/mixing/math, not simply waiting for packets or AudioTrack writes.
+
+A stronger silent loopback test reproduced the failure with receiver audio **enabled**. The old background test mostly exercised muted radio and checked connection survival, not underrun growth. With the same audio code and buffers but **runtime debugging disabled**, the new test passed 60 seconds behind the Home screen plus 60 seconds screen-off: zero radio/device underruns and zero dropped PCM. The native ring in that run was 360 ms, with a 460 ms radio target.
+
+Normal sideload builds now set `android:debuggable=false`, retaining the original debug signing key, package ID, and `app-debug.apk` path for in-place updates. For debugger development only, opt in with `-Pdebuggable=true`. Do not use that build to judge background audio performance. No buffer/latency increase, network-queue enlargement, or battery-policy bypass was needed for this fix. Longer runs and live listening still matter; the test does not prove every route or Android version is immune to underruns.
+
 ## Counters on the main screen
 
 | Counter | Meaning |
@@ -38,4 +46,4 @@ If gaps persist, record which counters increase, phone/Android version, speaker 
 
 Pure Kotlin tests cover device-sized priming, exact-drain behavior, real-underflow recovery, bounded adaptation/backlog, mute/close semantics, and a minute of ordered 512-sample Kiwi packets with jitter and 80 ms output-write bursts. Session tests verify diagnostics reach the UI metrics independently of sequence-loss counters.
 
-`AudioPlaybackTest` runs real AudioTrack on the phone's current route with silent PCM arriving at the receiver sample rate for 20 seconds after priming, switching from mono input to stereo input halfway through. Starting in 0.5.0, the output track is always stereo and all buffering thresholds/diagnostics use sample frames, not counts of individual channel samples. It reports the final buffer/counter snapshot and asserts no local starvation/backlog drops or growth in device underruns. It neither connects to a receiver nor records microphone audio. The phone test script runs it before the screen-off test.
+`AudioPlaybackTest` runs real AudioTrack on the phone's current route with silent PCM arriving at the receiver sample rate for 20 seconds after priming, switching from mono input to stereo input halfway through. Starting in 0.5.0, the output track is always stereo and all buffering thresholds/diagnostics use sample frames, not counts of individual channel samples. It reports the final buffer/counter snapshot and asserts no local starvation/backlog drops or growth in device underruns. It neither connects to a receiver nor records microphone audio. The phone test script runs it before the background test. `BackgroundPlaybackTest` now enables the full radio path as well as tone synthesis, runs for 60 seconds behind Home and 60 seconds screen-off, and asserts that device underruns, local underruns, and dropped PCM do not grow. Loopback pacing uses the reported source rate rather than a rounded 43 ms packet period.
