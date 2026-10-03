@@ -90,24 +90,57 @@ class MwSourcesTest {
     }
 
     @Test fun `Mexican lists parse CRT CSV by header and the IFT extract`() {
-        val csv = "﻿Folio;Población;Estado;Distintivo;Banda;Frecuencia;Concesionario\n" +
-            "1;Ciudad de México;CDMX;XEW-AM;AM;900;\"Radiópolis; S.A.\"\n" +
-            "2;Monterrey;NL;XHFM-FM;FM;99.3;X\n3;Tijuana;BC;XEPRS;am;1090 kHz;Y\n"
-        assertEquals(setOf("XEW" to 900, "XEPRS" to 1090), MexicoAm.parseCrt(csv))
+        val csv = "\uFEFFfolio_electronico,poblacion,estado,tipo,tipo_uso,concesionario,distintivo_adic,banda,frecuencia,tipo_frecuencia\n" +
+            "1,Ciudad de México,Ciudad de México,Concesión,Comercial,\"Radiópolis, S.A.\",XEW-AM,AM,900.0,Principal\n" +
+            "2,Monterrey,Nuevo León,Concesión,Comercial,X,XHFM,FM,99.3,Principal\n" +
+            "3,Santa Rosalía,Baja California Sur,Concesión,Comercial,Y,XERLA,AM,940.0,Adicional\n"
+        assertEquals(listOf(MexicoAm.Station("XEW", 900, "Ciudad de México"), MexicoAm.Station("XERLA", 940, "Santa Rosalía")),
+            MexicoAm.parseCrt(csv))
+        assertEquals(listOf(MexicoAm.Station("XEW", 900)), MexicoAm.parseCrt("Distintivo;Banda;Frecuencia\nXEW;AM;900 kHz\nXHX;FM;99.3\n"))
         assertEquals(listOf(listOf("a", "b,c", "d\"e")), MexicoAm.parseCsv("a,\"b,c\",\"d\"\"e\""))
         assertFailsWith<IllegalArgumentException> { MexicoAm.parseCrt("Folio,Estado\n1,X\n") }
-        assertEquals(setOf("XEHS" to 540, "XEW" to 900),
+        assertEquals(listOf(MexicoAm.Station("XEHS", 540), MexicoAm.Station("XEW", 900)),
             MexicoAm.parseIft2014(StringReader("# comment\ncall\tkhz\nXEHS\t540\nXEW-AM\t900\n")))
     }
 
-    @Test fun `Mexican treaty records are confirmed or marked unverified, CRT taking precedence`() {
-        val fcc = listOf(station("XEW", 900, "MX"), station("XEOLD", 1000, "MX"), station("XE", 1100, "MX"), station("CMBC", 1350, "CU"))
-        val ift = MwVetting.apply(fcc, MwVetting.Inputs(mexicoIft2014 = setOf("XEW" to 900, "XE" to 1100)))
-        assertEquals(listOf("LIC", "UNVERIFIED", "UNVERIFIED", "NOTIFIED"), ift.map { it.status })
-        assertEquals(MwStation.SOURCE_IFT_2014, ift.first().source)
-        val crt = MwVetting.apply(fcc, MwVetting.Inputs(mexicoCrt = setOf("XEOLD" to 1000), mexicoIft2014 = setOf("XEW" to 900)))
-        assertEquals(listOf("UNVERIFIED", "LIC"), crt.take(2).map { it.status })
-        assertEquals(MwStation.SOURCE_CRT, crt[1].source)
+    @Test fun `city keys ignore accents, punctuation and the Cd abbreviation`() {
+        assertTrue(MexicoAm.sameCity("Cd.victoria", "Ciudad Victoria"))
+        assertTrue(MexicoAm.sameCity("Mexicali", "MEXICALI"))
+        assertTrue(MexicoAm.sameCity("Santa Rosalia", "Santa Rosalía"))
+        assertFalse(MexicoAm.sameCity("Tijuana", "Tecate"))
+        assertFalse(MexicoAm.sameCity("Sin Dato", "Sin Dato"))
+    }
+
+    @Test fun `Mexican treaty records are confirmed, corrected or marked unverified`() {
+        fun mx(call: String, khz: Int, city: String, id: Int) = station(call, khz, "MX", id = id).copy(city = city)
+        val fcc = listOf(
+            mx("XEW", 900, "Mexico", 1),             // exact
+            mx("XEDF", 970, "Mexico", 2),            // official list moved it to 1500
+            mx("XEAI", 1500, "Mexico", 3),           // official list moved it to 1470
+            mx("XESW", 970, "Ciudad de México", 4),  // official call is now XERFR
+            mx("XE", 1630, "Cd. Juarez", 5),         // placeholder named by kHz + city
+            mx("XEOLD", 1000, "Tijuana", 6),         // gone
+            station("CMBC", 1350, "CU"))
+        val official = listOf(MexicoAm.Station("XEW", 900, "Ciudad de México"), MexicoAm.Station("XEDF", 1500, "Ciudad de México"),
+            MexicoAm.Station("XEAI", 1470, "Ciudad de México"), MexicoAm.Station("XERFR", 970, "Ciudad de México"),
+            MexicoAm.Station("XEJCZ", 1630, "Ciudad Juárez"), MexicoAm.Station("XENEW", 1620, "Guachochi"))
+        val report = MwImportReport()
+        val out = MwVetting.apply(fcc, MwVetting.Inputs(mexicoCrt = official), report).associateBy { it.facilityId }
+        assertEquals(Triple("XEW", 900, "LIC"), out.getValue(1).let { Triple(it.call, it.khz, it.status) })
+        assertEquals(Triple("XEDF", 1500, "LIC"), out.getValue(2).let { Triple(it.call, it.khz, it.status) })
+        assertEquals(Triple("XEAI", 1470, "LIC"), out.getValue(3).let { Triple(it.call, it.khz, it.status) })
+        assertEquals(Triple("XERFR", 970, "LIC"), out.getValue(4).let { Triple(it.call, it.khz, it.status) })
+        assertEquals(Triple("XEJCZ", 1630, "LIC"), out.getValue(5).let { Triple(it.call, it.khz, it.status) })
+        assertEquals(MwStation.UNVERIFIED, out.getValue(6).status)
+        assertEquals(MwStation.SOURCE_CRT, out.getValue(4).source)
+        assertEquals(MwStation.NOTIFIED, out.values.single { it.call == "CMBC" }.status)
+        assertTrue(report.render().contains("XENEW 1620 Guachochi"))
+        assertTrue(report.render().contains("XESW 970 → XERFR 970"))
+        // Without CRT, the 2014 list confirms by call (and moves stale frequencies) but cannot match cities.
+        val ift = MwVetting.apply(fcc, MwVetting.Inputs(mexicoIft2014 = listOf(MexicoAm.Station("XEW", 900), MexicoAm.Station("XE", 1630))))
+            .associateBy { it.facilityId }
+        assertEquals(MwStation.SOURCE_IFT_2014, ift.getValue(1).source)
+        assertEquals(MwStation.UNVERIFIED, ift.getValue(5).status)
     }
 
     @Test fun `visibility hides permits, silent, unverified and user-hidden rows unless asked`() {
@@ -150,5 +183,11 @@ class MwSourcesTest {
         val confirmed = db.station(7, 830)!!
         assertEquals(MwStation.NOTIFIED to MwStation.SOURCE_WIKIPEDIA, confirmed.status to confirmed.source)
         assertEquals(listOf("WBZ"), db.search("news").map { it.call })
+        val silent = station("XEAA", 1340, "MX", id = 8).copy(status = MwStation.UNVERIFIED)
+        val silentText = StringBuilder().also { MwStationDb.writeFormats(listOf(silent to ("Silent" to "XEAA")), emptyMap(), it) }.toString()
+        assertEquals(MwStation.UNVERIFIED, MwStationDb(listOf(silent)).withFormats(StringReader(silentText)).stations.single().status)
+        // A current CRT list is authoritative; Wikipedia does not override it.
+        val crt = MwStationDb(listOf(xela), mapOf("mx-crt" to "CRT")).withFormats(StringReader(text)).stations.single()
+        assertEquals(MwStation.UNVERIFIED to "Rock", crt.status to crt.format)
     }
 }

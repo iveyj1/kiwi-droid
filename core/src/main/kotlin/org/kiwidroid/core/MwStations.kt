@@ -137,15 +137,18 @@ class MwStationDb(val stations: List<MwStation>, val metadata: Map<String, Strin
     }
 
     /**
-     * Attaches programming formats keyed by facility ID and channel. A format row means a current Wikipedia
-     * article lists the station on this AM channel, so an otherwise [MwStation.UNVERIFIED] treaty record is
-     * shown as [MwStation.NOTIFIED] with source [MwStation.SOURCE_WIKIPEDIA].
+     * Attaches programming formats keyed by facility ID and channel. A format row means a Wikipedia article
+     * lists the station on this AM channel. When the only Mexican list is the 2014 IFT extract, that confirms
+     * an otherwise [MwStation.UNVERIFIED] treaty record ([MwStation.NOTIFIED], source [MwStation.SOURCE_WIKIPEDIA]).
+     * A current CRT list is authoritative: rows it omits are duplicates or stations moved to FM, and articles lag.
      */
     fun withFormats(reader: Reader): MwStationDb {
         val table = readFormats(reader)
+        val promote = "mx-crt" !in metadata
         return MwStationDb(stations.map { s ->
             val format = s.facilityIds.firstNotNullOfOrNull { table.formats[it to s.khz] }
-            if (format != null && s.isUnverified) s.copy(format = format, status = MwStation.NOTIFIED, source = MwStation.SOURCE_WIKIPEDIA)
+            if (format != null && promote && s.isUnverified && !INACTIVE_FORMAT.containsMatchIn(format))
+                s.copy(format = format, status = MwStation.NOTIFIED, source = MwStation.SOURCE_WIKIPEDIA)
             else s.copy(format = format)
         }, metadata, table.metadata)
     }
@@ -158,6 +161,8 @@ class MwStationDb(val stations: List<MwStation>, val metadata: Map<String, Strin
         const val HEADER = "facility\tcall\tkhz\tcountry\tstate\tcity\tclass\tday_kw\tnight_kw\tcritical_kw\tda\tlat\tlon\tstatus\tmerged\tsource"
         /** Previous layout without `source`, read only so refreshes can report differences against it. */
         private val HEADER_V1 = HEADER.removeSuffix("\tsource")
+        /** Infobox formats that describe a station off the air rather than its programming. */
+        private val INACTIVE_FORMAT = Regex("""\b(silent|defunct|dark|off[- ]the[- ]air|off[- ]air)\b""", RegexOption.IGNORE_CASE)
         const val FORMAT_HEADER = "facility\tkhz\tformat\tarticle"
 
         class FormatTable(val formats: Map<Pair<Int, Int>, String>, val metadata: Map<String, String>)

@@ -39,7 +39,7 @@ Tap ☆/★ on any station row. Favorites appear as chips on the main screen **o
 | LIC | Licensed/operational, confirmed by FCC LMS (US), ISED (Canada), or the CRT/IFT list (Mexico) | Yes |
 | CP | US construction permit with no licence on that channel, or an ISED authorization not yet operating | No: **Permits** |
 | SILENT | US station that FCC LMS lists as "licensed and silent" | No: **Silent** |
-| NOTIFIED | Treaty record with no national list to check: Cuba, or a Mexican row that a current Wikipedia article lists on that AM channel | Yes |
+| NOTIFIED | Treaty record with no national list to check: Cuba (or, with only the 2014 Mexican list, a row a current Wikipedia article lists on that AM channel) | Yes |
 | UNVERIFIED | Mexican treaty record that the national list does not confirm; most such stations have closed or moved to FM | No: **Unverified** |
 
 Each row also shows which list confirmed it ("confirmed by FCC LMS", "ISED", "CRT", or "IFT 2014 list"). The **Also show** chips are remembered.
@@ -56,26 +56,20 @@ The FCC AM Query is the base: it has every station's technical record, including
 |---|---|---|
 | US | FCC LMS `facility.dat`, daily (public domain) | Drop facilities whose licence is cancelled, void, or permit cancelled. "Licensed and silent" → SILENT. Take the current call sign from LMS. When LMS lists a different frequency, keep the AM Query channel and report it for review (cases include genuine day/night frequency pairs, pending moves, and apparent LMS errors). |
 | Canada | ISED broadcasting extract `amstatio.dbf` (`baserad.zip`) | Replace all FCC treaty rows. Keep operational (OP/TO) stations as LIC and authorized ones (AU/AP/CN) as CP; drop allotments, proposals, and unacceptable or deleted records. Day and night records for one call/channel are merged; power, class, and both sites come from ISED. Stations matching an FCC row keep its facility ID (so favorites keep working); others use 1,000,000,000 + the ISED file number. |
-| Mexico | CRT "Infraestructura de Estaciones AM/FM" CSV (CC BY 4.0), else the IFT's 26 Nov 2014 list | A treaty row whose call and channel are on the list becomes LIC; others become UNVERIFIED. Coordinates and power still come from the FCC record. Official stations missing from the FCC data are reported, not added (no coordinates). |
+| Mexico | CRT "Infraestructura de Estaciones AM/FM" CSV (CC BY 4.0; committed as `tools/data/mx_crt_am_fm.csv`), else the IFT's 26 Nov 2014 list | Each official station is matched to at most one FCC treaty row, in three passes: call and kHz; call alone (the FCC frequency is outdated, so the row moves to the official channel); kHz and city (the FCC call is outdated or a placeholder, so the row takes the official call). Matched rows become LIC; unmatched FCC rows become UNVERIFIED. Coordinates and power still come from the FCC record. Official stations with no FCC record are reported, not added (no coordinates). The 2014 list has no cities, so only the first two passes apply. |
 | Cuba | None available | Kept as NOTIFIED. |
 
-The CRT file server rejects scripted downloads, so save the latest CSV from [datos.gob.mx](https://www.datos.gob.mx/dataset/infraestructura_estaciones_am_fm) in a browser as `tools/data/mx_crt_am_fm.csv`. Columns are found by header name (`distintivo`, `banda`, `frecuencia`). Until then the committed `tools/data/mx_ift_am_2014.tsv` (406 stations, call and kHz only) is used. That list predates most AM-to-FM migrations and later social/indigenous concessions, so it both over- and under-confirms.
+The CRT file server rejects scripted downloads, so save the latest CSV from [datos.gob.mx](https://www.datos.gob.mx/dataset/infraestructura_estaciones_am_fm) in a browser into `tools/data/` (any `mx_crt*.csv` name; the newest is used). Columns are found by header name (`distintivo`, `banda`, `frecuencia`, `poblacion`). Without one, the committed `tools/data/mx_ift_am_2014.tsv` (406 stations, call and kHz only) is used; it predates most AM-to-FM migrations and later social/indigenous concessions.
 
-On 2026-10-02 this changed the table from 7,823 to 7,320 rows: 541 dead Canadian treaty rows were removed (only 131 of 674 were operational), 43 operational Canadian stations were added, 141 US stations were marked silent, and 2,293 of 2,683 Mexican rows were not confirmed by the 2014 list.
+With the March 2026 CRT list (356 AM stations), 328 Mexican rows were confirmed: 272 exactly, 16 moved to their current channel (e.g. XEDF 970 → 1500, XEAI 1500 → 1470), and 40 renamed to their current call (e.g. XESW → XERFR 970). 28 official stations, mostly low-power social and public concessions, have no FCC record. 2,355 Mexican FCC rows are unverified.
+
+On 2026-10-02 this changed the table from 7,823 to 7,320 rows: 541 dead Canadian treaty rows were removed (only 131 of 674 were operational), 43 operational Canadian stations were added, and 141 US stations were marked silent.
 
 ## Programming formats
 
 Formats come from the `format` field of English Wikipedia's radio station infobox, stored separately in `mw_formats.tsv` under **CC BY-SA 4.0** (text by Wikipedia contributors; each row names its article). US articles are found through Wikidata's FCC Facility ID (P1400). Canadian and Mexican articles are found by call sign (Wikidata P2317, or the usual titles `CALL (AM)`, `CALL-AM`, `CALL`) and accepted only when the infobox frequency matches the channel, which rejects FM/TV namesakes. Values with leftover wiki markup are discarded.
 
-Coverage on 2026-10-03: 4,249 stations (US 3,915, Mexico 211, Canada 123). Formats appear in station rows and channel lines, and search matches them (e.g. `sports`, `regional mexican`). Formats change and articles can lag; treat them as a hint. A Mexican row that the national list did not confirm but that a current article lists on that AM channel is shown as NOTIFIED ("listed on Wikipedia").
-
-## Consolidation
-
-The FCC AM Query returns about 24,600 records for 530–1700 kHz, consolidated to about 7,800 stations (US, CA, MX, CU) before vetting:
-
-1. Only licence (`LIC`) and permit/notification (`CP`) records are used; applications are dropped. US call signs beginning with `D` (deleted facilities) are dropped.
-2. Per facility ID and channel, licence records win over permits. Within the chosen status, the newest record (highest application ID) for each hours category is used. Day, night, unlimited, and critical-hours records are merged into one station with day/night/critical power and directional (DA) flags. Specific day/night records take precedence over unlimited.
-3. Facilities sharing a real call sign and channel within 10 km merge into one station, such as repeated notifications or a site split into day-only and night-only facilities. The newest facility ID becomes the primary ID, and each period's power comes from the newest facility listing it. Older IDs are retained in the `merged` column. Placeholder calls (`NEW`, `XE`, `XENVA…`, blank, numeric) never merge.
+Coverage on 2026-10-03: 4,265 stations (US 3,915, Canada 123, Mexico 227). Formats appear in station rows and channel lines, and search matches them (e.g. `sports`, `regional mexican`). Formats change and articles can lag; treat them as a hint. Only when the 2014 IFT list is the Mexican fallback does a Wikipedia article listing a station on its AM channel confirm an otherwise unverified row (NOTIFIED, "listed on Wikipedia"), and never when the infobox format says silent or defunct. A current CRT list is authoritative: the rows it omits are mostly duplicate FCC notifications of confirmed stations or stations moved to FM (the list carries their XH… FM call).
 
 ## Updating the tables
 

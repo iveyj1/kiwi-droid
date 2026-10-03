@@ -1,8 +1,8 @@
 # KiwiDroid MW station formats: v1
 # source: English Wikipedia {{Infobox radio station}} 'format', articles located via Wikidata (P1400 FCC Facility ID; P2317 call sign)
 # license: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/); text by Wikipedia contributors; article titles listed per row
-# fetched: 2026-10-03T00:20:05Z
-# stations: 4249 with format of 7320; 90 articles without a format; 2278 non-US call matches rejected or unreadable
+# fetched: 2026-10-03T00:43:53Z
+# stations: 4265 with format of 7320; 91 articles without a format; 2261 non-US call matches rejected or unreadable
 facility	khz	format	article
 106051	530	Multilingual (Punjabi and other South Asian languages)	CHLO (AM)
 145	540	Religious	KDFT
@@ -22,6 +22,8 @@ facility	khz	format	article
 60764	540	News/talk	WDAK
 65202	540	Sports	WKFN
 73286	540	Adult contemporary/Full service	WRGC (AM)
+100760	540	Spanish-language Religion	XESURF (AM)
+103429	540	Grupera	XEWF-AM
 106062	540	News/Talk	CBK (AM)
 161448	540	Album-oriented rock	WXYG
 166740	540	Spanish & English Top 40 (CHR)	XEWA-AM
@@ -47,7 +49,7 @@ facility	khz	format	article
 67578	550	Catholic talk radio	WSJW
 71087	550	News/talk	KTSA
 72436	550	Country	KRAI (AM)
-100778	550	Public radio	XETNC-AM
+100778	550	Public radio	XEGNAY-AM
 11902	560	News/talk	WVOC
 21727	560	Sports	WHBQ (AM)
 23335	560	Religious	WMIK (AM)
@@ -56,7 +58,7 @@ facility	khz	format	article
 35088	560	Conservative talk radio	KLZ
 35900	560	Talk radio	KWTO (AM)
 41062	560	Sports Radio	WNSR
-49689	560	Sports	WEBC
+49689	560	Defunct	WEBC-FM
 52193	560	Christian radio	WFIL
 52335	560	Talk radio (day) / Classic country music (night)	WJLS (AM)
 55757	560	News/talk	WHYN (AM)
@@ -197,6 +199,7 @@ facility	khz	format	article
 106105	610	Classic hits	CHNL (AM)
 106107	610	Adult contemporary	CHTM (AM)
 106109	610	Talk radio	CKTB (AM)
+199812	610	News/talk	XESORN-AM
 7080	620	Urban adult contemporary	WHEN (AM)
 10775	620	Sports	KMNS
 17762	620	Sports	WDNC
@@ -297,7 +300,7 @@ facility	khz	format	article
 791649	660	Sports talk	XEFZ-AM
 8148	670	Regional Mexican	KHGZ
 21391	670	Christian radio	WWFE
-25445	670	Sports radio	WMAQ (AM)
+25445	670	Sports radio	WSCR (AM)
 35191	670	Christian radio	KLTT
 42134	670	Oldies	WLUI
 48678	670	News/Talk/Sports	KPUA
@@ -364,6 +367,8 @@ facility	khz	format	article
 51424	700	Conservative talk radio (weekdays) / Christian radio (late nights, weekends)	KDAZ
 64041	700	Catholic	KMBX
 101126	700	News/talk, contemporary music in English	XEDKR-AM
+103734	700	Indigenous community radio	XEXPUJ-AM
+103826	700	Indigenous community radio	XEETCH-AM
 133464	700	Full Service	KHSE
 198033	700	Christian	CJLI
 2211	710	Sports/classic rock	KXMR
@@ -602,7 +607,7 @@ facility	khz	format	article
 98871	800	Oldies/Classic hits	CHAB (AM)
 101399	800	Spanish adult hits	XESPN (AM)
 101406	800	Indigenous community radio	XEZV (AM)
-183603	800	Sports talk (XERG-AM)	XEDD-AM
+183603	800	Sports talk (XERG-AM)	XEERG-AM
 67503	801	Christian radio	KTWG
 161	810	Brokered programming (ethnic, religious, special interest)	WEDO
 210	810	Christian contemporary and talk/teaching	KYTY
@@ -627,6 +632,8 @@ facility	khz	format	article
 74003	810	Religious	WSJC
 101423	810	News/talk	XEAGR-AM
 101433	810	News/talk	XERSV-AM
+102561	810	Full-service radio	XERB (AM)
+102686	810	Grupera	XEEMM-AM
 129548	810	Sports	WRSO
 10687	820	Christian radio	WPGO
 16849	820	Progressive talk radio	WCPT (AM)
@@ -907,7 +914,7 @@ facility	khz	format	article
 73275	920	Country music	WMOK
 98960	920	Country	CFRY (AM)
 98966	920	Classic country/Full service radio	CKNX (AM)
-101750	920	Public radio	XETEB-AM
+101750	920	Public radio	XESTRC-AM
 101755	920	Regional Mexican	XERE-AM
 101757	920	Catholic religious	XELT-AM
 160224	920	Tejano music	WURA
@@ -987,6 +994,7 @@ facility	khz	format	article
 72200	940	Classic country (WZCC simulcast)	WLQH
 73096	940	Soft oldies / Adult standards	WMIX (AM)
 73160	940	Southern gospel	WKGM
+101820	940	News/talk	XEMMM-AM
 101828	940	Spanish adult hits	XEQ (AM)
 161412	940	Spanish Adult Hits	KDIL
 190081	940	Expected to be French health and wellness format; currently (broadcasting) class	CFNV
@@ -1254,6 +1262,7 @@ facility	khz	format	article
 99454	1010	Public radio and talk	CBR (AM)
 99459	1010	News/talk	CFRB (AM)
 102073	1010	Sports/Talk	XEHL-AM
+102389	1010	Indigenous community radio	XETUX-AM
 161428	1010	Oldies / Classic Hits	WMIN
 197997	1010	Regional Mexican	XEPA-AM
 198569	1010	Indigenous community radio	XETUMI-AM
@@ -1295,6 +1304,7 @@ facility	khz	format	article
 60878	1030	Full service classic hits	KMAS (AM)
 65207	1030	Spanish-language, Latin music, news and opinion	WGSF (AM)
 102125	1030	Indigenous community radio	XEVFS (AM)
+102131	1030	News/talk	XEROPJ-AM
 162100	1030	Silent	XESDD-AM
 166373	1030	Silent	XESDD-AM
 792997	1030	Oldies and standards in Spanish	XEQR-AM
@@ -1649,6 +1659,7 @@ facility	khz	format	article
 102499	1150	Regional Mexican	XEJP-AM
 102501	1150	News/talk	XEAD-AM
 102521	1150	Spanish adult contemporary	XETVR-AM
+103086	1150	Mexican college	XEUAS-AM
 198165	1150	Classic hits	CJSL (AM)
 4643	1160	Catholic religious programming	WMET
 6375	1160	News/Talk	KSL (AM)
@@ -1955,6 +1966,7 @@ facility	khz	format	article
 73400	1230	Sports	WOLH
 74089	1230	Classic hits	WTIV
 102727	1230	Public radio	XETVH-AM
+102753	1230	News/talk	XEIZ-AM
 103048	1230	News/Talk	CHFC (AM)
 129162	1230	Sports	WAYX
 160849	1230	Sports	WCDS
@@ -2092,6 +2104,7 @@ facility	khz	format	article
 73408	1240	Classic country	WZCC
 73676	1240	Full service	WOON
 74565	1240	Talk	KCLV (AM)
+102608	1240	Grupera	XERD-AM
 102732	1240	Regional Mexican	XEWG-AM
 102760	1240	Grupera	XEBQ-AM
 102762	1240	Regional Mexican	XECG-AM
@@ -2457,7 +2470,7 @@ facility	khz	format	article
 10829	1320	Southern gospel	WKRK (AM)
 12205	1320	News/Talk	WMSR (AM)
 14763	1320	Sports	KCLI (AM)
-22099	1320	News/talk	KWHN
+22099	1320	Southern gospel	KFSW
 23609	1320	Haitian Creole	WLQY
 24448	1320	Oldies	WDMJ
 27510	1320	Spanish CHR	WTKZ
@@ -3368,7 +3381,7 @@ facility	khz	format	article
 38458	1450	Sports	KHIT
 40637	1450	Classic hits	WDXR
 40889	1450	Classic country	KEED
-42068	1450	Oldies	WRLL (1690 AM)
+42068	1450	Spanish variety	WRLL
 42082	1450	Oldies	WIOE (AM)
 42649	1450	Oldies	KKOO (AM)
 43034	1450	Spanish Christian radio	WKAT (AM)
@@ -3502,6 +3515,7 @@ facility	khz	format	article
 71202	1460	Silent (formerly Spanish language Contemporary Hits)	WQXM
 71870	1460	Classic country	KLTC
 73919	1460	Talk radio	WRAD (AM)
+103563	1460	Regional Mexican	XECB-AM
 103575	1460	Talk radio	XEYC-AM
 103591	1460	Regional Mexican	XEKC-AM
 105824	1460	Oldies/Classic Hits/Variety	CJOY (AM)
@@ -3550,6 +3564,7 @@ facility	khz	format	article
 73372	1470	News/Talk	WNWF
 73930	1470	Christian radio	WWNN
 103616	1470	Silent	XEBAL-AM
+103736	1470	Talk radio, oldies in Spanish	XEAI-AM
 105827	1470	Multicultural	CJVB (AM)
 793461	1470	News/talk and Music	XERCN-AM
 726	1480	Catholic radio	WMMA (AM)
@@ -3721,7 +3736,7 @@ facility	khz	format	article
 60497	1490	Full service country	KOVC
 60587	1490	Talk/Brokered	WWPR (AM)
 61433	1490	Talk radio	KYCA
-61712	1490	Classic regional Mexican	KSPE
+61712	1490	Rhythmic oldies	KOSJ
 62236	1490	Sports	KTOP (AM)
 65661	1490	Worship music	KJOQ
 65674	1490	news/talk	WGCH
@@ -4253,3 +4268,4 @@ facility	khz	format	article
 87141	1700	Urban contemporary gospel and Urban adult contemporary	WEUP (AM)
 87142	1700	Sports radio	KVNS
 87169	1700	Haitian Creole talk music and news / World Ethnic	WJCC (AM)
+103554	1700	Sports radio	XEPE-AM

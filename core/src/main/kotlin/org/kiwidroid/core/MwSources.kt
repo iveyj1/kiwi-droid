@@ -115,36 +115,51 @@ object IsedAm {
     }
 }
 
-/** Mexican official AM lists, reduced to call sign + kHz for confirming FCC treaty records. */
+/** Mexican official AM lists, used to confirm (and correct) FCC treaty records. */
 object MexicoAm {
+    /** [city] is empty when the list has none (the 2014 IFT extract). */
+    data class Station(val call: String, val khz: Int, val city: String = "")
+
     fun normalizeCall(call: String) = call.trim().uppercase(Locale.ROOT).removeSuffix("-AM").replace(" ", "")
 
+    /** Accent-, case- and punctuation-insensitive city key; "Cd." abbreviates "Ciudad". */
+    fun cityKey(city: String) = fold(city).uppercase(Locale.ROOT).replace(Regex("^CD\\.?\\s*"), "CIUDAD ")
+        .filter { it.isLetter() }
+
+    fun sameCity(a: String, b: String): Boolean {
+        val x = cityKey(a)
+        val y = cityKey(b)
+        if (x.length < 4 || y.length < 4 || x == "SINDATO" || y == "SINDATO") return false
+        return x == y || (minOf(x.length, y.length) >= 6 && (x.startsWith(y) || y.startsWith(x)))
+    }
+
     /** Committed extract of the IFT's 2014 AM infrastructure list (`call<TAB>khz`). */
-    fun parseIft2014(reader: Reader): Set<Pair<String, Int>> = reader.buffered().lineSequence()
+    fun parseIft2014(reader: Reader): List<Station> = reader.buffered().lineSequence()
         .filter { it.isNotBlank() && !it.startsWith("#") && !it.startsWith("call\t") }
-        .map { it.split('\t') }.map { normalizeCall(it[0]) to it[1].trim().toInt() }.toSet()
+        .map { it.split('\t') }.map { Station(normalizeCall(it[0]), it[1].trim().toInt()) }.toList()
 
     /**
      * CRT "Infraestructura de Estaciones AM/FM" CSV. Columns are located by header name (distintivo, banda,
-     * frecuencia), ignoring case and accents, so minor monthly layout changes do not break the import.
+     * frecuencia, poblacion), ignoring case and accents, so minor monthly layout changes do not break the import.
      */
-    fun parseCrt(text: String): Set<Pair<String, Int>> {
-        val rows = parseCsv(text.removePrefix("﻿"))
+    fun parseCrt(text: String): List<Station> {
+        val rows = parseCsv(text.removePrefix("\uFEFF"))
         require(rows.isNotEmpty()) { "Empty CRT CSV" }
-        val header = rows.first().map(::fold)
+        val header = rows.first().map(::fold).map { it.lowercase(Locale.ROOT) }
         fun column(word: String) = header.indexOfFirst { word in it }.also { require(it >= 0) { "CRT CSV lacks a '$word' column: $header" } }
         val call = column("distintivo")
         val band = column("banda")
         val frequency = column("frecuencia")
-        return rows.drop(1).filter { it.size > maxOf(call, band, frequency) && fold(it[band]) == "am" }
+        val city = header.indexOfFirst { "poblacion" in it || "localidad" in it }
+        return rows.drop(1).filter { it.size > maxOf(call, band, frequency) && fold(it[band]).lowercase(Locale.ROOT) == "am" }
             .mapNotNull { r ->
                 val value = r[frequency].replace(',', '.').filter { it.isDigit() || it == '.' }.toDoubleOrNull() ?: return@mapNotNull null
-                normalizeCall(r[call]) to (if (value < 2) value * 1000 else value).toInt()
-            }.toSet()
+                Station(normalizeCall(r[call]), (if (value < 2) value * 1000 else value).toInt(), r.getOrNull(city).orEmpty().trim())
+            }.distinct()
     }
 
     private fun fold(text: String) = Normalizer.normalize(text, Normalizer.Form.NFD)
-        .replace(Regex("\\p{M}"), "").trim().lowercase(Locale.ROOT)
+        .replace(Regex("\\p{M}"), "").trim()
 
     internal fun parseCsv(text: String): List<List<String>> {
         val delimiter = if (text.lineSequence().first().count { it == ';' } > text.lineSequence().first().count { it == ',' }) ';' else ','
@@ -197,8 +212,8 @@ object MwVetting {
     data class Inputs(
         val lms: Map<Int, LmsAm.Facility>? = null,
         val isedRows: List<Map<String, String>>? = null,
-        val mexicoCrt: Set<Pair<String, Int>>? = null,
-        val mexicoIft2014: Set<Pair<String, Int>>? = null,
+        val mexicoCrt: List<MexicoAm.Station>? = null,
+        val mexicoIft2014: List<MexicoAm.Station>? = null,
     )
 
     fun apply(fcc: List<MwStation>, inputs: Inputs, report: MwImportReport = MwImportReport()): List<MwStation> {
@@ -212,9 +227,8 @@ object MwVetting {
             ised.forEach { report.note("CA: from ISED as ${it.status}", if (fccCanada.none { f -> f.call == it.call && f.khz == it.khz }) "${it.label} ${it.khz} ${it.place} (not in FCC data)" else null) }
             ised
         } ?: fcc.filter { it.country == "CA" }.onEach { report.note("CA: FCC treaty record kept (no ISED input)") }
-        val mexico = fcc.filter { it.country == "MX" }.map { vetMexico(it, inputs, report) }
+        val mexico = vetMexico(fcc.filter { it.country == "MX" }, inputs, report)
         val other = fcc.filter { it.country !in setOf("US", "CA", "MX") }.onEach { report.note("${it.country}: treaty record, no national list") }
-        reportMissingMexican(fcc, inputs, report)
         return (us + canada + mexico + other)
             .sortedWith(compareBy<MwStation> { it.khz }.thenBy { it.country }.thenBy { it.call }.thenBy { it.facilityId })
     }
@@ -242,24 +256,41 @@ object MwVetting {
         return station.copy(call = call ?: station.call, status = status, source = MwStation.SOURCE_LMS)
     }
 
-    private fun vetMexico(station: MwStation, inputs: Inputs, report: MwImportReport): MwStation {
-        val key = MexicoAm.normalizeCall(station.call) to station.khz
+    /**
+     * Matches each official station to at most one FCC treaty row, in three passes:
+     * exact call + kHz; same call (the FCC row is on an old frequency, so it moves to the official one);
+     * same kHz and city (the FCC row has an old or placeholder call, so it takes the official one).
+     * Coordinates and power stay from the FCC record. Unmatched FCC rows become UNVERIFIED.
+     */
+    private fun vetMexico(rows: List<MwStation>, inputs: Inputs, report: MwImportReport): List<MwStation> {
         val (list, source) = inputs.mexicoCrt?.let { it to MwStation.SOURCE_CRT }
             ?: inputs.mexicoIft2014?.let { it to MwStation.SOURCE_IFT_2014 }
-            ?: return station.also { report.note("MX: no national list; treaty record kept") }
-        if (!FccAmImport.isPlaceholderCall(station.call) && key in list) {
-            report.note("MX: confirmed by $source")
-            return station.copy(status = MwStation.LICENSED, source = source)
+            ?: return rows.onEach { report.note("MX: no national list; treaty record kept") }
+        val result = rows.toMutableList()
+        val matched = BooleanArray(rows.size)
+        val pending = list.toMutableList()
+        fun pass(name: String, candidates: (MexicoAm.Station) -> List<Int>) {
+            pending.removeAll { official ->
+                val index = candidates(official).filterNot { matched[it] }.maxByOrNull { rows[it].maxKw } ?: return@removeAll false
+                matched[index] = true
+                val before = rows[index]
+                result[index] = before.copy(call = official.call, khz = official.khz, status = MwStation.LICENSED, source = source)
+                report.note("MX: confirmed by $source ($name)",
+                    if (before.call != official.call || before.khz != official.khz) "${before.label} ${before.khz} → ${official.call} ${official.khz} ${official.city}" else null)
+                true
+            }
         }
-        report.note("MX: not in $source list; unverified (hidden by default)")
-        return station.copy(status = MwStation.UNVERIFIED)
-    }
-
-    private fun reportMissingMexican(fcc: List<MwStation>, inputs: Inputs, report: MwImportReport) {
-        val list = inputs.mexicoCrt ?: inputs.mexicoIft2014 ?: return
-        val present = fcc.filter { it.country == "MX" }.map { MexicoAm.normalizeCall(it.call) to it.khz }.toSet()
-        (list - present).sortedBy { it.second }.forEach { (call, khz) ->
-            report.note("MX: on the national list but absent from FCC data (no coordinates; not added)", "$call $khz")
+        val real = rows.indices.filterNot { FccAmImport.isPlaceholderCall(rows[it].call) }
+        pass("call and kHz") { o -> real.filter { MexicoAm.normalizeCall(rows[it].call) == o.call && rows[it].khz == o.khz } }
+        pass("call; FCC frequency outdated") { o -> real.filter { MexicoAm.normalizeCall(rows[it].call) == o.call } }
+        pass("kHz and city; FCC call outdated or placeholder") { o -> rows.indices.filter { rows[it].khz == o.khz && MexicoAm.sameCity(rows[it].city, o.city) } }
+        pending.sortedBy { it.khz }.forEach { o ->
+            report.note("MX: on the national list but no matching FCC record (no coordinates; not added)", "${o.call} ${o.khz} ${o.city}")
         }
+        rows.indices.filterNot { matched[it] }.forEach { i ->
+            report.note("MX: not on the $source list; unverified (hidden by default)")
+            result[i] = rows[i].copy(status = MwStation.UNVERIFIED)
+        }
+        return result
     }
 }

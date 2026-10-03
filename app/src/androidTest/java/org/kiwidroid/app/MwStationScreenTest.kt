@@ -26,6 +26,8 @@ class MwStationScreenTest {
         try {
             instrumentation.runOnMainSync {
                 radio.stop(); radio.setMode(Mode.AM); radio.tune("5000.000"); radio.setMwIncludePermits(false)
+                // Rank by power, not by any location the user has set, so WBZ leads 1030 kHz.
+                radio.saveReceiver(original.selected, original.receiver.name, original.receiver.url)
             }
             rule.onNodeWithTag("mwStations").assertDoesNotExist()
             rule.onNodeWithTag("frequency").performTextReplacement("1030")
@@ -35,7 +37,7 @@ class MwStationScreenTest {
             instrumentation.runOnMainSync { radio.setMode(Mode.CW); radio.tune("1000.000") }
             rule.onNodeWithTag("mwStations").performScrollTo().performClick()
             rule.onNodeWithTag("mwSearch").performTextReplacement("WBZ")
-            rule.onNodeWithText("0 stations · tap to tune").assertExists()
+            rule.onNodeWithText("0 stations · tap to tune", substring = true).assertExists()
             rule.onNodeWithTag("mwScopeAll").performClick()
             rule.onNodeWithText("1030 WBZ").performClick()
             rule.onNodeWithTag("tuned").assertTextEquals("Tuned: 1030.000 kHz")
@@ -47,11 +49,11 @@ class MwStationScreenTest {
             rule.onNodeWithTag("mwScopeAll").performClick()
             // WLBE is licensed on 790 kHz and holds a permit to move to 780 kHz.
             rule.onNodeWithTag("mwSearch").performTextReplacement("WLBE")
-            rule.onNodeWithText("1 station · tap to tune").assertExists()
+            rule.onNodeWithText("1 station · tap to tune", substring = true).assertExists()
             rule.onNodeWithText("790 WLBE").assertExists()
             rule.onNodeWithText("780 WLBE").assertDoesNotExist()
             rule.onNodeWithTag("mwPermits").performClick()
-            rule.onNodeWithText("2 stations · tap to tune").assertExists()
+            rule.onNodeWithText("2 stations · tap to tune", substring = true).assertExists()
             rule.onNodeWithText("780 WLBE").assertExists()
             rule.runOnIdle { assertTrue(radio.state.value.settings.mwIncludePermits) }
             rule.onNodeWithText("Close").performClick()
@@ -61,6 +63,9 @@ class MwStationScreenTest {
                 radio.tune(formatKhz(original.tuning.frequencyHz))
                 radio.setMode(original.tuning.mode)
                 radio.setMwIncludePermits(original.mwIncludePermits)
+                val location = original.receiverLocation
+                radio.saveReceiver(original.selected, original.receiver.name, original.receiver.url,
+                    location?.latitude?.toString() ?: "", location?.longitude?.toString() ?: "")
             }
         }
     }
@@ -112,11 +117,12 @@ class MwStationScreenTest {
 
             rule.onNodeWithTag("mwStations").performScrollTo().performClick()
             rule.onNodeWithTag("mwScopeFavorites").performClick()
-            rule.onNodeWithText("1 station · tap to tune").assertExists()
+            rule.onNodeWithTag("mwSearch").performTextReplacement("WBZ")  // ignore the user's own favorites
+            rule.onNodeWithText("1 station · tap to tune", substring = true).assertExists()
             rule.onNodeWithContentDescription("Remove WBZ 1030 from favorites").performClick()
-            rule.onNodeWithText("0 stations · tap to tune").assertExists()
+            rule.onNodeWithText("0 stations · tap to tune", substring = true).assertExists()
             rule.onNodeWithText("Close").performClick()
-            rule.onNodeWithTag("favoriteChip").assertDoesNotExist()
+            rule.onNodeWithText("1030 WBZ").assertDoesNotExist()
 
             // Reporting a bad entry hides it everywhere except the Hidden view, where it can be restored.
             rule.onNodeWithTag("mwStations").performScrollTo().performClick()
@@ -125,15 +131,16 @@ class MwStationScreenTest {
             rule.onNodeWithContentDescription("Hide WBZ 1030 as a bad entry").performClick()
             rule.onNodeWithText("1030 WBZ").assertDoesNotExist()
             rule.onNodeWithTag("mwScopeHidden").performClick()
-            rule.onNodeWithText("1 station · tap to tune").assertExists()
+            rule.onNodeWithText("1 station · tap to tune", substring = true).assertExists()
             rule.onNodeWithText("Close").performClick()
             rule.onAllNodesWithTag("mwChannel").assertAll(hasText("WBZ", substring = true).not())
             rule.onNodeWithTag("mwStations").performScrollTo().performClick()
             rule.onNodeWithTag("mwScopeHidden").performClick()
+            rule.onNodeWithTag("mwSearch").performTextReplacement("WBZ")  // ignore the user's own hidden entries
             rule.onNodeWithContentDescription("Restore WBZ 1030").performClick()
-            rule.onNodeWithText("0 stations · tap to tune").assertExists()
+            rule.onNodeWithText("0 stations · tap to tune", substring = true).assertExists()
             rule.onNodeWithText("Close").performClick()
-            rule.runOnIdle { assertTrue(radio.state.value.settings.mwHidden.isEmpty()) }
+            rule.runOnIdle { assertTrue(radio.state.value.settings.mwHidden.none { it.matches(wbz) }) }
         } finally {
             instrumentation.runOnMainSync {
                 val location = original.receiverLocation
