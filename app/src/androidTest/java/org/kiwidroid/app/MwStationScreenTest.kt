@@ -117,11 +117,29 @@ class MwStationScreenTest {
             rule.onNodeWithText("0 stations · tap to tune").assertExists()
             rule.onNodeWithText("Close").performClick()
             rule.onNodeWithTag("favoriteChip").assertDoesNotExist()
+
+            // Reporting a bad entry hides it everywhere except the Hidden view, where it can be restored.
+            rule.onNodeWithTag("mwStations").performScrollTo().performClick()
+            rule.onNodeWithTag("mwScopeAll").performClick()
+            rule.onNodeWithTag("mwSearch").performTextReplacement("WBZ")
+            rule.onNodeWithContentDescription("Hide WBZ 1030 as a bad entry").performClick()
+            rule.onNodeWithText("1030 WBZ").assertDoesNotExist()
+            rule.onNodeWithTag("mwScopeHidden").performClick()
+            rule.onNodeWithText("1 station · tap to tune").assertExists()
+            rule.onNodeWithText("Close").performClick()
+            rule.onAllNodesWithTag("mwChannel").assertAll(hasText("WBZ", substring = true).not())
+            rule.onNodeWithTag("mwStations").performScrollTo().performClick()
+            rule.onNodeWithTag("mwScopeHidden").performClick()
+            rule.onNodeWithContentDescription("Restore WBZ 1030").performClick()
+            rule.onNodeWithText("0 stations · tap to tune").assertExists()
+            rule.onNodeWithText("Close").performClick()
+            rule.runOnIdle { assertTrue(radio.state.value.settings.mwHidden.isEmpty()) }
         } finally {
             instrumentation.runOnMainSync {
                 val location = original.receiverLocation
                 radio.saveReceiver(original.selected, original.receiver.name, original.receiver.url,
                     location?.latitude?.toString() ?: "", location?.longitude?.toString() ?: "")
+                if (radio.state.value.settings.mwHidden.any { it.matches(wbz) }) radio.toggleHidden(wbz)
                 val starred = radio.state.value.settings.favorites.any { it.matches(wbz) }
                 if (starred != original.favorites.any { it.matches(wbz) }) radio.toggleFavorite(wbz)
                 radio.setMode(Mode.AM)

@@ -120,6 +120,18 @@ class RadioController(private val application: Application) {
     }
     fun setSound(sound: SoundSettings) = change { it.copy(sound = sound) }
     fun setMwIncludePermits(include: Boolean) = change { it.copy(mwIncludePermits = include) }
+    fun setMwIncludeSilent(include: Boolean) = change { it.copy(mwIncludeSilent = include) }
+    fun setMwIncludeUnverified(include: Boolean) = change { it.copy(mwIncludeUnverified = include) }
+
+    /** Reports a bad entry (hidden everywhere but the Hidden view), or restores it. */
+    fun toggleHidden(station: MwStation): Boolean = change {
+        val rest = it.mwHidden.filterNot { ref -> ref.matches(station) }
+        if (rest.size < it.mwHidden.size) it.copy(mwHidden = rest)
+        else {
+            require(rest.size < Settings.MAX_HIDDEN) { "At most ${Settings.MAX_HIDDEN} hidden stations" }
+            it.copy(mwHidden = rest + MwFavorite.of(station))
+        }
+    }
     fun setRadioAudio(enabled: Boolean) = change { it.copy(sound = it.sound.copy(radioEnabled = enabled)) }
     fun setRssiTones(enabled: Boolean) = change { it.copy(sound = it.sound.copy(tones = it.sound.tones.copy(enabled = enabled))) }
     fun selectReceiver(index: Int) = change { it.copy(selected = index) }

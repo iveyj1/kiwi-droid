@@ -105,23 +105,65 @@ object FccAmImport {
     }
 }
 
-/** Build-time entry point: `./gradlew :core:importMwStations --args="<amq.txt> <out.tsv>"`. */
+/**
+ * Build-time entry point; see tools/update-mw-db.sh. Options (all but --fcc and --out optional):
+ * `--fcc amq.txt --lms facility.dat --ised amstatio.dbf --mx-crt crt.csv --mx-ift ift2014.tsv --out mw_stations.tsv --report report.txt`
+ */
 fun main(args: Array<String>) {
-    require(args.size == 2) { "Usage: <fcc-amq-list4.txt> <mw_stations.tsv>" }
-    val input = File(args[0])
-    val bytes = input.readBytes()
-    val stations = FccAmImport.convert(String(bytes, Charsets.ISO_8859_1).lineSequence())
-    check(stations.size > 1000) { "Only ${stations.size} stations parsed; refusing to replace the database" }
-    val metadata = linkedMapOf(
-        "KiwiDroid MW station database" to "v1",
-        "source" to FccAmImport.SOURCE_URL,
-        "fetched" to Instant.ofEpochMilli(input.lastModified()).truncatedTo(ChronoUnit.SECONDS).toString(),
-        "sha256" to MessageDigest.getInstance("SHA-256").digest(bytes).joinToString("") { "%02x".format(it) },
-        "countries" to FccAmImport.NORTH_AMERICA.sorted().joinToString(" "),
-        "stations" to stations.size.toString(),
-        "merged facilities" to stations.sumOf { it.mergedFacilityIds.size }.toString(),
-        "note" to "FCC data (public domain); non-US entries are treaty notifications and may be out of date",
+    val options = args.toList().chunked(2).associate { (k, v) -> k.removePrefix("--") to v }
+    fun file(name: String) = options[name]?.let(::File)?.also { require(it.isFile) { "--$name ${it.path} not found" } }
+    val fccFile = requireNotNull(file("fcc")) { "--fcc is required" }
+    val out = File(requireNotNull(options["out"]) { "--out is required" })
+    fun sha256(bytes: ByteArray) = MessageDigest.getInstance("SHA-256").digest(bytes).joinToString("") { "%02x".format(it) }
+    fun fetched(f: File) = Instant.ofEpochMilli(f.lastModified()).truncatedTo(ChronoUnit.SECONDS).toString()
+
+    val fccBytes = fccFile.readBytes()
+    val fcc = FccAmImport.convert(String(fccBytes, Charsets.ISO_8859_1).lineSequence())
+    check(fcc.size > 1000) { "Only ${fcc.size} FCC stations parsed; refusing to replace the database" }
+    val inputs = MwVetting.Inputs(
+        lms = file("lms")?.let { LmsAm.parse(it.readText(Charsets.ISO_8859_1)) }?.also { check(it.size > 1000) { "LMS facility table looks truncated" } },
+        isedRows = file("ised")?.let { Dbf.read(it.readBytes()) }?.also { check(it.size > 1000) { "ISED table looks truncated" } },
+        mexicoCrt = file("mx-crt")?.let { MexicoAm.parseCrt(it.readText()) }?.also { check(it.size > 50) { "CRT list has only ${it.size} AM rows" } },
+        mexicoIft2014 = file("mx-ift")?.let { f -> f.reader().use(MexicoAm::parseIft2014) },
     )
-    File(args[1]).bufferedWriter().use { MwStationDb.write(stations, metadata, it) }
-    println("Wrote ${stations.size} stations to ${args[1]}")
+    val report = MwImportReport()
+    val stations = MwVetting.apply(fcc, inputs, report)
+
+    val metadata = linkedMapOf(
+        "KiwiDroid MW station database" to "v2",
+        "source" to FccAmImport.SOURCE_URL,
+        "fetched" to fetched(fccFile),
+        "sha256" to sha256(fccBytes),
+    )
+    file("lms")?.let { metadata["lms"] = "FCC LMS facility table, fetched ${fetched(it)}, sha256 ${sha256(it.readBytes())}" }
+    file("ised")?.let { metadata["ised"] = "ISED broadcasting extract amstatio.dbf, fetched ${fetched(it)}, sha256 ${sha256(it.readBytes())}" }
+    file("mx-crt")?.let { metadata["mx-crt"] = "CRT Infraestructura de Estaciones AM/FM (CC BY 4.0), ${it.name}, sha256 ${sha256(it.readBytes())}" }
+    file("mx-ift")?.let { metadata["mx-ift"] = "IFT Infraestructura de Estaciones de Radio AM, 26 Nov 2014 (call/kHz extract)" }
+    metadata["countries"] = FccAmImport.NORTH_AMERICA.sorted().joinToString(" ")
+    metadata["stations"] = stations.size.toString()
+    stations.groupingBy { "${it.country} ${it.status}" }.eachCount().toSortedMap()
+        .let { counts -> metadata["by status"] = counts.entries.joinToString(", ") { "${it.key} ${it.value}" } }
+    metadata["merged facilities"] = stations.sumOf { it.mergedFacilityIds.size }.toString()
+    metadata["note"] = "FCC/ISED data; Mexican rows are FCC treaty records checked against the national list; " +
+        "UNVERIFIED rows were not confirmed and are hidden by default"
+
+    val previous = out.takeIf { it.isFile }?.let { runCatching { it.reader().use(MwStationDb::read).stations }.getOrNull() }
+    previous?.let { old ->
+        val before = old.associateBy { it.facilityId to it.khz }
+        val after = stations.associateBy { it.facilityId to it.khz }
+        (after.keys - before.keys).forEach { k -> after.getValue(k).let { report.note("Diff: added", "${it.label} ${it.khz} ${it.place} ${it.status}") } }
+        (before.keys - after.keys).forEach { k -> before.getValue(k).let { report.note("Diff: removed", "${it.label} ${it.khz} ${it.place} ${it.status}") } }
+        (after.keys intersect before.keys).forEach { k ->
+            val a = after.getValue(k); val b = before.getValue(k)
+            if (a.status != b.status || a.call != b.call) report.note("Diff: status or call changed", "${b.label} ${b.status} → ${a.label} ${a.status} ${a.khz}")
+            else if (MwStationDb.row(a).dropLast(1) != MwStationDb.row(b).dropLast(1))
+                report.note("Diff: technical details changed", "${a.label} ${a.khz}")
+        }
+    }
+
+    out.bufferedWriter().use { MwStationDb.write(stations, metadata, it) }
+    val rendered = report.render()
+    options["report"]?.let { File(it).apply { parentFile?.mkdirs() }.writeText(rendered) }
+    println(report.render(maxExamples = 0))
+    println("Wrote ${stations.size} stations to ${out.path}" + (options["report"]?.let { "; full report in $it" } ?: ""))
 }

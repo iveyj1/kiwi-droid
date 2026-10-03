@@ -1,6 +1,6 @@
 # MW (AM broadcast) station list
 
-North American MW station database: a bundled FCC table, the stations inside the current passband, search, tune-by-station (phase 1), receiver locations, likelihood ranking, and favorites (phase 2). Logging is a later phase.
+North American MW station database: a bundled FCC table vetted against the US, Canadian, and Mexican regulators' lists, with Wikipedia programming formats; the stations inside the current passband, search, tune-by-station, receiver locations, likelihood ranking, favorites, and hiding bad entries. Logging is a later phase.
 
 ## Using it
 
@@ -32,30 +32,58 @@ This is a "who to listen for" hint, not identification or a propagation predicti
 
 Tap ☆/★ on any station row. Favorites appear as chips on the main screen **on every band** once any exist; tapping one tunes to that channel with the same mode rules as the list. The picker's **Favorites** view lists them, including permits even when permits are hidden. Favorites are stored by facility ID and channel, so they follow call-sign changes and facility consolidation (merged IDs still match). At most 200 favorites.
 
-## Station status and the permit filter
+## Station status and filters
 
 | Status | Meaning | Shown by default |
 |---|---|---|
-| LIC | US licensed station | Yes |
-| CP | US construction permit with no licence on that channel (new station, or a move not yet licensed) | No: enable **Construction permits** |
-| NOTIFIED | Canadian, Mexican, or Cuban station from the FCC's treaty notification records | Yes |
+| LIC | Licensed/operational, confirmed by FCC LMS (US), ISED (Canada), or the CRT/IFT list (Mexico) | Yes |
+| CP | US construction permit with no licence on that channel, or an ISED authorization not yet operating | No: **Permits** |
+| SILENT | US station that FCC LMS lists as "licensed and silent" | No: **Silent** |
+| NOTIFIED | Treaty record with no national list to check: Cuba, or a Mexican row that a current Wikipedia article lists on that AM channel | Yes |
+| UNVERIFIED | Mexican treaty record that the national list does not confirm; most such stations have closed or moved to FM | No: **Unverified** |
 
-The FCC lists every non-US entry as `CP`. The importer relabels these `NOTIFIED`, so the permit filter hides only genuine US permits. Treaty notifications may be out of date. The **Construction permits** choice is remembered.
+Each row also shows which list confirmed it ("confirmed by FCC LMS", "ISED", "CRT", or "IFT 2014 list"). The **Also show** chips are remembered.
+
+### Hiding bad entries
+
+Tap ⊘ on a row to report it as a bad entry. It disappears from channel lines, search, and ranking. The **Hidden** view (shown once anything is hidden) lists them; tap ↺ to restore. Hidden entries are stored on the phone by facility ID and channel, so they survive database refreshes.
+
+## Vetting against national lists
+
+The FCC AM Query is the base: it has every station's technical record, including the treaty notifications for other countries. Each refresh checks it against the national regulators' lists and writes `build/mw-import-report.txt` with every decision and the differences from the previous table.
+
+| Country | Official list | Rule |
+|---|---|---|
+| US | FCC LMS `facility.dat`, daily (public domain) | Drop facilities whose licence is cancelled, void, or permit cancelled. "Licensed and silent" → SILENT. Take the current call sign from LMS. When LMS lists a different frequency, keep the AM Query channel and report it for review (cases include genuine day/night frequency pairs, pending moves, and apparent LMS errors). |
+| Canada | ISED broadcasting extract `amstatio.dbf` (`baserad.zip`) | Replace all FCC treaty rows. Keep operational (OP/TO) stations as LIC and authorized ones (AU/AP/CN) as CP; drop allotments, proposals, and unacceptable or deleted records. Day and night records for one call/channel are merged; power, class, and both sites come from ISED. Stations matching an FCC row keep its facility ID (so favorites keep working); others use 1,000,000,000 + the ISED file number. |
+| Mexico | CRT "Infraestructura de Estaciones AM/FM" CSV (CC BY 4.0), else the IFT's 26 Nov 2014 list | A treaty row whose call and channel are on the list becomes LIC; others become UNVERIFIED. Coordinates and power still come from the FCC record. Official stations missing from the FCC data are reported, not added (no coordinates). |
+| Cuba | None available | Kept as NOTIFIED. |
+
+The CRT file server rejects scripted downloads, so save the latest CSV from [datos.gob.mx](https://www.datos.gob.mx/dataset/infraestructura_estaciones_am_fm) in a browser as `tools/data/mx_crt_am_fm.csv`. Columns are found by header name (`distintivo`, `banda`, `frecuencia`). Until then the committed `tools/data/mx_ift_am_2014.tsv` (406 stations, call and kHz only) is used. That list predates most AM-to-FM migrations and later social/indigenous concessions, so it both over- and under-confirms.
+
+On 2026-10-02 this changed the table from 7,823 to 7,320 rows: 541 dead Canadian treaty rows were removed (only 131 of 674 were operational), 43 operational Canadian stations were added, 141 US stations were marked silent, and 2,293 of 2,683 Mexican rows were not confirmed by the 2014 list.
+
+## Programming formats
+
+Formats come from the `format` field of English Wikipedia's radio station infobox, stored separately in `mw_formats.tsv` under **CC BY-SA 4.0** (text by Wikipedia contributors; each row names its article). US articles are found through Wikidata's FCC Facility ID (P1400). Canadian and Mexican articles are found by call sign (Wikidata P2317, or the usual titles `CALL (AM)`, `CALL-AM`, `CALL`) and accepted only when the infobox frequency matches the channel, which rejects FM/TV namesakes. Values with leftover wiki markup are discarded.
+
+Coverage on 2026-10-03: 4,249 stations (US 3,915, Mexico 211, Canada 123). Formats appear in station rows and channel lines, and search matches them (e.g. `sports`, `regional mexican`). Formats change and articles can lag; treat them as a hint. A Mexican row that the national list did not confirm but that a current article lists on that AM channel is shown as NOTIFIED ("listed on Wikipedia").
 
 ## Consolidation
 
-The FCC AM Query returns about 24,600 records for 530–1700 kHz; the table keeps about 7,800 stations (US, CA, MX, CU):
+The FCC AM Query returns about 24,600 records for 530–1700 kHz, consolidated to about 7,800 stations (US, CA, MX, CU) before vetting:
 
 1. Only licence (`LIC`) and permit/notification (`CP`) records are used; applications are dropped. US call signs beginning with `D` (deleted facilities) are dropped.
 2. Per facility ID and channel, licence records win over permits. Within the chosen status, the newest record (highest application ID) for each hours category is used. Day, night, unlimited, and critical-hours records are merged into one station with day/night/critical power and directional (DA) flags. Specific day/night records take precedence over unlimited.
 3. Facilities sharing a real call sign and channel within 10 km merge into one station, such as repeated notifications or a site split into day-only and night-only facilities. The newest facility ID becomes the primary ID, and each period's power comes from the newest facility listing it. Older IDs are retained in the `merged` column. Placeholder calls (`NEW`, `XE`, `XENVA…`, blank, numeric) never merge.
 
-## Updating the table
+## Updating the tables
 
 ```sh
-./tools/update-mw-db.sh    # downloads ~10 MB from the FCC, rewrites app/src/main/assets/mw_stations.tsv
+./tools/update-mw-db.sh             # FCC AM Query, FCC LMS, ISED (about 35 MB); rewrites mw_stations.tsv
+./tools/update-mw-db.sh --formats   # also refreshes mw_formats.tsv from Wikidata/Wikipedia
 ```
 
-The app never downloads station data. The generated table is committed. Its header records the source URL, fetch time, SHA-256 of the raw download, and station/merge counts. Review the diff before committing. The converter refuses to write fewer than 1,000 stations. FCC data is a US government work in the public domain.
+The app never downloads station data. Both generated tables are committed. Review `build/mw-import-report.txt` and the diff before committing. The station table's header records each source, its fetch time and SHA-256, and counts by country and status. The converter refuses to write a table from a truncated input.
 
-Format: `#` metadata lines, a header, then tab-separated `facility call khz country state city class day_kw night_kw critical_kw da lat lon status merged`. Empty power means no authorization for that period; `da` holds `D` and/or `N`.
+Station table: `#` metadata lines, a header, then tab-separated `facility call khz country state city class day_kw night_kw critical_kw da lat lon status merged source`. Empty power means no authorization for that period; `da` holds `D` and/or `N` (FCC rows only). Format table: `facility khz format article`.

@@ -21,7 +21,10 @@ class StationDirectory(context: Context) {
         val assets = context.applicationContext.assets
         CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
             mutableState.value = try {
-                StationDirectoryState(db = assets.open(ASSET).reader(Charsets.UTF_8).use(MwStationDb::read))
+                val stations = assets.open(ASSET).reader(Charsets.UTF_8).use(MwStationDb::read)
+                // Formats are a separate CC BY-SA table; the station list works without it.
+                val db = runCatching { assets.open(FORMATS_ASSET).reader(Charsets.UTF_8).use(stations::withFormats) }.getOrDefault(stations)
+                StationDirectoryState(db = db)
             } catch (e: Exception) {
                 if (e is CancellationException) throw e
                 StationDirectoryState(error = e.message ?: e.javaClass.simpleName)
@@ -29,5 +32,8 @@ class StationDirectory(context: Context) {
         }
     }
 
-    companion object { const val ASSET = "mw_stations.tsv" }
+    companion object {
+        const val ASSET = "mw_stations.tsv"
+        const val FORMATS_ASSET = "mw_formats.tsv"
+    }
 }

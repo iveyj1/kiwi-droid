@@ -84,7 +84,7 @@ private fun RadioScreen(state: RadioUiState, stations: StationDirectoryState, mo
             Text("Tuned: ${formatKhz(settings.tuning.frequencyHz)} kHz", Modifier.testTag("tuned"))
             MwFavoriteChips(settings.favorites, stations.db, state.loaded) { model.tuneToStation(it) }
             if (settings.tuning.frequencyHz in MW_BAND_HZ) MwStationPanel(settings.tuning, stations,
-                settings.mwIncludePermits, settings.receiverLocation, now, state.loaded) { stationsOpen = true }
+                settings.mwVisibility, settings.receiverLocation, now, state.loaded) { stationsOpen = true }
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Button(onClick = { model.step(-1) }, enabled = state.loaded,
                     modifier = Modifier.weight(1f).heightIn(min = 56.dp).testTag("stepDown")) { Text("−") }
@@ -169,8 +169,10 @@ private fun RadioScreen(state: RadioUiState, stations: StationDirectoryState, mo
         onDismiss = { passbandOpen = false }, onSave = model::setPassband)
 
     if (stationsOpen) stations.db?.let { db ->
-        MwStationPicker(db, settings.tuning, settings.mwIncludePermits, settings.favorites, settings.receiverLocation, now,
-            model::setMwIncludePermits, { model.toggleFavorite(it) }, onDismiss = { stationsOpen = false }) { station ->
+        MwStationPicker(db, settings.tuning, settings.mwVisibility, settings.favorites, settings.receiverLocation, now,
+            MwPickerActions(model::setMwIncludePermits, model::setMwIncludeSilent, model::setMwIncludeUnverified,
+                { model.toggleFavorite(it) }, { model.toggleHidden(it) }),
+            onDismiss = { stationsOpen = false }) { station ->
             if (model.tuneToStation(station.khz)) stationsOpen = false
         }
     }

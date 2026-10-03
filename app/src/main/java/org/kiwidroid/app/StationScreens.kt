@@ -19,7 +19,7 @@ import org.kiwidroid.core.*
 
 /** Shown only while tuned within the MW band; other bands keep the plain tuning screen. */
 @Composable
-internal fun MwStationPanel(tuning: Tuning, directory: StationDirectoryState, includePermits: Boolean,
+internal fun MwStationPanel(tuning: Tuning, directory: StationDirectoryState, visibility: MwVisibility,
                             location: GeoPoint?, now: Instant, enabled: Boolean, onOpen: () -> Unit) {
     val db = directory.db
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
@@ -32,13 +32,13 @@ internal fun MwStationPanel(tuning: Tuning, directory: StationDirectoryState, in
                 if (channels.isEmpty()) Text("No 10 kHz MW channel in the passband", Modifier.testTag("mwChannel"),
                     style = MaterialTheme.typography.bodyMedium)
                 channels.forEach { khz ->
-                    val listed = db.onChannel(khz, includePermits)
+                    val listed = db.onChannel(khz, visibility)
                     val more = if (listed.size > 1) " (+${listed.size - 1})" else ""
                     val text = when {
                         listed.isEmpty() -> "$khz kHz: no listed station"
-                        location == null -> listed.first().let { "$khz kHz: ${it.label} ${it.place} · ${powerText(it)}$more" }
+                        location == null -> listed.first().let { "$khz kHz: ${it.label} ${it.place}${formatSuffix(it)} · ${powerText(it)}$more" }
                         else -> MwRanker.rank(listed, location, now).first().let {
-                            "$khz kHz: ${it.station.label} ${it.station.place} · ${rankingText(it)}$more"
+                            "$khz kHz: ${it.station.label} ${it.station.place}${formatSuffix(it.station)} · ${rankingText(it)}$more"
                         }
                     }
                     Text(text, Modifier.fillMaxWidth().clickable(enabled = enabled, onClick = onOpen).testTag("mwChannel"),
@@ -67,22 +67,36 @@ internal fun MwFavoriteChips(favorites: List<MwFavorite>, db: MwStationDb?, enab
     }
 }
 
-internal enum class MwScope(val label: String) { PASSBAND("In passband"), ALL("All"), FAVORITES("Favorites") }
+internal enum class MwScope(val label: String) {
+    PASSBAND("In passband"), ALL("All"), FAVORITES("Favorites"), HIDDEN("Hidden")
+}
+
+/** Callbacks for the picker's visibility chips and per-row actions. */
+internal class MwPickerActions(
+    val onIncludePermits: (Boolean) -> Unit,
+    val onIncludeSilent: (Boolean) -> Unit,
+    val onIncludeUnverified: (Boolean) -> Unit,
+    val onToggleFavorite: (MwStation) -> Unit,
+    val onToggleHidden: (MwStation) -> Unit,
+)
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-internal fun MwStationPicker(db: MwStationDb, tuning: Tuning, includePermits: Boolean, favorites: List<MwFavorite>,
-                             location: GeoPoint?, now: Instant, onIncludePermits: (Boolean) -> Unit,
-                             onToggleFavorite: (MwStation) -> Unit, onDismiss: () -> Unit, onSelect: (MwStation) -> Unit) {
+internal fun MwStationPicker(db: MwStationDb, tuning: Tuning, visibility: MwVisibility, favorites: List<MwFavorite>,
+                             location: GeoPoint?, now: Instant, actions: MwPickerActions,
+                             onDismiss: () -> Unit, onSelect: (MwStation) -> Unit) {
     val channels = remember(tuning) { mwChannelsInPassband(tuning) }
     var query by rememberSaveable { mutableStateOf("") }
     var scope by rememberSaveable { mutableStateOf(if (channels.isNotEmpty()) MwScope.PASSBAND else MwScope.ALL) }
-    val rows: List<Pair<MwStation, MwRanking?>> = remember(db, query, scope, includePermits, channels, favorites, location, now) {
-        val found = db.search(query, includePermits = includePermits || scope == MwScope.FAVORITES)
+    val hidden = visibility.hidden
+    val rows: List<Pair<MwStation, MwRanking?>> = remember(db, query, scope, visibility, channels, favorites, location, now) {
+        // Favorites and the Hidden view list the user's own choices whatever the status filters say.
+        val everything = MwVisibility(permits = true, silent = true, unverified = true)
         val scoped = when (scope) {
-            MwScope.PASSBAND -> found.filter { it.khz in channels }
-            MwScope.ALL -> found
-            MwScope.FAVORITES -> found.filter { station -> favorites.any { it.matches(station) } }
+            MwScope.PASSBAND -> db.search(query, visibility).filter { it.khz in channels }
+            MwScope.ALL -> db.search(query, visibility)
+            MwScope.FAVORITES -> db.search(query, everything.copy(hidden = hidden)).filter { station -> favorites.any { it.matches(station) } }
+            MwScope.HIDDEN -> db.search(query, everything).filter { station -> hidden.any { it.matches(station) } }
         }
         if (location == null) scoped.map { it to null }
         else if (scope == MwScope.PASSBAND) MwRanker.rank(scoped, location, now).map { it.station to it }
@@ -94,13 +108,20 @@ internal fun MwStationPicker(db: MwStationDb, tuning: Tuning, includePermits: Bo
             ReplacementTextField(query, { query = it }, label = { Text("Call, city, state or kHz") }, singleLine = true,
                 modifier = Modifier.fillMaxWidth().testTag("mwSearch"))
             FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                MwScope.entries.forEach { option ->
+                MwScope.entries.filter { it != MwScope.HIDDEN || hidden.isNotEmpty() || scope == MwScope.HIDDEN }.forEach { option ->
                     FilterChip(scope == option, { scope = option }, { Text(option.label) },
                         enabled = option != MwScope.PASSBAND || channels.isNotEmpty(),
                         modifier = Modifier.testTag("mwScope${option.name.lowercase(Locale.ROOT).replaceFirstChar { it.uppercase() }}"))
                 }
-                FilterChip(includePermits, { onIncludePermits(!includePermits) }, { Text("Construction permits") },
+            }
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("Also show:", Modifier.align(Alignment.CenterVertically), style = MaterialTheme.typography.bodySmall)
+                FilterChip(visibility.permits, { actions.onIncludePermits(!visibility.permits) }, { Text("Permits") },
                     modifier = Modifier.testTag("mwPermits"))
+                FilterChip(visibility.silent, { actions.onIncludeSilent(!visibility.silent) }, { Text("Silent") },
+                    modifier = Modifier.testTag("mwSilent"))
+                FilterChip(visibility.unverified, { actions.onIncludeUnverified(!visibility.unverified) }, { Text("Unverified") },
+                    modifier = Modifier.testTag("mwUnverified"))
             }
             Text("${rows.size} station${if (rows.size == 1) "" else "s"} · tap to tune" +
                 if (scope == MwScope.PASSBAND && location != null) " · most likely first" else "",
@@ -108,17 +129,25 @@ internal fun MwStationPicker(db: MwStationDb, tuning: Tuning, includePermits: Bo
             LazyColumn(Modifier.heightIn(max = 360.dp)) {
                 items(rows, key = { "${it.first.facilityId}/${it.first.khz}" }) { (station, ranking) ->
                     val favorite = favorites.any { it.matches(station) }
+                    val isHidden = hidden.any { it.matches(station) }
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Column(Modifier.weight(1f).clickable { onSelect(station) }.padding(vertical = 6.dp)) {
                             Text("${station.khz} ${station.label}", style = MaterialTheme.typography.titleSmall)
+                            station.format?.let { Text(it, style = MaterialTheme.typography.bodySmall) }
                             Text(detailText(station), style = MaterialTheme.typography.bodySmall)
                             ranking?.let { Text(rankingText(it, bestDb), style = MaterialTheme.typography.bodySmall) }
                         }
-                        val action = if (favorite) "Remove ${station.label} ${station.khz} from favorites"
+                        val favoriteAction = if (favorite) "Remove ${station.label} ${station.khz} from favorites"
                             else "Add ${station.label} ${station.khz} to favorites"
-                        TextButton(onClick = { onToggleFavorite(station) },
-                            modifier = Modifier.semantics { contentDescription = action }) {
+                        TextButton(onClick = { actions.onToggleFavorite(station) },
+                            modifier = Modifier.semantics { contentDescription = favoriteAction }) {
                             Text(if (favorite) "★" else "☆", style = MaterialTheme.typography.titleLarge)
+                        }
+                        val hideAction = if (isHidden) "Restore ${station.label} ${station.khz}"
+                            else "Hide ${station.label} ${station.khz} as a bad entry"
+                        TextButton(onClick = { actions.onToggleHidden(station) },
+                            modifier = Modifier.semantics { contentDescription = hideAction }) {
+                            Text(if (isHidden) "↺" else "⊘", style = MaterialTheme.typography.titleLarge)
                         }
                     }
                 }
@@ -126,8 +155,7 @@ internal fun MwStationPicker(db: MwStationDb, tuning: Tuning, includePermits: Bo
             Text((if (location == null) "Ordered by licensed power; set the receiver location to rank by likely reception. "
                 else "Likelihood is a coarse day/night ground- and sky-wave estimate from the receiver location; " +
                     "directional antennas and conditions are ignored. ") +
-                "FCC AM data${db.metadata["fetched"]?.let { " fetched ${it.take(10)}" } ?: ""}. " +
-                "Canadian, Mexican and Cuban entries are treaty notifications and may be out of date.",
+                sourcesText(db),
                 style = MaterialTheme.typography.bodySmall)
         }
     }, confirmButton = { TextButton(onClick = onDismiss) { Text("Close") } })
@@ -165,8 +193,41 @@ internal fun rankingText(ranking: MwRanking, bestDb: Double? = null): String = b
     }
 }
 
+private fun formatSuffix(station: MwStation) = station.format?.let { " · $it" } ?: ""
+
+private fun statusText(station: MwStation): String? = when (station.status) {
+    MwStation.PERMIT -> "construction permit"
+    MwStation.SILENT -> "licensed but silent"
+    MwStation.UNVERIFIED -> "unverified treaty record"
+    MwStation.NOTIFIED -> if (station.source == MwStation.SOURCE_WIKIPEDIA) "treaty record, listed on Wikipedia" else "treaty record"
+    else -> null
+}
+
+private fun sourceText(source: String) = when (source) {
+    MwStation.SOURCE_LMS -> "FCC LMS"
+    MwStation.SOURCE_ISED -> "ISED"
+    MwStation.SOURCE_CRT -> "CRT"
+    MwStation.SOURCE_IFT_2014 -> "IFT 2014 list"
+    else -> null
+}
+
 private fun detailText(station: MwStation): String = buildString {
     append(station.place).append(" · class ").append(station.stationClass).append(" · ").append(powerText(station))
     if (station.directionalDay || station.directionalNight) append(" · DA")
-    if (station.isPermit) append(" · construction permit")
+    statusText(station)?.let { append(" · ").append(it) }
+    sourceText(station.source)?.let { append(" · confirmed by ").append(it) }
+}
+
+private fun sourcesText(db: MwStationDb): String = buildString {
+    append("Stations: FCC AM Query")
+    db.metadata["fetched"]?.let { append(" (").append(it.take(10)).append(")") }
+    if ("lms" in db.metadata) append(", FCC LMS")
+    if ("ised" in db.metadata) append(", ISED Canada")
+    if ("mx-crt" in db.metadata) append(", CRT México (CC BY 4.0)") else if ("mx-ift" in db.metadata) append(", IFT México 2014 list")
+    append(". Cuban entries are unconfirmed treaty records. ")
+    if (db.formatMetadata.isNotEmpty()) {
+        append("Formats: Wikipedia contributors, CC BY-SA 4.0")
+        db.formatMetadata["fetched"]?.let { append(" (").append(it.take(10)).append(")") }
+        append(".")
+    }
 }

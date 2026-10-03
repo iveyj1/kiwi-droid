@@ -18,6 +18,12 @@ data class Settings(
     val sound: SoundSettings = SoundSettings(),
     /** Show US construction permits (not yet on air) alongside licensed and notified MW stations. */
     val mwIncludePermits: Boolean = false,
+    /** Show stations the FCC lists as licensed but silent. */
+    val mwIncludeSilent: Boolean = false,
+    /** Show treaty records that no national list confirms. */
+    val mwIncludeUnverified: Boolean = false,
+    /** Entries the user reported as bad; hidden everywhere except the Hidden view. */
+    val mwHidden: List<MwFavorite> = emptyList(),
     /** Antenna locations keyed by normalized receiver URL, kept outside [Receiver] so editing one never reconnects. */
     val receiverLocations: Map<String, GeoPoint> = emptyMap(),
     val favorites: List<MwFavorite> = emptyList(),
@@ -29,12 +35,18 @@ data class Settings(
         require(receivers.map { it.baseUrl }.distinct().size == receivers.size) { "Receiver URL already exists" }
         require(favorites.size <= MAX_FAVORITES) { "At most $MAX_FAVORITES favorites" }
         require(favorites.map { it.facilityId to it.khz }.distinct().size == favorites.size) { "Duplicate favorite" }
+        require(mwHidden.size <= MAX_HIDDEN) { "At most $MAX_HIDDEN hidden stations" }
     }
     val receiver get() = receivers[selected]
     val receiverLocation: GeoPoint? get() = locationOf(receiver)
     fun locationOf(receiver: Receiver): GeoPoint? = receiverLocations[receiver.locationKey]
 
-    companion object { const val MAX_FAVORITES = 200 }
+    val mwVisibility: MwVisibility get() = MwVisibility(mwIncludePermits, mwIncludeSilent, mwIncludeUnverified, mwHidden)
+
+    companion object {
+        const val MAX_FAVORITES = 200
+        const val MAX_HIDDEN = 2000
+    }
 }
 
 /** `http://host:8073` and `http://host:8073/` are the same receiver. */
@@ -63,9 +75,10 @@ internal object SettingsCodec {
                 put("lat", point.latitude); put("lon", point.longitude)
             }) }
         })
-        put("favorites", buildJsonArray { settings.favorites.forEach { favorite -> add(buildJsonObject {
-            put("facility", favorite.facilityId); put("khz", favorite.khz); put("call", favorite.call)
-        }) } })
+        put("favorites", stationRefs(settings.favorites))
+        put("mwIncludeSilent", settings.mwIncludeSilent)
+        put("mwIncludeUnverified", settings.mwIncludeUnverified)
+        put("mwHidden", stationRefs(settings.mwHidden))
         put("sound", buildJsonObject {
             put("radioEnabled", settings.sound.radioEnabled)
             put("radioVolume", settings.sound.radioVolumePercent)
@@ -113,12 +126,20 @@ internal object SettingsCodec {
                 Receiver.endpoint(url).toString() to
                     GeoPoint(value.jsonObject.getValue("lat").jsonPrimitive.double, value.jsonObject.getValue("lon").jsonPrimitive.double)
             } ?: emptyMap(),
-            favorites = obj["favorites"]?.jsonArray?.map {
-                val favorite = it.jsonObject
-                MwFavorite(favorite.getValue("facility").jsonPrimitive.int, favorite.getValue("khz").jsonPrimitive.int,
-                    favorite.getValue("call").jsonPrimitive.content)
-            } ?: emptyList(),
+            favorites = obj["favorites"]?.jsonArray?.let(::decodeStationRefs) ?: emptyList(),
+            mwIncludeSilent = obj["mwIncludeSilent"]?.jsonPrimitive?.boolean ?: false,
+            mwIncludeUnverified = obj["mwIncludeUnverified"]?.jsonPrimitive?.boolean ?: false,
+            mwHidden = obj["mwHidden"]?.jsonArray?.let(::decodeStationRefs) ?: emptyList(),
         )
+    }
+
+    private fun stationRefs(refs: List<MwFavorite>) = buildJsonArray { refs.forEach { ref -> add(buildJsonObject {
+        put("facility", ref.facilityId); put("khz", ref.khz); put("call", ref.call)
+    }) } }
+
+    private fun decodeStationRefs(array: JsonArray) = array.map {
+        val ref = it.jsonObject
+        MwFavorite(ref.getValue("facility").jsonPrimitive.int, ref.getValue("khz").jsonPrimitive.int, ref.getValue("call").jsonPrimitive.content)
     }
 
     private fun decodeSound(obj: JsonObject): SoundSettings = SoundSettings(

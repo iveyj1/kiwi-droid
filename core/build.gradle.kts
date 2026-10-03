@@ -22,3 +22,10 @@ tasks.register<JavaExec>("importMwStations") {
     mainClass.set("org.kiwidroid.core.FccAmImportKt")
     workingDir = rootDir
 }
+// Build-time Wikipedia format import (network); see tools/update-mw-db.sh --formats.
+tasks.register<JavaExec>("importMwFormats") {
+    description = "Fetches MW station programming formats from Wikidata/Wikipedia"
+    classpath = sourceSets["main"].runtimeClasspath
+    mainClass.set("org.kiwidroid.core.MwFormatImport")
+    workingDir = rootDir
+}

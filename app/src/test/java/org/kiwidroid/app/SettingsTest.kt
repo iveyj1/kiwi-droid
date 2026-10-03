@@ -30,6 +30,17 @@ class SettingsTest {
         }
     }
 
+    @Test fun `MW visibility filters and hidden reports persist`() {
+        val hidden = listOf(MwFavorite(106053, 530, "CFHS"))
+        val settings = Settings(mwIncludeSilent = true, mwIncludeUnverified = true, mwHidden = hidden)
+        val decoded = SettingsCodec.decode(SettingsCodec.encode(settings))
+        assertEquals(settings, decoded)
+        assertEquals(MwVisibility(permits = false, silent = true, unverified = true, hidden = hidden), decoded.mwVisibility)
+        val older = Json.parseToJsonElement(SettingsCodec.encode(settings)).jsonObject
+            .let { JsonObject(it - "mwIncludeSilent" - "mwIncludeUnverified" - "mwHidden") }.toString()
+        assertEquals(MwVisibility(), SettingsCodec.decode(older).mwVisibility)
+    }
+
     @Test fun `MW permit filter persists and defaults off for older settings`() {
         val settings = Settings(mwIncludePermits = true)
         assertTrue(SettingsCodec.decode(SettingsCodec.encode(settings)).mwIncludePermits)

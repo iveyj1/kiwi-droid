@@ -1,0 +1,4255 @@
+# KiwiDroid MW station formats: v1
+# source: English Wikipedia {{Infobox radio station}} 'format', articles located via Wikidata (P1400 FCC Facility ID; P2317 call sign)
+# license: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/); text by Wikipedia contributors; article titles listed per row
+# fetched: 2026-10-03T00:20:05Z
+# stations: 4249 with format of 7320; 90 articles without a format; 2278 non-US call matches rejected or unreadable
+facility	khz	format	article
+106051	530	Multilingual (Punjabi and other South Asian languages)	CHLO (AM)
+145	540	Religious	KDFT
+5349	540	Religious	WWCS
+9849	540	Catholic radio	KRXA
+10824	540	News/Talk	WAUK
+12043	540	Southern gospel / religious	WGTH (AM)
+18269	540	Catholic Talk and Teaching	WETC
+22048	540	Urban Gospel	WYNN (AM)
+35249	540	Talk radio	KMLB
+35891	540	Classic country	KWMT
+37805	540	South Asian talk radio and Bollywood music	WBWD (AM)
+51141	540	Urban gospel	WASG (AM)
+51177	540	Christian radio	KVIP
+51970	540	News/talk	WFLF (AM)
+58915	540	New Mexico music	KNMX
+60764	540	News/talk	WDAK
+65202	540	Sports	WKFN
+73286	540	Adult contemporary/Full service	WRGC (AM)
+106062	540	News/Talk	CBK (AM)
+161448	540	Album-oriented rock	WXYG
+166740	540	Spanish & English Top 40 (CHR)	XEWA-AM
+178080	540	Spanish & English Top 40 (CHR)	XEWA-AM
+5351	550	Christian talk and teaching	KARI (AM)
+7695	550	Country	KUZZ
+7911	550	Country	KBOW
+12967	550	Sports	KTZN
+15879	550	Christian radio	KLLV
+24625	550	Christian radio	WAYR (AM)
+25808	550	Full-service, agricultural News and classic country	KFRM
+39493	550	News/talk	WSVA
+41426	550	News-Talk	KFYR (AM)
+41902	550	Talk Radio	WSAU (AM)
+42015	550	News Talk Information	KCRS (AM)
+46949	550	Soft Oldies - Standards	WIOZ (AM)
+49956	550	Country	KNUI
+50587	550	Public radio and talk	KOAC (AM)
+53077	550	Spanish News/Talk	WPAB
+56101	550	Sports radio	WGR
+63146	550	Classic country	WAME
+63918	550	Talk radio	KFYI
+67578	550	Catholic talk radio	WSJW
+71087	550	News/talk	KTSA
+72436	550	Country	KRAI (AM)
+100778	550	Public radio	XETNC-AM
+11902	560	News/talk	WVOC
+21727	560	Sports	WHBQ (AM)
+23335	560	Religious	WMIK (AM)
+25083	560	Christian radio	WRDT
+25580	560	Talk radio	KLVI
+35088	560	Conservative talk radio	KLZ
+35900	560	Talk radio	KWTO (AM)
+41062	560	Sports Radio	WNSR
+49689	560	Sports	WEBC
+52193	560	Christian radio	WFIL
+52335	560	Talk radio (day) / Classic country music (night)	WJLS (AM)
+55757	560	News/talk	WHYN (AM)
+58544	560	Talk radio	WGAN
+62330	560	Classic country	KMON (AM)
+64002	560	Sports radio	WQAM
+67068	560	Conservative talk radio	WIND (AM)
+71715	560	News/talk	KPQ (AM)
+71868	560	Classic country	WFRB (AM)
+72731	560	Black Gospel	WGAI
+73675	560	Sports	WOOF (AM)
+100799	560	News/talk, Regional Mexican	XEOC-AM
+100801	560	Regional Mexican	XESRD-AM
+100809	560	Grupera	XEYO-AM
+60853	567	News/Talk radio	KGUM (AM)
+2946	570	Talk radio	WWNC
+11846	570	Conservative talk radio	WWRC
+22996	570	Talk radio	WAAX
+33733	570	Various	KCFJ
+35061	570	News/talk	KLIF (AM)
+35853	570	Conservative talk radio	KVI
+37447	570	Gospel Music	WIDS (AM)
+40149	570	Sports	WMAM
+51985	570	Religious; brokered	WTBN
+58626	570	Christian radio	WMCA (AM)
+58938	570	"Real Country" 70s 80s 90s early 2000s	KUAI
+59958	570	Sports radio	KLAC
+61698	570	Classic rock	WQDR (AM)
+63818	570	Talk radio	KNRS (AM)
+63950	570	Rhythmic AC	KWML
+100827	570	Regional Mexican	XEBJB-AM
+106077	570	Full-service radio	CFCB (AM)
+106078	570	Defunct (was News - Talk - Sports)	CKGL (AM)
+106079	570	Classic hits	CKSW (AM)
+1018	580	Classic hits	WACQ
+4435	580	News/talk	WGAC (AM)
+8146	580	Country music	WKSK (AM)
+15322	580	Talk radio	WHP (AM)
+17396	580	Talk radio	KIDO
+20492	580	Christian radio (Catholic)	KJMJ
+26923	580	News/talk	KMJ (AM)
+35230	580	News/talk	WTAG
+36207	580	Sports	WKTY
+39579	580	Talk	WLVA
+46713	580	Classic rock	KZMX (AM)
+48726	580	News/talk	WDBO (AM)
+51114	580	Classic country	WXRH
+57733	580	Sports	KTMT (AM)
+58829	580	Classic soul	WELO
+60804	580	News/Talk	KRFE
+70524	580	News/talk/sports	WTCM (AM)
+71660	580	News/talk/sports	WCHS (AM)
+73626	580	Classic rock	KUBC
+100847	580	English classic hits	XEFI-AM
+100849	580	Ranchera	XELRDA-AM
+100857	580	Adult Contemporary	XEAV-AM
+100861	580	Adult hits	XEYI-AM
+106088	580	Classic hits	CKWW (AM)
+792293	580	News/Talk	CFRA (AM)
+792471	580	Multilingual	CHAH (AM)
+8623	590	Christian radio	WDWD
+11016	590	Religious	KGLE
+12506	590	Talk radio	KUGN
+21237	590	Full-service and adult standards	WMBS
+24229	590	Classic Country	WAFC (AM)
+27418	590	News/talk	WVLK (AM)
+29261	590	Classic country	WCAB
+50313	590	Sports	WOW (AM)
+53665	590	Variety hits	WWLX
+53846	590	News/talk	KCSJ
+54485	590	Talk	WKZO (AM)
+54853	590	Soft oldies	WROW
+57223	590	Classic country / talk	WJMS
+58808	590	Conservative talk	KTIE
+60421	590	News/talk	KQNT
+60914	590	Soft oldies; adult standards	KHAR
+61384	590	News/talk	KSUB
+65791	590	News/Talk	KLBJ (AM)
+70504	590	Classic hits	WARM (AM)
+72504	590	Christian Talk	WLES
+100877	590	Tropical music	XEPH-AM
+100881	590	English classic hits	XEGTO-AM
+100891	590	Regional Mexican	XEFD-AM
+106092	590	Classic hits	CFTK (AM)
+106095	590	Full-service radio	VOCM (AM)
+106096	590	Sports	CJCL (AM)
+3430	600	Classic hits	WKYH
+10695	600	Country	WCVP (AM)
+10778	600	Classic country	KSJB
+14908	600	Sports	KROD
+20415	600	Christian radio / southern gospel	WVOG
+21196	600	Oldies–Adult Standards	WFRM
+24248	600	Talk radio	KTBB (AM)
+37547	600	Talk radio	WRQX (AM)
+42078	600	Christian radio	WSNL
+47119	600	Conservative Talk	WCHT
+49517	600	Christian talk and teaching	WFST
+51514	600	News/Talk	KOGO (AM)
+53588	600	Conservative talk	WBOB (AM)
+54372	600	Classic hits	WVAR
+58391	600	Talk–sports	WSJS
+58396	600	Conservative talk	WREC
+60575	600	Full service	KGEZ
+63777	600	Urban contemporary gospel	WCAO
+68567	600	Sports	KVNA (AM)
+70686	600	Talk radio	WYEL
+72345	600	Talk radio	WICC (AM)
+73593	600	News/talk	WMT (AM)
+98981	600	Country	CJWW (AM)
+100898	600	Public	XEOCH-AM
+190778	600	Classic hits; news/talk	CFQR (AM)
+204370	600	Multicultural	CKSP
+1000000173	600	Full service country music	CKAT (AM)
+1082	610	Christian radio	KEAR (AM)
+4668	610	Classic hits	WXVA
+8066	610	Spanish / Mexican Music Programming	WPLO
+9319	610	Gospel	WVTJ
+10081	610	Country music	KCSR
+11269	610	News/talk	WTVN
+11270	610	Sports	KFNZ (AM)
+12819	610	Contemporary hit radio	WEXS
+13716	610	Talk radio	WSNG
+14242	610	Talk radio	WIOD
+19557	610	Regional Mexican Spanish hits	KRTA
+19827	610	Talk radio	KARV (AM)
+25440	610	Sports gambling	KILT (AM)
+28626	610	All-news radio for the Black community	WTEL (AM)
+35237	610	News/talk	WGIR (AM)
+48717	610	Urban gospel	WAGG
+49262	610	Classic hits	KOJM
+53974	610	Urban gospel	WPZS
+55459	610	Talk radio	KVNU
+60230	610	News/talk	KDAL (AM)
+67668	610	News/talk	KONA (AM)
+67705	610	Classic hits	WCEH (AM)
+68608	610	Sports	KNML
+73971	610	Full service	WRUS
+106105	610	Classic hits	CHNL (AM)
+106107	610	Adult contemporary	CHTM (AM)
+106109	610	Talk radio	CKTB (AM)
+7080	620	Urban adult contemporary	WHEN (AM)
+10775	620	Sports	KMNS
+17762	620	Sports	WDNC
+21628	620	Christian radio	KJOL (AM)
+29923	620	News/talk	WVMT
+30798	620	Oldies	WAKY (AM)
+40501	620	News/talk/sports	WWNR
+42020	620	Urban Gospel	WFMV (AM)
+51122	620	Punjabi language music, talk and news	KIGS
+52152	620	News/Talk	KGTL
+52515	620	Sports	KTAR (AM)
+53069	620	Sports	KPOJ
+59817	620	News/talk/sports	WJDX (AM)
+60024	620	Public radio; News/Talk	KMJC
+61643	620	Brokered programming	WSNR
+65209	620	Christian radio	WRJZ
+72297	620	Brokered programming (days) / Oldies (nights)	WKHB (AM)
+74096	620	Talk radio	WTMJ (AM)
+74198	620	Sports radio	WDAE
+100952	620	Catholic	XENK-AM
+106113	620	Full-service radio	CKCM (AM)
+166377	620	Spanish-language Talk radio	XESS-AM
+203357	620	Talk	XEGMSR-AM
+1000000109	620	Country	CKRM (AM)
+13568	630	Christian talk and teaching; adult standards	KTRW
+13874	630	News Talk Information	KWRO
+14504	630	Christian radio	KCIS
+20323	630	Oldies	WAIZ
+39618	630	Sports radio	KVMA (AM)
+41970	630	Regional Mexican	WREY
+48962	630	Talk radio	KHOW
+50304	630	Sports	KPLY
+54476	630	News Talk Information	WUNO
+58634	630	Christian radio	KSLR
+58944	630	Contemporary Christian	WAVU
+59716	630	Sports	WJAW (AM)
+61235	630	Talk and sports	KJNO
+61701	630	Sports	WMFD (AM)
+63330	630	Classic hits	WNEG (AM)
+63915	630	Rhythmic contemporary	KFXD
+64843	630	News/Talk	WPRO (AM)
+66363	630	Sports	WEJL
+68209	630	News/talk	WLAP
+73250	630	Sports radio	WSBN
+100975	630	Cultural	XEJB-AM
+100976	630	Regional Mexican	XEFB-AM
+100977	630	Grupera	XECCQ-AM
+100989	630	Full-Service	XEFU-AM
+204113	630	Cultural	XEPBGJ-AM
+790767	630	Regional Mexican	XEFB-AM
+8583	640	Talk radio	WFNC (AM)
+22190	640	Sports radio	KWPN (AM)
+29119	640	Public radio; news-talk	WOI (AM)
+29513	640	Sports	WXSM
+29730	640	All-news radio	WBIN (AM)
+34425	640	Talk radio	KFI
+36183	640	Spanish-language Contemporary Hits	KTIB
+43858	640	Conservative talk	WHLO
+43904	640	Catholic radio	WWJZ
+55089	640	Oldies	WMFN
+61080	640	Sports radio	WMEN
+70724	640	Classic hits	WVLG
+100571	640	News/Talk	CBN (AM)
+101010	640	Romantic	XETAM-AM
+166702	640	Romantic	XETAM-AM
+792472	640	Talk	CFIQ
+12516	650	Talk radio	KENI
+13880	650	Urban gospel	KPRP (AM)
+22883	650	Talk radio	KSTE
+25450	650	Sports radio	KIKK
+30224	650	Talk radio	KGAB
+59035	650	Classic country	KMTI
+73173	650	News/talk	KDAH
+74066	650	Country music / Americana / bluegrass music	WSM (AM)
+98782	650	Sports	CISL (AM)
+98788	650	News/Talk	CKOM (AM)
+101035	650	News/talk	XEVG-AM
+1000004686	650	Full service radio	CKGA (AM)
+2541	660	Sports	WXQW
+6438	660	Talk radio	KFAR
+6591	660	Conservative talk radio	KSKY
+10511	660	News/talk, classic country	KEYZ
+14652	660	Conservative talk	WXIC
+21810	660	Regional Mexican	WDYZ (AM)
+25732	660	Urban contemporary	WAMO (AM)
+26980	660	Sports	WBHR
+27190	660	Oldies	WLOY (AM)
+28617	660	Sports radio	WFAN (AM)
+31037	660	Christian	KXOR (AM)
+54760	660	South Asian	KGSV
+54902	660	Christian radio	KCRO
+59026	660	Full service radio atation - news talk and country music	WMIC
+66146	660	Country music / Classic hits / Navajo cultural programming	KTNN
+69678	660	Country music	KAPS
+98789	660	All-news radio	CFFR (AM)
+101044	660	Tropical music	XEDTL-AM
+101049	660	Sports talk	XEFZ-AM
+791649	660	Sports talk	XEFZ-AM
+8148	670	Regional Mexican	KHGZ
+21391	670	Christian radio	WWFE
+25445	670	Sports radio	WMAQ (AM)
+35191	670	Christian radio	KLTT
+42134	670	Oldies	WLUI
+48678	670	News/Talk/Sports	KPUA
+51211	670	Talk radio	KBOI (AM)
+68741	670	Adult album alternative	WRJR
+69743	670	Ethnic Iranian	KIRN
+122525	670	Conservative talk	KMZQ (AM)
+1902	680	News/talk	WRKO
+4759	680	Talk radio	WCBM
+5348	680	Brokered programming	WNZK
+7900	680	News/talk/sports/nostalgia	WISR
+8889	680	News talk	WBQN
+14361	680	Adult standards	WCTT (AM)
+14748	680	Sports	KWKA
+21630	680	News/Talk	WPTF
+26893	680	Traditional pop	KUTI
+34374	680	Sports radio	WMFS (AM)
+34419	680	News/talk/sports/farm	KFEQ
+35115	680	Soft adult contemporary, news, talk	WDBC
+48723	680	Classic country	KKYX
+49163	680	Adult standards	KOMW
+49725	680	Classic hits	KKGR
+56389	680	Sports	WCNN
+56520	680	Sports radio	WHBE (AM)
+60375	680	Public radio / Public Affairs / Popular music / Religious	KBRW (AM)
+63427	680	Conservative talk	WOGO
+67191	680	Classic Country	WINR
+71662	680	Country	WKAZ (AM)
+74558	680	Christian radio	WGES (AM)
+98795	680	News/talk	CJOB
+101083	680	Pop	XECHG-AM
+790645	680	All-news radio	CFTR (AM)
+4839	690	Classic hits	KAFN
+5348	690	Brokered programming	WNZK
+10141	690	World ethnic	KFXN (AM)
+16742	690	Conservative talk radio	KHNR
+16897	690	Sports	WJOX (AM)
+24590	690	Christian radio	KCEE
+27171	690	Sports	KRCO (AM)
+34462	690	Talk radio	KGGF (AM)
+54481	690	Christian radio	WADS
+55004	690	Christian radio	WZAP
+60923	690	Classic hits	WELD (AM)
+67472	690	News/talk	KOLT (AM)
+69836	690	Christian	WVCY (AM)
+69871	690	Rhythmic oldies	KWRP
+71649	690	Country/News/Sports	KPET
+73300	690	Urban gospel	KSTL (AM)
+74090	690	Religious	WQNO
+98800	690	Public radio and talk	CBU (AM)
+101103	690	Spanish adult hits	XEN-AM
+101107	690	Sports	XERG-AM
+137631	690	Talk radio	XEWW-AM
+190079	690	Sports	CKGM (AM)
+9645	700	Talk / brokered	KSEV
+19235	700	Regional Mexican	WDMV
+20558	700	Oldies / Classic hits / Classic Top 40	WZOO (AM)
+23480	700	Sports	KALL
+23614	700	Urban contemporary	WARB
+30036	700	Sports	KXLX
+49612	700	Talk radio	KBYR (AM)
+51118	700	Classic hits	WQVD
+51181	700	Christian radio (KVIP-FM simulcast)	KGRV
+51424	700	Conservative talk radio (weekdays) / Christian radio (late nights, weekends)	KDAZ
+64041	700	Catholic	KMBX
+101126	700	News/talk, contemporary music in English	XEDKR-AM
+133464	700	Full Service	KHSE
+198033	700	Christian	CJLI
+2211	710	Sports/classic rock	KXMR
+6362	710	Sports radio	KIRO (AM)
+7710	710	News/talk	WOR (AM)
+8695	710	Talk radio	WNTM
+17745	710	Classic country	WKOO
+33255	710	Sports radio	KSPN (AM)
+33391	710	Talk	KCMO (AM)
+37254	710	Oldies	WAQI
+42377	710	Conservative talk	KNUS
+46983	710	News/Talk	KEEL
+50300	710	Christian radio	KFIA (AM)
+54577	710	Christian talk and teaching, Southern Gospel	WPOG
+54824	710	News/Talk	WKJB
+66283	710	Contemporary Hit Radio	WROM (AM)
+70463	710	News-talk	KURV
+71356	710	Sports	WDSM
+98814	710	Full-service radio	CKVO (AM)
+101147	710	Regional Mexican	XEMP-AM
+791809	710	Regional Mexican	XEMAR-AM
+2198	720	Christian radio	WGCR
+6146	720	Soft oldies / adult standards	WJIB
+23024	720	Talk radio	KFIR
+23072	720	Classic regional Mexican and norteño music	KSAH (AM)
+26973	720	Catholic talk and teaching	WHYF
+35440	720	Variety	KOTZ
+39620	720	Talk	WGST (AM)
+39769	720	Christian radio	WRZN
+165783	720	Regional Mexican	XEJCC-AM
+203672	720	Regional Mexican	XEJAGC-AM
+4041	730	Regional Mexican	KULE (AM)
+9194	730	Catholic radio	WACE (AM)
+19216	730	Oldies	KYYA
+24638	730	Talk radio	WVFN
+26179	730	Sports gambling	WZGV
+27194	730	News/Talk	WWTK
+31170	730	Christian radio	WJYM
+33467	730	Country Music	KWRE
+39590	730	Sports	WUMP
+39735	730	Gospel	WSTT
+48749	730	Conservative talk	KQPN
+48971	730	Sports	KWOA
+57222	730	Oldies	WJMT
+57444	730	Regional Mexican	KSVN (AM)
+58624	730	Christian radio (days) / Classic Christian contemporary music (nights)	WPIT
+59757	730	Tropical music	WAZL (AM)
+60880	730	Classic country	WFMW
+65518	730	Sports radio	WMNA (AM)
+70036	730	Contemporary hit radio	WTNT (AM)
+70622	730	Contemporary hit radio	WFMC
+71794	730	Native American religion	KTBA
+73211	730	Country	WLIL
+73874	730	Catholic radio	WLTQ (AM)
+98828	730	Country/Adult Contemporary	CKDM (AM)
+98831	730	Traffic information	CKAC (AM)
+101201	730	Sports	XEX (AM)
+199725	730	Indigenous community radio	XEPET-AM
+1000000297	730	Talk radio	CKNW (AM)
+3712	740	Adult hits / Variety hits	WRPQ
+4935	740	Talk radio and Spanish variety	WIAC (AM)
+6383	740	Catholic radio	KIDR
+6440	740	Classic hits/Oldies	WDGY
+9637	740	All-news radio	KCBS (AM)
+12316	740	Sports	WMSP
+15881	740	Catholic talk/services	WNOP (AM)
+16434	740	Talk radio	KVFC
+25021	740	Adult standards / oldies / classic hits	WMBG
+29259	740	Brokered programming	WNYH
+31910	740	Classic hits	KMZN
+33729	740	Sports radio	KCMC (AM)
+34588	740	Christian talk and teaching	KBRT
+35674	740	Talk radio	KTRH
+35869	740	News/talk	KVOR
+48729	740	News/talk	KRMG (AM)
+49836	740	Country	WHMT
+51982	740	Sports	WYGM
+52626	740	Country / Bluegrass / Americana	WCXZ
+54513	740	Classic Regional Mexican	KATK (AM)
+54971	740	Americana; bluegrass; classic country; southern gospel	WPAQ
+69633	740	Adult contemporary	WVLN
+74166	740	Conservative talk	WJFP
+98832	740	Public radio and talk	CBX (AM)
+101223	740	Adult hits	XEVAY-AM
+101236	740	News/talk	XEKV-AM
+135847	740	Sports	KNFL (AM)
+166404	740	News/talk	XECAQ-AM
+1000006822	740	Adult standards / oldies	CFZM (AM)
+948	750	Sports	KXTG
+1913	750	Catholic talk	WBMD
+2208	750	Country	KERR
+8092	750	Classic hits	WGMF (AM)
+9937	750	Christian contemporary	KMMJ
+17755	750	Classic hits	KSEO
+18389	750	News/Talk	KOAL
+36948	750	English contemporary hit radio	KAMA (AM)
+51093	750	News/talk	KBNN
+52675	750	Talk radio	KFQD
+56784	750	Brokered programming, local talk and gospel	KKNO
+63816	750	Country music	WRIK
+73316	750	Classic hits	WNDZ
+73977	750	News/talk	WSB (AM)
+101254	750	Indigenous community radio	XEJMN (AM)
+1000000777	750	Adult hits	CKJH (AM)
+5890	760	Christian radio	WVNE
+6491	760	Christian radio	KCCV
+8626	760	News/talk	WJR
+10130	760	Christian radio	WCHP
+11945	760	Sports	KTKR
+14004	760	Urban Gospel, Urban Oldies, Blues	WCPS
+19840	760	Travelers information	KEJY
+23871	760	Regional Mexican	KMTL
+29740	760	Conservative talk	KDFD
+35148	760	Sports radio	WEFL
+42120	760	Sports radio	KGB (AM)
+53705	760	Sports	KGU (AM)
+54480	760	News/talk	WORA (AM)
+65205	760	Conservative talk	WETR
+65459	760	Southern gospel	WURL
+71212	760	Christian radio	WLCC
+71507	760	Conservative Talk	WENO
+71794	760	Native American religion	KTBA
+101266	760	Public radio	XERA (AM)
+101270	760	Regional Mexican	XEDGO-AM
+101272	760	Grupera	XEZZ-AM
+101276	760	Adult contemporary	XEABC-AM
+101288	760	Variety	XENY-AM
+1088	770	Brokered programming	WEW
+3084	770	News/talk	WVNN (AM)
+9709	770	Variety	WYRV
+10026	770	Oldies	WKFB
+11251	770	News/Talk	KKOB (AM)
+17303	770	Christian talk / brokered (To become Christian Teaching by Fall 2026)	KCBI (AM)
+27023	770	Conservative talk	KTTH
+34587	770	Christian radio	KCBC
+43865	770	Southern Gospel / Christian Teaching and Talk	WCGW
+48256	770	Country	WAIS (AM)
+58964	770	Urban oldies	WLWL
+62297	770	Adult contemporary	KATL (AM)
+65232	770	Public Radio	KCHU
+69337	770	College radio	KUOM
+70658	770	Conservative talk radio	WABC (AM)
+74121	770	Brokered South Asian	WTOR
+98850	770	News/talk/sports	CHQR (AM)
+101302	770	News/talk	XEACH-AM
+165675	770	Indigenous community radio	XEANT-AM
+203587	770	News/talk	XEFRTM-AM
+9340	780	News, Regional, Country, Pop, Inspirational	KNOM
+9631	780	All-news radio	WBBM (AM)
+11236	780	News/talk	KKOH
+13820	780	Classic hits	WPTN
+17514	780	Oldies	WXME
+27479	780	Southern Gospel	WWOL
+47283	780	Southern gospel	WCKB
+48646	780	Blues	WIIN
+54465	780	Christian talk radio	WAVA (AM)
+63441	780	Adult hits - Mainstream rock	KSPI (AM)
+64494	780	Full-service radio	KAZM
+73121	780	Talk radio	WJAG
+73202	780	Silent	WLBE
+101344	780	Indigenous community radio	XEGLO (AM)
+135885	780	Contemporary worship music	KLVG (AM)
+154	790	Talk	WTNY
+837	790	Christian radio	KWIL
+4671	790	Talk radio	WNIS
+7062	790	Sports	WAYY
+11235	790	Mainstream rock	KJRB
+14371	790	Talk radio	WAEB (AM)
+19185	790	Sports gambling	WMC (AM)
+19709	790	Country music	WLSV
+22674	790	News/talk	WSGW (AM)
+23082	790	Sports radio	KBME (AM)
+23323	790	Urban Contemporary / Urban Gospel / Christian talk and teaching	WVCD
+29131	790	Sports	WSFN
+29429	790	Sports	KFPT
+30837	790	Adult contemporary and conservative talk radio	WAXY (AM)
+33254	790	Talk radio	KABC (AM)
+34266	790	News Talk Information/Brokered programming	KURM (AM)
+34421	790	Talk radio	KFGO (AM)
+34467	790	News/talk	KGMI
+35627	790	Christian radio	KSPD
+37125	790	Classic country	KXXX
+38639	790	talk radio	WGRA
+43135	790	Talk radio	WPNN
+44050	790	Classic hits	WETB
+49563	790	Religious	KCAM (AM)
+50354	790	Classic country	KGHL (AM)
+53587	790	Sports radio	WKRD (AM)
+53589	790	Conservative talk	KNST
+54552	790	Tropical	WBLO
+54795	790	Urban gospel	WTSK
+57937	790	Country	WHTH
+60005	790	Talk radio	WPIC
+60106	790	Americana	WAMM (AM)
+61151	790	Talk radio	KFYO (AM)
+64336	790	Urban gospel	WNTC (AM)
+64840	790	Sports betting	WPRV
+73202	790	Silent	WLBE
+101367	790	Grupera	XESU-AM
+101369	790	News/Talk	XENT (AM)
+101379	790	News/talk	XEGAJ-AM
+136292	790	Urban contemporary	KBET (AM)
+791588	790	News/talk and Regional Mexican	XEFE (AM)
+320	800	Classic country / bluegrass	WSVS
+505	800	News/talk	WVHU
+823	800	Classic hits	KINY
+2319	800	Gospel Music	WPJM
+2937	800	Oldies	KAGH (AM)
+9235	800	Christian radio	WSHO
+10110	800	Oldies	WCHA (AM)
+14752	800	Spanish tropical	WNNW
+16935	800	Sports	WDSC (AM)
+17437	800	Classic Country	KBRV
+24658	800	Brokered and religious programming	WTMR
+28846	800	Sports	KBFP (AM)
+29075	800	Sports	KXIC
+35531	800	Podcast	KREI
+36245	800	Mainstream rock	WPCA (AM)
+39259	800	Contemporary Christian	KDWC
+39377	800	Religious	WDEH
+43830	800	Oldies	KVOM (AM)
+44023	800	Talk radio	WBHP
+54721	800	Soft Oldies	WPLK
+54809	800	News Talk Information	WJAT
+58628	800	Christian talk and teaching	KPDQ (AM)
+65456	800	News/Talk	WLAD
+73260	800	Southern gospel	WMGY
+73711	800	Christian radio	WKZI
+74312	800	Oldies	KDDD (AM)
+78914	800	Classic country	WVAL
+98863	800	Adult hits	CKOR (AM)
+98864	800	Full-service/community radio / Christian radio	VOWR (AM)
+98865	800	Full-service (country/oldies/adult contemporary)	CJBQ (AM)
+98868	800	News/talk	CKLW (AM)
+98869	800	News/Talk	CJAD (AM)
+98871	800	Oldies/Classic hits	CHAB (AM)
+101399	800	Spanish adult hits	XESPN (AM)
+101406	800	Indigenous community radio	XEZV (AM)
+183603	800	Sports talk (XERG-AM)	XEDD-AM
+67503	801	Christian radio	KTWG
+161	810	Brokered programming (ethnic, religious, special interest)	WEDO
+210	810	Christian contemporary and talk/teaching	KYTY
+2823	810	Spanish Religious	KXOI
+3079	810	Urban adult contemporary	WYZI
+6384	810	Sports	WHB
+7898	810	Country	WCKA
+8096	810	Catholic radio	WKVM
+9673	810	Farm information.	KBHB
+12313	810	Spanish Variety	WMGC (AM)
+13795	810	Adult contemporary	WSYW
+15329	810	Talk radio	WGY (AM)
+17054	810	Active rock	WZRK (AM)
+17619	810	Sports radio	WPIN (AM)
+28904	810	Country music	WEKG
+34471	810	Conservative talk	KSFO
+35089	810	Oldies and adult standards	KLVZ
+36194	810	Classic hits	KSWV
+38899	810	Christian radio and southern gospel	WWOS (AM)
+55300	810	Regional Mexican	WMJH
+70352	810	Adult album alternative	WYRE (AM)
+74003	810	Religious	WSJC
+101423	810	News/talk	XEAGR-AM
+101433	810	News/talk	XERSV-AM
+129548	810	Sports	WRSO
+10687	820	Christian radio	WPGO
+16849	820	Progressive talk radio	WCPT (AM)
+27440	820	Conservative talk radio	WJFN (AM)
+28819	820	Christian talk and teaching	KGNW
+47104	820	Freeform / Federal News Network sports programming	WSHE (AM)
+49645	820	Sports	KCBF
+51971	820	hot talk / sports radio	WWBA
+66186	820	Catholic talk	WVSG (AM)
+68924	820	Alternative rock	WSWI
+71200	820	News/talk	WBAP (AM)
+98877	820	Multicultural (Punjabi music)	CHAM (AM)
+101472	820	Mexican Regional	XEBA-AM
+129372	820	Contemporary Christian	KUTR
+160559	820	Catholic talk	WBKK
+790694	820	Grupera	XEBM-AM
+792946	820	Mexican Regional	XEBA-AM
+943	830	Public Radio / Full Service	KSDP (AM)
+9201	830	Brokered programming / news/talk / oldies	WCRN
+9642	830	News/Talk	WCCO (AM)
+9915	830	Classic country	WMMI
+11003	830	Christian radio	KUYO
+20649	830	Oldies	KDRI (AM)
+28874	830	Spanish Religious	WACC (AM)
+33672	830	Christian	WUMY (AM)
+34591	830	News/talk	KHVH
+42365	830	Urban gospel / Black talk / classic R&B	WKTX
+50516	830	Sports radio	KLAA (AM)
+56559	830	Tropical	KGLA (AM)
+63478	830	Christian talk and teaching	WTRU
+70508	830	Talk radio	WEEU
+72960	830	Sports	WQZQ
+101497	830	Rock music	XELA-AM
+101500	830	Indigenous community radio	XEPUR (AM)
+101502	830	Regional Mexican	XELN-AM
+791618	830	Rock music	XEITE-AM
+3641	840	Christian radio	KWDF
+4131	840	southern gospel	WKDI
+5390	840	Classic hits	KKNX
+13569	840	Talk radio	KMAX (AM)
+24453	840	Christian radio	WBHY (AM)
+25773	840	Urban Contemporary	WHGH
+26314	840	Contemporary hit radio	WRYM
+33068	840	Talk radio	KXNT (AM)
+43580	840	Classic hits	KSWB (AM)
+47423	840	Classic hits	WPCO (AM)
+54466	840	Regional Mexican	WCEO
+64629	840	Spanish Christian	KVJY
+73191	840	Classic hits	WKTR
+73876	840	Silent	WPGS
+74206	840	Spanish Variety	WXEW
+98894	840	Country	CKBX
+137401	840	Catholic talk and teaching	KMPH (AM)
+189392	840	Traditional country	CFCW (AM)
+648	850	Spanish News/Talk	WABA (AM)
+888	850	Oldies	WKIX (AM)
+1912	850	Sports gambling	WEEI (AM)
+2190	850	Spanish Catholic	KJON
+2911	850	Regional Mexican	KEYH
+3494	850	Brokered religious	WLRC
+18523	850	All-news radio	KHHO
+28509	850	Sports	WKNR
+29490	850	News/talk	WFTL
+29738	850	News/talk	KOA (AM)
+39258	850	Christian radio	KFUO (AM)
+39466	850	Soft adult contemporary	WYLF
+60472	850	Talk radio	WTAR
+64417	850	Sports - Fox Sports Radio	WPTB
+66327	850	free-form radio (stunting)	WAXB
+66618	850	Active rock	WVLZ (AM)
+69151	850	Sports	WRUF (AM)
+74191	850	Christian radio	WQRM
+101546	850	Grupera	XEZF-AM
+1177	860	Conservative talk radio	WGUL
+1326	860	Regional Mexican	KNAI (AM)
+2485	860	Variety	WACB
+3341	860	Classic country	WTZX
+4820	860	Full-service radio / classic hits	WSBS (AM)
+6337	860	Sports	WMRI
+11232	860	Talk radio	KKAT (AM)
+11741	860	News/talk	KSFA
+12550	860	Religious	WOAY (AM)
+22102	860	Adult contemporary	KFST (AM)
+26946	860	Classic hits	WSON
+29553	860	Conservative talk	KPAM
+35451	860	Country	KPAN (AM)
+36069	860	Urban contemporary	WNOV
+47085	860	Classic country	KWPC
+50029	860	Business News/talk	KONO (AM)
+52902	860	Gospel and classic country	KOSE (AM)
+53609	860	Urban Gospel	WFMO
+60155	860	Catholic talk and teaching	WAOB (AM)
+61224	860	Variety	WLBG
+63479	860	Full Service	WEVA (AM)
+66246	860	Conservative talk	KTRB
+71342	860	Mexican music	WDMG (AM)
+74085	860	Brokered programming	WWDB
+98910	860	News/Talk	CFPR (AM)
+98912	860	News/Talk	CHAK (AM)
+98913	860	Public radio; news/talk	CJBC (AM)
+101578	860	News/talk	XEZOL-AM
+101589	860	University cultural	XEUN-AM
+101597	860	Romantic/oldies	XENL-AM
+132691	860	Spanish oldies into the 70s, 80s and 90s	XEMO-AM
+162099	860	Spanish oldies into the 70s, 80s and 90s	XEMO-AM
+573	870	Talk/Personality/Salsa	WQBS (AM)
+12317	870	Full-service	WFLO (AM)
+15975	870	News/Talk, Adult Contemporary	KPRM
+16725	870	News/talk	KFLD
+18048	870	Talk radio	WHCU
+23138	870	Business News/Talk	KFJZ
+27024	870	Country music	WMTL
+31004	870	Sports	KAAN (AM)
+34377	870	news/talk / sports radio	WWL (AM)
+36694	870	Regional Mexican / Spanish AC	KLSQ
+41684	870	Public radio; news/talk	WKAR (AM)
+42652	870	Classic country	WPWT
+61267	870	Conservative talk radio	KRLA
+68392	870	Christian talk and teaching	WTCG
+73996	870	News/Talk	WTIM
+98919	870	Variety hits	CFBV (AM)
+98922	870	Full service radio	CFSX (AM)
+101611	870	Indigenous community radio	XETAR (AM)
+129513	870	Classic hip hop	KJMP
+3540	880	Regional Mexican / Licensed & Silent	WMDB
+4578	880	News/talk	KJJR
+4629	880	Adult standards, oldies	KIXI
+9636	880	Sports radio	WHSQ
+14053	880	Classic rock	KLRG
+20625	880	Variety hits	KJOZ
+21763	880	Black-oriented news	WXBN (AM)
+31212	880	Oldies - Adult standards	WSLK
+32965	880	Regional Mexican	KWIP
+41508	880	Religious	WPIP
+41565	880	Sports	WPEK
+43603	880	Catholic radio	KKMC
+48002	880	Full service	KRVN (AM)
+52474	880	Conservative Talk	WMEQ (AM)
+58630	880	Christian radio	WRFD
+71796	880	Native American religion	KHAC
+72890	880	Regional Mexican	WIJR
+73966	880	Spanish Christian Radio Nueva Vida	WRRZ
+1000000759	880	News/talk	CHED (AM)
+6429	890	Christian radio	KVOZ
+6475	890	Tropical music	WAMG
+16785	890	Urban contemporary	WHJA
+17352	890	Regional Mexican	WYAM (AM)
+31102	890	Christian radio	WFKJ
+33256	890	Public radio	KBBI
+41504	890	Christian radio	WBAJ
+53106	890	Southern Gospel	WKNV
+56373	890	Gospel	WHNC
+59366	890	Contemporary worship music	KTLR
+60189	890	Agricultural News/Talk and classic country at night and weekends.	KQLX (AM)
+60454	890	Talk radio	KDXU (AM)
+73227	890	Talk radio	WLS (AM)
+87729	890	Christian talk	KIHC (AM)
+98939	890	Country	CJDC (AM)
+129380	890	Christian radio	KYWN
+135886	890	Classic country	KCEG (AM)
+160999	890	Sports radio	KSAC (AM)
+161266	890	Full Service	KTXV
+433	900	Classic hits	WATK
+610	900	Religious radio; adult standards	KSGL
+2766	900	Talk radio	KPYN
+2807	900	Adult contemporary	WDLS
+3198	900	Classic rock	WBRV (AM)
+5356	900	Urban contemporary	WATV (AM)
+9226	900	Full-service	KBIF
+9678	900	Sports	KMVI
+10067	900	Country music	WJTH
+11666	900	Classic country	WKDW (AM)
+11982	900	Classic hits	WCPA (AM)
+18887	900	Conservative Religious	WCBX
+22552	900	Gospel Music	WYCV
+25007	900	Regional Mexican	WJWL
+25701	900	Full-service and public radio	KZPA
+26234	900	Classic country	KHOZ
+26628	900	News/talk	KJSK
+28279	900	News/Talk and music	WACA (AM)
+28634	900	Sports	KKRT
+34409	900	Classic country	KFAL
+38388	900	Contemporary Christian	WLSI
+49770	900	Christian talk and teaching	KTIS (AM)
+49985	900	Regional Mexican	WNMB
+51092	900	Urban adult contemporary	WOZK
+52442	900	Urban talk	WURD
+54446	900	Religious	WKXV
+56570	900	Full service adult contemporary	WCME
+56716	900	Gospel music	WGOK
+57026	900	Agricultural	KFLP (AM)
+59660	900	Gospel	WSWN
+71152	900	Adult contemporary	WAYN (AM)
+71216	900	Urban gospel	WYPZ (AM)
+71289	900	Big band	WKDA
+71631	900	Asian	KREH
+72620	900	1990s-2000s Active rock	WABY
+73278	900	Urban contemporary	WMOP
+98954	900	Country	CKBI (AM)
+866	910	Ranchera/mariachi	KOXR
+1911	910	Catholic radio	WLAT
+3405	910	Spanish Christian	WMRB
+3670	910	Mainstream rock	WTOS (AM)
+9677	910	Classic country, farm	KJJQ
+11960	910	Sports radio	WRNL
+13664	910	Conservative talk	WFDF (AM)
+17307	910	Full Service/AC	WDOR (AM)
+18056	910	Southern Gospel	KVIS
+18529	910	Regional Mexican	WSRP
+20977	910	Christian radio	KECR
+22670	910	Country, Polka, Live Sports Houston Astros, Local and Hill Country News	KNAF (AM)
+24255	910	Sports	WZMG
+34388	910	Spanish tropical	WOLI (AM)
+34871	910	Regional Mexican	KBIM (AM)
+35033	910	Sports radio	KMTT
+35801	910	Adult standards	KURY (AM)
+36200	910	News/talk	WAAF (AM)
+36612	910	Gold Hot AC	WGTO
+37024	910	Classic country	WSEK (AM)
+40154	910	Country	WEPG
+48640	910	Urban gospel	WMOG (AM)
+50057	910	Christian radio	WRKL
+52298	910	Talk radio	WFJX
+52600	910	Christian talk and teaching	KPOF
+53994	910	Progressive Talk	WBZH
+54475	910	News	WPRP
+54836	910	Catholic talk/services	WPFB
+55182	910	Talk radio	WLTP (AM)
+55681	910	Classic country / talk	KCJB
+56477	910	Christian radio	KRIO (AM)
+59966	910	Black-oriented news	KKSF
+60660	910	News/talk	KINA
+63119	910	Public news/talk	WSUI
+63873	910	Sports	KBLG
+65480	910	Sports radio	KGME
+67662	910	Conservative talk	WJFA
+67672	910	Talk radio	WJCW
+72370	910	Sports	WTMZ (AM)
+73979	910	News-talk	WSBA (AM)
+101721	910	Regional Mexican	XEAO-AM
+174	920	Classic country	KLMR (AM)
+2934	920	News/Talk	KVEL
+9082	920	Classic Hits	WPCM
+9948	920	Gold-based Soft AC	WKVA
+10870	920	News/talk	KVEC
+11230	920	Christian radio	KSVA
+12062	920	Talk and music	KVIN
+13868	920	Oldies	WMPL
+18038	920	Soft oldies and adult standards	KSHO
+21171	920	Conservative talk	WZST (AM)
+24434	920	Oldies/Classic hits	KWYS (AM)
+25011	920	Regional Mexican	WNJE
+27298	920	Conservative talk	KYST
+27396	920	Conservative talk radio	WGHQ
+28649	920	Classic country	KWAD
+30660	920	Classic hits	WHJD
+35635	920	News/talk	KSRM
+37234	920	Talk	WHJJ
+38448	920	Sports	KRLV (AM)
+40900	920	Urban adult contemporary	WXKD
+47567	920	Adult standards	KBRD
+49042	920	Americana	KWUL (AM)
+49110	920	Sports	WMNI
+53707	920	Catholic radio	KIHM
+53946	920	Public radio	WBAA
+54634	920	Classic country	KDHL
+60506	920	Classic country	WGOL
+60572	920	Classic country	WPTL
+61320	920	Classic country	KKLS (AM)
+61947	920	News/talk	KXLY (AM)
+63917	920	Sports	WOKY
+64431	920	Classic country	WTCW
+65976	920	Conservative talk radio	WGKA
+67065	920	Sports	KQBU (AM)
+67355	920	Public radio and talk	KKGX
+68615	920	Full service adult contemporary	WKQK
+70520	920	Country	WLIV (AM)
+73275	920	Country music	WMOK
+98960	920	Country	CFRY (AM)
+98966	920	Classic country/Full service radio	CKNX (AM)
+101750	920	Public radio	XETEB-AM
+101755	920	Regional Mexican	XERE-AM
+101757	920	Catholic religious	XELT-AM
+160224	920	Tejano music	WURA
+788	930	Talk/Hot adult contemporary	KTKN
+5152	930	Christian radio	WYFQ
+6015	930	News/Talk	KWOC
+7909	930	Christian radio	KKXX (AM)
+9769	930	News Talk Information	KDET
+12465	930	Classic rock	WHLM (AM)
+15793	930	News/Talk/Variety	WYAC (AM)
+17409	930	Urban gospel	WLLL
+19463	930	Religious (Catholic)	WNCR (AM)
+21435	930	Sports	WRVC (AM)
+22039	930	Sports	KIUP
+22995	930	Oldies	WGAD
+24745	930	Country music	KRKY (AM)
+25120	930	News/Talk	KSDN (AM)
+25694	930	Classic country	KAFF (AM)
+27553	930	Hot adult contemporary/variety	WIZR
+31136	930	News/talk and sports radio	WFMD
+34381	930	News/talk	WBEN (AM)
+34975	930	Conservative talk radio	KLUP
+35394	930	Classic country	KCCC (AM)
+36030	930	Christian radio	KYAK
+37224	930	Catholic radio	KHJ (AM)
+37459	930	Oldies	WFAT
+38626	930	talk radio	KROE
+48240	930	Catholic radio	WKBM
+50065	930	News/talk	KOGA (AM)
+50127	930	Country	WWON (AM)
+51216	930	Conservative talk	KSEI
+51661	930	Brokered programming	WPAT (AM)
+51973	930	Sports	WFXJ (AM)
+52401	930	Christian Adult Contemporary	WMGR
+53387	930	Sports	WPKX
+53483	930	Classic hits	WNCL
+59126	930	Talk radio	WLSS
+61334	930	Public radio; news/talk	KAGI
+62049	930	Black-oriented news	WSFZ
+63138	930	Classical	WLBL (AM)
+64610	930	Sports	WDLX
+64839	930	News talk	WTAD
+65589	930	News Talk Information	WKCT
+69484	930	Oldies, classic hits, adult standards	KKIN (AM)
+71754	930	Talk	KMPT
+98968	930	Religious	CJCA (AM)
+98969	930	Country music	CFBC (AM)
+98971	930	Country	CJYQ (AM)
+101803	930	Indigenous community radio	XETLA (AM)
+165	940	Regional Mexican	KWBY (AM)
+167	940	News Talk Information	KSWM
+1062	940	Classic country	WCIT (AM)
+9308	940	Conservative talk	KIXZ
+10335	940	Country	KMER
+10532	940	Active rock	WXNK
+14937	940	Urban Gospel	KKNE
+15389	940	Religious	WINE (AM)
+18407	940	Oldies	KYNO
+20401	940	Christian, Southern gospel	WADV
+24446	940	Classic rock	WFAW (AM)
+25227	940	Hot adult contemporary	WGRP
+26612	940	Full service	KVSH
+33542	940	Sports radio	KTFS (AM)
+40247	940	Classic country	WKYK
+42146	940	Catholic talk	WIDG
+43778	940	Christian (Southern gospel)	WECO (AM)
+46998	940	News/talk	WMAC
+50232	940	Classic hits	WQVR
+51977	940	Sports radio	WINZ (AM)
+53592	940	Christian radio	KGMS
+53861	940	Talk radio	WIPR (AM)
+58533	940	Christian talk and teaching	KPSZ
+60083	940	Regional Mexican	WCND
+60707	940	Urban gospel	WYLD (AM)
+70347	940	Southern Gospel	WNRG (AM)
+71291	940	Christian radio	WCPC
+72200	940	Classic country (WZCC simulcast)	WLQH
+73096	940	Soft oldies / Adult standards	WMIX (AM)
+73160	940	Southern gospel	WKGM
+101828	940	Spanish adult hits	XEQ (AM)
+161412	940	Spanish Adult Hits	KDIL
+190081	940	Expected to be French health and wellness format; currently (broadcasting) class	CFNV
+792531	940	Country	CJGX (AM)
+140	950	Talk radio	KOZE (AM)
+168	950	News/Talk	WIBX
+3953	950	Religious Broadcasting	WYWY
+4817	950	Christian radio	WCDC (AM)
+4907	950	Talk radio	WERL
+6589	950	Catholic talk and teaching	WSFS (AM)
+6873	950	Sports	WBES
+8669	950	News/talk	KCAP
+9139	950	Christian radio	WROL
+9621	950	All-news radio	WWJ (AM)
+9644	950	Talk radio	KPRC (AM)
+9927	950	News–talk	KWOS
+12321	950	Urban adult contemporary	WZKD
+22054	950	Classic hits, news/sports	KXJK
+22365	950	Country music	WAKM
+22413	950	Contemporary hit radio	KISR
+25095	950	Christian radio	WKDN (AM)
+28125	950	Oldies	KNFT (AM)
+30839	950	Sports radio	KKSE (AM)
+33247	950	news/talk / public radio	KTBR
+36423	950	Classic country/rock	WCLB
+41870	950	Variety (Americana, blues, country, standards and oldies)	WHVW
+48341	950	Talk radio	KAHI
+48386	950	Sports	KJR (AM)
+48731	950	Conservative talk radio	WORL (AM)
+49721	950	Regional Mexican	KMHR
+56215	950	Adult contemporary	KDCE
+57833	950	Progressive talk radio	KTNF
+59711	950	Adult contemporary	WCTN
+60206	950	Conservative talk	WXLW
+60856	950	Full-service radio	KWAT
+61237	950	Talk radio	WHSY
+66390	950	Conservative talk	WORD (AM)
+70511	950	Urban Adult Contemporary	WGUN
+71205	950	Sports radio	WROC (AM)
+71271	950	Southern Gospel/religious	WPET
+73769	950	Soft oldies / adult standards	WIXZ
+74207	950	Classic hip hop	WXGI
+98976	950	community radio/easy listening	CFAM (AM)
+101872	950	Indigenous community radio	XEOJN (AM)
+158848	950	Spanish News/Talk	XEGM
+158849	950	Spanish News/Talk	XEKAM-AM
+4	960	Conservative talk	KIXW (AM)
+275	960	Talk	KROF
+1218	960	Sports	WRFC (AM)
+2112	960	Talk radio	WERC (AM)
+3408	960	Sports	KLAD (AM)
+4040	960	World Ethnic	KNDN (AM)
+6617	960	Gospel	WJYZ
+8418	960	Christian radio	WFGL
+8503	960	Christian talk and teaching	WCRU
+11621	960	Contemporary Christian	WDNO
+11933	960	Talk radio	WELI
+13508	960	Conservative talk	KKNT
+14734	960	News/Talk	WBMC
+18548	960	Classic hits	WPRT (AM)
+24454	960	Southern Gospel	WLPR (AM)
+25238	960	Classic rock; Delta blues	WABG (AM)
+25899	960	News/talk	KGWA
+28165	960	Sports radio	WTGM
+29915	960	Regional Mexican	KIMP
+31138	960	News/talk	WFIR
+34464	960	Sports	KGKL (AM)
+35107	960	Talk	KMA (AM)
+36231	960	Classic rock	WQLA
+37780	960	Talk radio	KLTF
+48734	960	Country	KFLN
+51463	960	Talk radio	KNEB (AM)
+52806	960	Sports	WEAV
+59957	960	Sports and conservative talk	KNEW (AM)
+63359	960	Contemporary Christian	KALE
+65665	960	Sports	KOVO
+66005	960	Christian radio	WDLM (AM)
+71527	960	Adult contemporary	KSRA (AM)
+72154	960	Classic Country	WTCH
+73985	960	Sports	WSBT (AM)
+74202	960	Southern gospel	WKVX
+74556	960	Oldies	WHYL
+74582	960	News/talk	KZIM
+98982	960	Sports	CFAC (AM)
+101904	960	Grupera	XEHK-AM
+129188	960	Haitian Creole	WSVU
+189776	960	News/talk	CKNT
+3112	970	Classic rock	WWRK
+6139	970	Public radio	WHA (AM)
+9750	970	Talk radio	KSYL
+11233	970	Sports	KESP
+12130	970	News/talk	KNWZ
+12518	970	Talk radio	KFBX
+15501	970	Classic country	WMPW
+16772	970	News/talk	KBUL (AM)
+17317	970	Classic hits	WBLF
+17336	970	Talk radio	KVWM
+18284	970	Southern Gospel	WFSR
+18309	970	Catholic radio	WESO
+20589	970	Talk (days) / Calypso and Quelbe (nights)	WSTX (AM)
+22126	970	News–talk	WDAY (AM)
+22665	970	Christian talk and teaching/Conservative talk	KCFO
+23151	970	EWTN Radio/Catholic Radio Network	KFEL
+23607	970	Christian radio	WNIV
+26590	970	Active rock	WDUL
+26926	970	Talk	KUFO
+27668	970	Christian	WDCZ
+29729	970	Conservative talk radio	WFLA (AM)
+31609	970	Sports	KNEA
+33074	970	Catholic radio	KNIH
+35011	970	Catholic radio	KYOW
+38348	970	Talk radio	WMAY (AM)
+38492	970	Catholic radio	KTTO
+39550	970	Adult hits	WAMD (AM)
+40868	970	Sports	KHTY
+51155	970	Religious	WEZZ
+54469	970	Classic hits	WDNT (AM)
+54820	970	urban gospel	WFQY
+56811	970	Religious	KQAQ
+58635	970	Conservative talk radio	WNYM
+59960	970	Sports radio	WBGG (AM)
+63780	970	Black-oriented news	KHVN
+63936	970	Conservative talk	WGTK (AM)
+64504	970	Active rock	WZAM
+67743	970	Classic rock/hits	KKRK
+67751	970	Christian radio	KJLT (AM)
+68179	970	Sports	WTBF (AM)
+70116	970	News/Talk	WVOP
+70862	970	Talk radio	WKCI (AM)
+71096	970	Oldies	WATH
+71219	970	Spanish tropical	WNNR
+73934	970	Gospel Music	WRCS
+101924	970	Classic Regional Mexican	XEJ-AM
+1903	980	Sports	WONE (AM)
+6382	980	Talk radio	KMBZ (AM)
+6872	980	Rhythmic contemporary	WWTB
+7918	980	Oldies	KTCR (AM)
+8725	980	Conservative religious	WYFN
+9222	980	Urban gospel	KOKA
+10454	980	News/talk	WXLM
+12373	980	Talk radio	KGLN
+14702	980	Classic country	WCUB
+15845	980	Country music	KMIN
+17305	980	Classic country	KSGM
+18047	980	Urban oldies	WDVH (AM)
+18518	980	Christian talk and teaching	KKMS (AM)
+19841	980	Adult contemporary	KWSW
+22122	980	Classic country	WAKV
+24553	980	Full-service	KDSJ
+25105	980	Sports radio	WTEM
+25457	980	Regional Mexican	KFWB
+25999	980	News/talk/sports	WAAV
+27420	980	Silent	WTPA (AM)
+30043	980	Country	WKLY
+31885	980	Adult hits	KCAB (AM)
+34380	980	News/talk	WILK (AM)
+36243	980	Country	KVLV
+37233	980	Sports	WOFX (AM)
+38310	980	Sports radio	KNTR
+40996	980	Classic hits	WTOB (AM)
+41010	980	Urban adult contemporary	WRNE
+41897	980	Talk	KSVC
+48847	980	Variety hits	WPFP
+49416	980	Full service (talk/oldies)	WCAP (AM)
+53303	980	Classic hits	WPRE
+54727	980	Urban contemporary gospel	WDDO
+54839	980	Regional Mexican	WAZS (AM)
+55238	980	Sports	KSPZ
+63489	980	Classic Country	WHAW
+69935	980	Adult hits, farm	WITY
+71627	980	Contemporary Christian / Religious	WJYK
+72374	980	Christian radio	WDYN
+74380	980	Spanish language Christian talk and teaching	WULR
+99134	980	Talk radio	CFPL (AM)
+99141	980	News/talk	CJME (AM)
+101969	980	Full-service radio	XELC-AM
+172	990	Gospel	WBTE
+1889	990	Spanish Variety	WPRA
+1906	990	Religious	WDCX (AM)
+2744	990	Adult hits	KTKT
+3619	990	Country/Southern Gospel	WEIS (AM)
+12833	990	Conservative talk radio	WMYM
+14529	990	Sports	KTMS
+15282	990	Sports	WTIG
+17322	990	Contemporary Christian	KAML (AM)
+23442	990	Christian talk and teaching	WTLN (AM)
+24221	990	Soft adult contemporary	WWKY (AM)
+35873	990	Talk radio	KWAM
+39485	990	Comedy	KTHH
+40143	990	Sports	KIKI (AM)
+40485	990	Gospel music	KZZB
+40488	990	Variety hits	WABO (AM)
+43473	990	Country music	KRMO
+43757	990	Brokered Spanish language Christian radio	KFCD
+50401	990	Black gospel	WREJ
+52065	990	News/Talk	KSVP
+52194	990	Conservative talk radio	WNTP
+52256	990	Talk radio (brokered programming)	KATD
+52433	990	Brokered programming and talk	WGSO
+52643	990	News/Talk	WEEB
+56364	990	Country	WGGI (AM)
+58632	990	Christian talk and teaching	KRKS (AM)
+60505	990	Classic hits	WLDX
+67589	990	Bluegrass	WNRV
+71548	990	Classic country	KRSL (AM)
+73352	990	Oldies	WNTY
+73689	990	Religious; Catholic-based talk/sermons	WDEO (AM)
+99242	990	Public radio - News/Talk	CBW (AM)
+99243	990	News/Talk	CBY (AM)
+102011	990	News, soap operas, Regional Mexican	XET (AM)
+792992	990	Spanish oldies / Disco and classic rock in English	XECL-AM
+4805	1000	Country (WHNY-FM simulcast)	WHNY (AM)
+5891	1000	Oldies	WYBT
+9072	1000	Spanish variety	WRTG
+11925	1000	News/Talk	KTOK
+21415	1000	Oldies	WGVY
+21647	1000	All-news radio	KNWN (AM)
+23088	1000	Urban gospel with Christian talk and teaching	WDJL
+25522	1000	Urban contemporary gospel	WABQ
+25524	1000	Christian radio	KKIM (AM)
+27303	1000	Spanish Religious	KBIB
+27486	1000	Urban contemporary gospel	WXTN
+32963	1000	Adult hits	WJBW
+37481	1000	Conservative talk	WLNL
+50377	1000	Talk	WJNZ (AM)
+54850	1000	Christian radio	WCMX
+61322	1000	Sports	KSOO (AM)
+65676	1000	Adult standards	KFLG (AM)
+66976	1000	Talk radio	WVWI
+67666	1000	Catholic radio	KCEO
+72985	1000	Classic country	WIOO
+73303	1000	Sports radio	WMVP
+102024	1000	Classic Regional Mexican	XEFV-AM
+102026	1000	News/talk	XETAC-AM
+102027	1000	Adult contemporary music in English; newscasts	XEOY-AM
+102042	1000	Contemporary hit radio	XECSV-AM
+179013	1000	Grupera	XEGQ-AM
+115	1010	Catholic	WCKW
+1322	1010	Christian talk and teaching	KBBW
+2106	1010	Oldies	WPCN
+5972	1010	Gospel music and preaching	WKJW
+20408	1010	Contemporary hit radio–Latin pop–reggaeton–tropical music	WWMC
+24100	1010	Oldies	WORM (AM)
+25451	1010	All-news radio	WINS (AM)
+28629	1010	Progressive rock / modern rock	WHFS (historic)
+31462	1010	Catholic religious	KTNZ
+35111	1010	Ranchera and norteño oldies	KCHJ (AM)
+35406	1010	Country	WCNL
+35687	1010	Catholic radio	KIHU
+48396	1010	Talk radio	KSIR
+49041	1010	Talk radio	WSPC
+54711	1010	Urban talk	WOLB
+54739	1010	Conservative talk radio	KDHX (AM)
+54742	1010	Christian radio	KXXT
+60035	1010	Oldies	WIOI
+63377	1010	Adult contemporary (KCHI-FM simulcast)	KCHI (AM)
+63710	1010	Classic hits	WUKZ
+67063	1010	Adult contemporary and regional Mexican	KLAT
+68205	1010	Talk and sports radio	WCST (AM)
+68212	1010	Rhythmic contemporary	KOOR
+69035	1010	Public radio	KRNI
+72134	1010	Urban and Inspirational	WXKG
+72178	1010	Adult contemporary	WHIN
+72261	1010	Talk radio	WCSI
+99454	1010	Public radio and talk	CBR (AM)
+99459	1010	News/talk	CFRB (AM)
+102073	1010	Sports/Talk	XEHL-AM
+161428	1010	Oldies / Classic Hits	WMIN
+197997	1010	Regional Mexican	XEPA-AM
+198569	1010	Indigenous community radio	XETUMI-AM
+792948	1010	Sports/Talk	XEHL-AM
+76	1020	Top 40/CHR	KJJK (AM)
+1216	1020	Christian radio	WRIX
+19617	1020	Country music	WWAC
+25443	1020	Talk radio	KDKA (AM)
+35673	1020	Adult Contemporary and Classic Regional Mexican	KTNQ
+35886	1020	Sports	KWIQ (AM)
+52641	1020	Christian talk and teaching	WPEO
+52802	1020	Spanish Variety	KMMQ
+53491	1020	Talk radio	KVNT
+57721	1020	Christian radio	KCKN
+62346	1020	Sports	KOKP
+64506	1020	Regional Mexican	KDYK
+64593	1020	Spanish Community	WOQI
+65950	1020	News/talk	WCIL (AM)
+102102	1020	Full-service radio	XEWO-AM
+166336	1020	Romantic	XEPR-AM
+4912	1030	Eclectic	WYCZ
+5284	1030	Conservative talk	WTHQ (AM)
+7093	1030	Christian radio	KCTA
+10646	1030	Classic regional Mexican	WNOW (AM)
+11924	1030	News/talk	KTWO (AM)
+12114	1030	Christian talk and teaching	WCTS
+13969	1030	Talk radio	KVOI
+16573	1030	Talk radio	KFAY
+20629	1030	Catholic radio	WKEG
+21760	1030	Rhythmic hot AC	WONQ
+23044	1030	Southern gospel	WGFC
+25444	1030	News/talk	WBZ (AM)
+33689	1030	News Talk Information	KBUF
+48959	1030	Spanish Religious	KCWJ
+50377	1030	Talk	WJNZ (AM)
+52910	1030	Polish	WNVR
+53104	1030	Christian radio	WDRU
+54881	1030	Adult contemporary	WEBS (AM)
+60878	1030	Full service classic hits	KMAS (AM)
+65207	1030	Spanish-language, Latin music, news and opinion	WGSF (AM)
+102125	1030	Indigenous community radio	XEVFS (AM)
+162100	1030	Silent	XESDD-AM
+166373	1030	Silent	XESDD-AM
+792997	1030	Oldies and standards in Spanish	XEQR-AM
+4341	1040	News/talk	WURN (AM)
+8099	1040	Urban gospel	KGGR
+10846	1040	News/talk	KPPF
+17074	1040	Adult Contemporary	WNVI
+18859	1040	Slavic/English Programming	KXPD (AM)
+28130	1040	Christian talk and teaching	WCHR (AM)
+41383	1040	Conservative talk	WHBO
+42070	1040	Vietnamese Music and Talk Programming	WPBS (AM)
+51331	1040	News Talk Information	WHO (AM)
+54257	1040	Catholic radio	KURS
+54665	1040	Talk radio	WYSL
+58742	1040	Catholic radio	WLCR
+72967	1040	Christian adult contemporary	WSGH
+102159	1040	Public radio	XEPLE-AM
+2268	1050	Catholic	KJPG
+3336	1050	Contemporary Christian	WSMT
+5202	1050	News/talk	KSIS
+8673	1050	Freeform	WHFS
+13002	1050	Hot adult contemporary	WTCA
+14494	1050	Country music (WAAZ-FM simulcast)	WJSB
+14554	1050	Classic hits	WFSC
+15255	1050	Classic country	WLYQ
+17484	1050	Country music	WAYS (AM)
+19879	1050	Christian radio	WJOK
+20595	1050	Christian radio	WFAM
+25525	1050	Urban gospel	WGRI
+28478	1050	Talk and full-service	WLIP
+32299	1050	Urban gospel	KJBN
+33667	1050	Catholic radio	KBLE
+39558	1050	Country music	WMNZ
+42379	1050	Oldies	KMTA
+43995	1050	Full Service	KCAA
+46946	1050	Classic Country	WNES
+47116	1050	Sports	WTKA
+48604	1050	Active rock	KTBL
+49935	1050	Classic hits	WMSG
+52187	1050	Classic rock	WLYC
+53148	1050	Religious/Talk	KSPO (AM)
+53348	1050	Sports	WDZ
+59421	1050	Classic country	WWIC
+60762	1050	Country	WFXO (AM)
+61593	1050	Alternative rock	KXCA
+62366	1050	Oldies	WLON
+64034	1050	Sports	KORE
+64363	1050	Gospel music	WTWG
+65636	1050	Sports radio	WEPN (AM)
+65766	1050	Urban adult contemporary	KGTO
+66333	1050	Christian radio	WROS
+67704	1050	Talk radio	WBRG
+68124	1050	South Asian	KCHN
+70233	1050	Full service/classic country, cajun	KVPI (AM)
+70737	1050	Country	KLOH
+70851	1050	Classic country	WAMN
+71241	1050	Country	WBUT
+71286	1050	Contemporary hit radio	WVXX
+73124	1050	Sports	WJCM
+74181	1050	Oldies	WWGP
+99901	1050	Sports radio	CHUM (AM)
+99902	1050	Country	CJNB (AM)
+102202	1050	Classic Ranchera	XEG (AM)
+793459	1050	Regional Mexican	XED (AM)
+8338	1060	Regional Mexican	KTNS
+15478	1060	Silent	WMCL
+17022	1060	Sports	KBFL (AM)
+21109	1060	Catholic religion	WQOM
+24708	1060	Religious	WCGB
+25441	1060	all-news radio	KYW (AM)
+27458	1060	Spanish Variety	KDYL (AM)
+30209	1060	Classic country	KGFX (AM)
+33324	1060	Christian radio	KIPA (AM)
+34429	1060	Classic country	KFIL (AM)
+34430	1060	Adult album alternative; Americana	KTSN (AM)
+35247	1060	Oldies	KNLV (AM)
+36304	1060	Sports radio	WJKY
+36642	1060	Christian talk and teaching	KKVV
+41866	1060	Oldies	WQMV
+48249	1060	Christian radio	KBGN
+54505	1060	Classic country	WIXC
+57268	1060	Classic hits	WRHL
+57451	1060	Classic Regional Mexican	WXNC
+61680	1060	gospel music	WCOK
+65165	1060	Sports radio	KDUS
+68351	1060	Talk radio	WKMQ
+70625	1060	Catholic radio	KRCN
+70636	1060	Country	WNPC
+72174	1060	Urban oldies	WHFB (AM)
+73183	1060	Real Country	WKNG (AM)
+160030	1060	Conservative talk	KFOY (AM)
+180588	1060	Regional Mexican	XERDO-AM
+254	1070	News talk	WMIA (AM)
+1046	1070	Classic hits	WZUN (AM)
+4130	1070	Christian	WNVY
+5205	1070	News/talk	KHMO
+9616	1070	All-news radio	KNX (AM)
+10649	1070	News/talk/sports	WINA
+19521	1070	Sports	WFNI
+25235	1070	Contemporary hit radio & regional Mexican	WCSZ
+27554	1070	Classic hip hop	WJMP (AM)
+32985	1070	Gospel music	WKMB
+35214	1070	Sports	WWCD (AM)
+35879	1070	News/talk	KWEL
+39460	1070	Classic hits	WEKT
+41973	1070	Sports	WTSO
+54639	1070	Classic Country	KATQ (AM)
+55968	1070	Christian Talk	KBCL
+56508	1070	Christian radio	WGOS
+57841	1070	Beach music	WNCT (AM)
+61174	1070	Conservative talk	KNTH
+61276	1070	Alternative rock	WBKW
+63889	1070	News–talk–sports	WKOK
+69569	1070	Urban oldies/classic soul	WDIA
+70860	1070	Christian radio	WFRF (AM)
+72061	1070	Conservative talk and Sports	WFLI (AM)
+72356	1070	Classic country	KFKB
+100082	1070	News/Talk	CFAX (AM)
+100085	1070	Country music	CHOK (AM)
+102229	1070	Spanish & English Top 40 (CHR)	XEIT-AM
+102235	1070	Contemporary hit radio	XEAGS-AM
+129640	1070	Catholic/Christian talk	KSKK
+12961	1080	Contemporary Christian	KOAN (AM)
+14662	1080	Oldies	KGVY
+18517	1080	Christian	WWNL
+22391	1080	Classic hits/Oldies	KEMR (AM)
+22915	1080	Classic hits	WKGX
+26457	1080	Country	KOAK
+27463	1080	Urban Gospel / Christian Talk and Teaching	WALD
+27556	1080	Catholic	WRYT
+35211	1080	Talk radio	KNDK (AM)
+36013	1080	full serviceAAA	KYMN
+37505	1080	Oldies, Classic hits, and Talk	WKAC
+41579	1080	Country	KSLL
+41594	1080	Talk radio	KSCO
+41682	1080	Regional Mexican	WOAP
+49245	1080	Classic hits	KVNI
+49785	1080	Ethnic radio	WNWI
+52862	1080	Regional Mexican	WFTD
+52945	1080	News/talk	WLEY (AM)
+54573	1080	Catholic Talk	WHOO
+55497	1080	Talk radio	WKJK
+56666	1080	Urban adult contemporary	WWDR
+57830	1080	Sports radio	KRSK (AM)
+59820	1080	News/Talk	KRLD (AM)
+60154	1080	Urban AC and Classic Hip Hop	WUFO
+66464	1080	News/talk	WTIC (AM)
+69567	1080	Classic country	KYMO (AM)
+72663	1080	Black Gospel / Religious	WKBY
+73185	1080	Christian Talk	WOKT
+74165	1080	Catholic radio	WQOS (AM)
+796411	1080	Regional Mexican	XEUU-AM
+3973	1090	Classic hits	WBAF
+5862	1090	Classic hits	WTNK
+6211	1090	Spanish Music	WWGC
+6387	1090	Conservative talk	KPTR (AM)
+6427	1090	Oldies, Beach music, Classic Country, Rhythm & Blues	WKTE
+6489	1090	Christian	WFCV (AM)
+10057	1090	Sports	KMXA (AM)
+16775	1090	Classic country / ag news	KBOZ (AM)
+19047	1090	News Talk	WCRA
+25087	1090	News/talk	WKBZ
+33253	1090	Christian radio	KAAY
+39379	1090	Adult hits	WENR (AM)
+47413	1090	Christian	WILD (AM)
+49784	1090	Christian radio	KNWS (AM)
+54681	1090	News/Talk	KVOP
+55338	1090	Sports	WAQE (AM)
+58371	1090	Classic country	WKFI
+58832	1090	Spanish Variety	WSOL (AM)
+64508	1090	Contemporary Christian	WHGG
+65679	1090	News/talk	WBAL (AM)
+67183	1090	Conservative talk radio	KTGO
+67756	1090	Spanish Adult hits	KSOU (AM)
+68856	1090	Urban adult contemporary	WCZZ
+71088	1090	Full service southern gospel	WTSB
+73397	1090	Oldies	WCAR (AM)
+102316	1090	News/talk	XEAU-AM
+102323	1090	Talk	XEHR-AM
+166706	1090	Spanish Christian	XEPRS (AM)
+9421	1100	Talk radio	KFNX
+14240	1100	News/talk	WCGA
+17128	1100	Christian radio	KJCW (AM)
+20374	1100	Christian radio	WSGI (AM)
+24510	1100	Christian talk and teaching	KFAX
+34907	1100	Progressive talk	WISS (AM)
+36027	1100	Catholic	KAFY
+38337	1100	Oldies	WHLI
+39465	1100	News–talk	KNZZ
+47666	1100	Christian talk and teaching	KDRY
+59595	1100	Talk radio / sports radio	WTAM
+67137	1100	Ameripolitan, oldies	WGPA
+71603	1100	Smooth jazz	WJZA (AM)
+135930	1100	Conservative talk radio	WZFG
+137871	1100	Sports	KWWN
+3425	1110	Country	WSLV
+4377	1110	Spanish tropical	WPMZ
+5391	1110	Christian talk and teaching	WSFW
+6442	1110	Talk/Personality	WVJP (AM)
+9943	1110	News Talk Information	KBND
+10397	1110	Variety	WUAT
+10827	1110	Catholic talk radio	KTEK
+13998	1110	Classic hits	WMVX (AM)
+22292	1110	Full-service	WTBQ
+24653	1110	Christian	WTOF
+25076	1110	Christian talk and teaching	KWVE (AM)
+26931	1110	News/talk	KFAB
+27225	1110	Gospel	KTTP
+31063	1110	Full Service	KVTT
+36075	1110	Christian talk and teaching - Southern Gospel music	WGNZ
+40504	1110	Christian	WJSM
+42653	1110	Christian Adult Contemporary	WYMW
+48953	1110	Classic rock	KEJL
+49918	1110	Punjabi language music, talk and news	KRPA
+56372	1110	Southern gospel	WBIB (AM)
+57702	1110	Asian radio	KLIB
+63483	1110	Silent	WWMN (AM)
+65972	1110	Catholic radio	WXES
+70617	1110	Christian radio and southern gospel	WCBR
+71396	1110	Classic hits	KGFL
+74088	1110	Spanish Contemporary hits	WTIS
+102367	1110	Catholic radio	XEWR-AM
+102374	1110	News/Talk/Sports with contemporary music in English	XERED-AM
+102393	1110	Adult contemporary	XEVS-AM
+129316	1110	Religious	KAGV
+796412	1110	News/Talk/Sports with contemporary music in English	XERED-AM
+3013	1120	Business talk	WBNW (AM)
+3257	1120	News/Talk	WMSW
+3651	1120	Adult contemporary	KETU
+9638	1120	Talk radio	KMOX
+13630	1120	Tropical music	WPRX
+17472	1120	Classic hip hop	WTLT
+20509	1120	Contemporary Christian	KANN
+25185	1120	Catholic radio	KCRN (AM)
+25386	1120	Urban gospel	WXJO
+27434	1120	Soul/R&B	WHOG (AM)
+40846	1120	Talk radio	KPNW (AM)
+48686	1120	All-news radio	WUST
+53967	1120	Sports talk	WBBF
+63290	1120	Sports	WKQW (AM)
+73601	1120	Oldies / religious programming (mornings) / vintage radio shows (overnight)	WTWZ
+73697	1120	Oldies	WSME
+102401	1120	News/talk	XEMX-AM
+102408	1120	Regional Mexican	XEUNO-AM
+160470	1120	News/Talk	WKAJ
+160615	1120	Christian radio	KTXW
+179015	1120	News	XEPOP-AM
+192534	1120	College Radio	XERUY-AM
+2207	1130	Classic country	KBMR
+3424	1130	Spanish Christian	WYXE
+4774	1130	Classic country	WPYB
+5869	1130	Financial news	WBBR
+19669	1130	Sports radio	WFNB (AM)
+24146	1130	Urban contemporary gospel	WEAF (AM)
+31895	1130	Country	KLEY (AM)
+39607	1130	Country	KAAB
+48366	1130	Regional Mexican	WHHW
+48701	1130	Southern Gospel	WCLW
+53415	1130	Talk radio	KQNA
+54411	1130	Classic rock	WRRL
+54483	1130	Spanish Variety	WOIZ
+54559	1130	Religious	KRDU
+59961	1130	Conservative talk	KTLK
+59969	1130	African-American all news	WDFN
+60266	1130	Sports radio	KWKH
+65695	1130	News/talk	WISN (AM)
+66926	1130	Classic hits	WWBF
+68309	1130	Regional Mexican	WALQ
+71930	1130	Classic country	WEDI (AM)
+73270	1130	Top 40 (CHR)	WBZB
+88995	1130	Hawaiian oldies	KPHI
+100717	1130	News/talk	CKWX (AM)
+102443	1130	Grupera	XEFN-AM
+160794	1130	Regional Mexican	KQRR
+199185	1130	University radio	XECHAP-AM
+1162	1140	Conservative talk / Brokered and religious (weekends)	KCXL
+5245	1140	Oldies	KZMQ (AM)
+6328	1140	Religious talk	KGEM
+8999	1140	Christian talk and teaching	WBXR
+11914	1140	News/Talk	WRVA (AM)
+12712	1140	Talk/Personality	WQII
+20352	1140	Sports	KHTK
+21759	1140	Spanish Salsa	WVVO
+33073	1140	Regional Mexican	KLTK
+34880	1140	Sports	KSLD
+35206	1140	Adult standards	KNAB (AM)
+35857	1140	Classic country	KVLI
+37858	1140	Classic Country	WCJW
+38473	1140	Oldies	WLOD (AM)
+40484	1140	Urban contemporary gospel	KYOK
+41667	1140	Catholic, talk	WVHF (AM)
+49395	1140	Classic hits	WAWK
+58934	1140	Sports	WAPF
+61153	1140	Southern gospel	WRNA
+63794	1140	Urban adult contemporary	KRMP
+64710	1140	Classic country	KXRB (AM)
+65313	1140	Catholic Radio	KCPP (AM)
+68623	1140	Urban gospel	WVEL
+72803	1140	Silent	WPNS (AM)
+73912	1140	Soft adult contemporary	WQBA
+74348	1140	Defunct	WXMY
+100850	1140	Christian	CHRB (AM)
+100852	1140	News–talk	CBI (AM)
+102469	1140	Public radio	XETEC-AM
+790865	1140	Christian	XEMR-AM
+227	1150	Classic hits / New Mexico music (Saturdays)	KNMM
+4054	1150	Conservative Talk	WJBO
+5224	1150	Talk/Personality	KCPS
+5969	1150	Adult contemporary	WSNW (AM)
+7632	1150	Sports	KZNE
+9865	1150	Classic Country/Ag News	WEAQ
+10342	1150	Talk radio	WNDB
+16458	1150	News/talk	WDEL (AM)
+19219	1150	Conservative talk	KEIB
+23245	1150	News Talk Information	KAGO (AM)
+24250	1150	Classic country	KOLJ (AM)
+24384	1150	Oldies	WJRD
+25051	1150	Catholic talk	WWDJ
+28471	1150	News-talk	KSAL (AM)
+33464	1150	News/Talk	KASM
+35554	1150	News/talk	KRMS (AM)
+37498	1150	News/talk	WIMA (AM)
+37778	1150	Classic country	KNED
+41988	1150	Sports	WXKO
+46745	1150	Adult standards and soft AC	WMST
+48370	1150	Classic hits	WGBR
+48541	1150	Christian talk and teaching	WNLR
+49099	1150	Regional Mexican	KDLX (AM)
+51705	1150	Mexican regional adult hits	KHRO
+52865	1150	Soft adult contemporary	WELC
+54526	1150	News/talk	WGOW (AM)
+54646	1150	Classic Tejano	KCCT
+54678	1150	talk radio / adult standards	WMRD
+54724	1150	News Talk Information	KQQQ
+54810	1150	Silent	WDTM
+56643	1150	Spanish News/Talk	KNRV
+57834	1150	Classic country	KKNW
+58352	1150	Variety	WLOC
+63782	1150	Full Service - News - Talk - Sports - Beach Music - Oldies	WBAG (AM)
+66820	1150	Sports radio	KIMM (AM)
+67655	1150	Oldies	KSEN
+68762	1150	Christian	KBPO
+70253	1150	Talk	WGGH
+71294	1150	Classic hits	WCRK
+72330	1150	Contemporary Christian music (WMIT simulcast)	WAVO
+73133	1150	Sports	WJEM
+73660	1150	Talk radio	WHBY
+74108	1150	Sports radio	WTMP (AM)
+101168	1150	News/Talk/Sports	CKFR (AM)
+101178	1150	Classic hits	CKOC (AM)
+102487	1150	News/talk	XERM-AM
+102499	1150	Regional Mexican	XEJP-AM
+102501	1150	News/talk	XEAD-AM
+102521	1150	Spanish adult contemporary	XETVR-AM
+198165	1150	Classic hits	CJSL (AM)
+4643	1160	Catholic religious programming	WMET
+6375	1160	News/Talk	KSL (AM)
+10475	1160	Classic Hits	WCXI
+11214	1160	Regional Mexican	WEWC
+15521	1160	Catholic talk and teaching	WCFO
+25031	1160	Religious	WCRT (AM)
+25966	1160	Classic country	WKCM
+26310	1160	Catholic radio	KRDY
+28618	1160	Full-service	KBDT
+28630	1160	Christian radio	WYLL
+35065	1160	Christian radio	WCVX
+39240	1160	Urban contemporary gospel	WYDU
+41582	1160	Classic hits	WSSV
+46351	1160	Sports	WSKW
+52124	1160	Sports	WPIE
+54502	1160	News-talk	WMTI (AM)
+54614	1160	Southern gospel	WWQT
+55250	1160	News/talk/sports	WCCS
+68956	1160	Christian radio	WVNJ
+69983	1160	Southern Gospel	WODY
+135914	1160	Portuguese	WRLZ (AM)
+136386	1160	Christian	KCTO
+165674	1160	Indigenous community radio	XEQIN (AM)
+250	1170	Urban gospel	WDEK
+1197	1170	Religious	WDFB (AM)
+6684	1170	South Asian	WWTR
+7090	1170	Oldies	WCLN (AM)
+13509	1170	Conservative talk radio	KCBQ
+41339	1170	Punjabi language talk and Punjabi music	KLOK (AM)
+42092	1170	Oldies	WFDL (AM)
+43633	1170	Alternative rock	WGMP
+44046	1170	News/talk	WWVA (AM)
+52943	1170	Spanish Variety	WLEO
+58309	1170	World Ethnic	WAVS
+58887	1170	Sports	KPUG
+58940	1170	Mexican regional	KJJD
+62365	1170	Variety (oldies; classic country; rockabilly)	WKFL
+64357	1170	Classic Country	KYET
+65795	1170	Silent	KJXX
+68329	1170	All-News (KOTV local newscasts)	KOTV (AM)
+70404	1170	Classic hits	WSOS (AM)
+70931	1170	Sports	KFOW
+71306	1170	Religious	WCXN
+72622	1170	Regional Mexican	WWLE
+102568	1170	Grupera	XERT-AM
+3068	1180	Oldies	WSKP (AM)
+7691	1180	News/talk	WJNT
+11890	1180	Catholic radio	KLAY
+16409	1180	Classic hits	WSQR
+16590	1180	Classic country	WZQZ
+16848	1180	Soft AC	WXLA
+17235	1180	Christian radio	KLPF
+22896	1180	Christian talk and teaching	WFYL
+30969	1180	Talk and farm information	WLDS
+34473	1180	South Asian	KGOL
+35368	1180	Oldies - News - Talk - Sports	KOFI
+35899	1180	Talk radio	KERN
+43237	1180	Soft rock	KZOT
+43771	1180	Oldies	WKCE (AM)
+48709	1180	Christian radio	WGAB
+52906	1180	Regional Mexican	WGUE (AM)
+72057	1180	Religious	WFGN
+102573	1180	University radio	XEUBS-AM
+102580	1180	Oldies	XEFR-AM
+136921	1180	Catholic talk	KYES (AM)
+2194	1190	Christian radio	KGBN
+4002	1190	Soft oldies - Adult standards - MOR	WSDE
+4373	1190	Roman Catholic religious broadcasting	KDMR
+6582	1190	Regional Mexican	WJPJ
+8440	1190	Religious	WBMJ
+11271	1190	News/talk	KEX (AM)
+13789	1190	Conservative talk	KXKS (AM)
+15877	1190	Christian radio	WAMT
+17381	1190	Christian talk and teaching	WNWC (AM)
+23822	1190	Adult contemporary	WPSP
+25375	1190	Conservative talk radio	KFXR (AM)
+25961	1190	Inspirational/Gospel	WMEJ
+28204	1190	latin pop / adult contemporary music	WLIB
+28205	1190	Talk radio	WOWO
+29019	1190	Spanish–talk radio (Brokered programming)	KNUV
+30935	1190	Red Dirt country	KREB
+35056	1190	Classic country	KKOJ
+38286	1190	Classic country	WPAA (AM)
+43533	1190	Classic country/talk	WIXE
+43896	1190	Urban Contemporary Gospel and Urban Adult Contemporary (WEUP simulcast)	WEUV
+48965	1190	Freeform	KVCU
+54263	1190	Urban gospel	KDYA
+54624	1190	Classic country	WPVW
+60773	1190	Full-service	KVSV (AM)
+64661	1190	Catholic radio	WVUS
+67280	1190	Country	WSDQ
+72111	1190	Catholic talk and teaching	WAFS (AM)
+102031	1190	Classic hits	CFSL (AM)
+102599	1190	Regional Mexican	XEMBC-AM
+102621	1190	Christian	XECT-AM
+103598	1190	University cultural	XEXQ-AM
+740	1200	Classic Country	WSML
+4757	1200	Spanish Christian	KDYM
+11196	1200	Spanish AC/Regional Mexican (Daytime) / Spanish Sports (Nighttime)	WRTO (AM)
+11952	1200	News/Talk	WOAI (AM)
+36016	1200	Country	KYOO (AM)
+36564	1200	Spanish Variety	WGDL
+41499	1200	Urban contemporary gospel	WMIR (AM)
+49792	1200	Christian talk and teaching	KFNW (AM)
+54546	1200	Sports	WTLA
+60852	1200	Catholic radio	KYAA
+61277	1200	Conservative Talk	WNRJ (AM)
+64274	1200	Contemporary hit radio	WXIT
+71209	1200	Religious	WBCE
+72879	1200	Christian radio	WFCN
+113359	1200	Sports radio	CFGO (AM)
+189797	1200	Multicultural	CJRJ (AM)
+2802	1210	Adult standards / Soft oldies	WMPS
+4599	1210	Stunting	WJNL
+9634	1210	Talk radio	WPHT
+10333	1210	Country music	KHAT
+15268	1210	Country	KOKK
+20930	1210	South Asian (Indian and Pakistani)	KRPU
+25973	1210	Spanish Christian	WSBI (AM)
+26624	1210	Silent	WILY
+29229	1210	Spanish variety format	WHOY
+31880	1210	Urban adult contemporary	WDAO
+32211	1210	Country	WANB
+33252	1210	South Asian	KQEQ
+33683	1210	Christian	KMIA (AM)
+51960	1210	Spanish Christian	KUBR
+52914	1210	J-Pop/Japanese Variety	KZOO
+54461	1210	Christian talk and teaching	KPRZ
+61642	1210	Talk radio	WNMA
+63946	1210	Sports	WTXK
+65152	1210	Talk	KGYN
+72020	1210	Country	KRSV (AM)
+102503	1210	Classic hits	CFYM (AM)
+5354	1220	Spanish variety	WAYE
+6648	1220	Country	KOFO
+6817	1220	Christian radio	WDYT
+7041	1220	Southern Gospel and Christian talk and teaching	WZOT
+9183	1220	Spanish tropical	WSTL
+10450	1220	Spanish Sports	WKRS
+10963	1220	Conservative talk	KSLM (AM)
+12364	1220	Christian talk and teaching	KLDC
+14772	1220	Christian radio	WHKW
+17153	1220	News / sports / country	WSLM (AM)
+21555	1220	Urban Gospel - Christian talk and teaching	KTLV
+24245	1220	Country music	WFKN
+26000	1220	Gospel	WENC
+27663	1220	Classic hits	WSRQ (AM)
+31937	1220	Conservative Christian radio	WKTZ (AM)
+32848	1220	Urban Gospel	WERM
+36645	1220	News-Talk-Rock	WLPO
+41442	1220	Spanish language	WREV
+42658	1220	Oldies	WATX
+48732	1220	Regional Mexican / reggaeton	WFAX
+56181	1220	Adult standards	WERT
+56300	1220	Brokered South Asian	KZEE
+57227	1220	Classic hits	WZBK
+58521	1220	Full service	KHTS (AM)
+60499	1220	Country	KDDR
+62369	1220	Classic rock	WJUN (AM)
+63494	1220	Oldies	WCPH
+63942	1220	Sports	WGNY (AM)
+64622	1220	Sports	KGIR
+65485	1220	Financial news/talk	KDOW
+68415	1220	Classic hits	KCAX
+69676	1220	Classic hits	WLSD
+70303	1220	Americana	KLPW (AM)
+73031	1220	Adult contemporary	KJAN
+74068	1220	Classic hits	WWSF
+102709	1220	University radio	XESAL-AM
+102710	1220	Spanish Classic Hits	XEB (AM)
+102769	1220	Commercial/Easy listening/Oldies	CJRB (AM)
+102783	1220	Classic hits	CFAJ-AM
+138	1230	Classic hits	KORT (AM)
+202	1230	Alternative rock	KBZZ (AM)
+249	1230	Catholic radio	WNEB
+407	1230	News/talk	KZYM
+645	1230	Sports	KCUP
+731	1230	Sports	WTBC (AM)
+1914	1230	Oldies	WECK
+3204	1230	Sports	WAUD
+4082	1230	Sports	KHSN
+4757	1230	Spanish Christian	KDYM
+4823	1230	Country	WNAW
+5298	1230	News Talk Information	KHDN
+5876	1230	News/talk	WJBC (AM)
+8081	1230	Oldies	KTNC (AM)
+8596	1230	Sports	WEEX
+10139	1230	Urban talk	WDBZ
+10917	1230	Brokered programming, local news/talk and gospel	WBOK
+12187	1230	Country/Talk	KVAK (AM)
+12219	1230	Talk; brokered programming	WJOB (AM)
+12664	1230	Silent	KRXK
+12723	1230	Oldies	KGHS (AM)
+13964	1230	Sports	KSIX (AM)
+14029	1230	Talk/Sports	KRSY (AM)
+14926	1230	Classic rock	KSFX (AM)
+15323	1230	Christian contemporary	WKBO
+17692	1230	Talk radio	KBTM
+17758	1230	Contemporary Christian	WAKI
+17795	1230	Sports	WTSV
+18050	1230	Oldies	WCRO
+18273	1230	Korean	KYPA
+18277	1230	Adult hits	WTCJ
+19627	1230	Sports gambling	WCWA
+20386	1230	Sports	KFSP
+20420	1230	Soft AC/talk	WSOO
+20439	1230	Sports gambling	WBZT
+21496	1230	Talk radio	KSZL
+21743	1230	Classic pop	WKWL
+21773	1230	Catholic radio	WDWR
+22119	1230	Spanish variety	KDRN
+22120	1230	Sports	WBET (AM)
+22678	1230	Contemporary hit radio	WPKB
+23868	1230	Talk radio	KFPW (AM)
+24947	1230	Classic hits	KBOV
+25038	1230	Black-oriented news	WYTS
+25378	1230	Adult hits	KERV
+25527	1230	Contemporary hit radio and regional Mexican	WFOA
+25864	1230	Adult standards / soft adult contemporary	WJOY
+25868	1230	Adult hits	WONN
+27264	1230	Country	WHCO
+27630	1230	Oldies	KSST
+27634	1230	Talk radio	WHOP (AM)
+28610	1230	Urban AC/Black Gospel	WEZO
+30026	1230	Talk	KLVT
+31153	1230	Rhythmic adult contemporary	WQJM (AM)
+33057	1230	Conservative talk	KWTX (AM)
+33259	1230	Alternative rock	KADA (AM)
+33876	1230	News/Talk	WNIK (AM)
+34442	1230	Country	KFUN (AM)
+34487	1230	Adult contemporary	KHAS
+35026	1230	Oldies	KYVA (AM)
+35607	1230	Catholic Radio	KSLO (AM)
+35639	1230	Sports	KSTC (AM)
+35861	1230	Talk radio	KVOC
+35889	1230	Talk radio	KWIX
+35963	1230	Country music	KXLO
+35969	1230	Oldies	KXO (AM)
+36233	1230	Rhythmic Adult Contemporary	KGEO
+36684	1230	Caribbean music	WNEZ
+36722	1230	Country music	WXLI
+36981	1230	Talk	WABN
+37180	1230	Oldies	WMLR
+37526	1230	Country	KLCB
+37740	1230	Classic hits	WBPZ
+38277	1230	News-Talk / Sports / Adult Standards	WSAL
+38907	1230	Sports talk	KKOR
+39244	1230	Classic country	KOTS
+40465	1230	News/talk and sports	KFJB
+40914	1230	News Talk Information	KATO (AM)
+41813	1230	Talk	WFVA
+42884	1230	Talk radio	KBAR (AM)
+43199	1230	Sports	WFXN (AM)
+48404	1230	Top 40/CHR	WMOU
+48788	1230	Oldies	WNNC
+49233	1230	Talk radio	WBLJ (AM)
+49301	1230	Religious; ethnic	WESX
+49370	1230	News/talk	KOZI (AM)
+49381	1230	News/talk/sports	WCMD (AM)
+49684	1230	Classic country	WFER
+49715	1230	Classic country	WMML
+50406	1230	Urban gospel	WSOK
+51210	1230	Spanish language Christian radio	KRYN
+51346	1230	Talk radio	WAIM
+51418	1230	Adult contemporary	KGRO
+51729	1230	News/talk/sports	WTKG
+52308	1230	News Talk Information	WHIR
+52746	1230	country-rock	WBVP
+52931	1230	News/talk	WBBZ (AM)
+53851	1230	Classic hits	KDZA (AM)
+53998	1230	Adult standards	WKLK (AM)
+54040	1230	K-pop; news	KWYZ
+55413	1230	Catholic radio	KLXR
+55462	1230	Talk radio	KELY
+55492	1230	News–talk	KAAA
+58303	1230	Conservative talk radio	KJJC (AM)
+59611	1230	Progressive talk	WXCO
+59813	1230	Sports	KWSN
+60418	1230	Religious	KWG (AM)
+60516	1230	Full service; classic hits; oldies	KIFW
+61390	1230	News–talk	WCLO
+61685	1230	Classic hits	WITO
+62157	1230	Public radio and talk	KSJK
+62265	1230	Adult contemporary	KZHC (AM)
+62361	1230	Classic hits	KDIX
+63191	1230	News/Talk	KKSB
+63531	1230	Country music	WHUC
+63914	1230	Regional Mexican	KOY
+64342	1230	Talk radio	KPRL
+64368	1230	Adult standards	WSBB (AM)
+64668	1230	News/Talk	KSBN (AM)
+65309	1230	Urban talk; urban contemporary	KCOH
+65496	1230	Christian radio	WMPC
+70259	1230	Oldies	WCMC (AM)
+70690	1230	Sports	KLAV
+71250	1230	Sports	WCBT
+71722	1230	Full service	WBLQ (AM)
+72055	1230	Country	WFAY
+72066	1230	Conservative talk radio	WFOM
+72101	1230	Urban contemporary	WRBD (AM)
+72152	1230	News/talk/sports	KWNO (AM)
+73257	1230	Country music	WMFR
+73400	1230	Sports	WOLH
+74089	1230	Classic hits	WTIV
+102727	1230	Public radio	XETVH-AM
+103048	1230	News/Talk	CHFC (AM)
+129162	1230	Sports	WAYX
+160849	1230	Sports	WCDS
+160899	1230	Classic Hits	WJUL
+185058	1230	News/talk	XEDKN-AM
+459	1240	Sports	KLOA (AM)
+643	1240	Sports	KTIX
+1125	1240	Urban gospel	WLLV
+2212	1240	Full-service Oldies	WHBU
+2682	1240	Talk radio	WVTS
+2774	1240	Oldies	KWAK (AM)
+2801	1240	Urban adult contemporary	WMSO
+4123	1240	Talk radio	KSMA (AM)
+4699	1240	News/Talk	KLYQ
+5216	1240	Classic hits	KVLF (AM)
+6251	1240	Classic hits	WGTX (AM)
+8476	1240	Oldies	WTWA
+8726	1240	Full service classic rock and classic hits	WPTR (AM)
+9288	1240	Country music	KASL
+9431	1240	Southern gospel	WBEJ
+9931	1240	News Talk Information	KODY
+9961	1240	News/talk	WTAX (AM)
+11031	1240	Oldies	WIGY (AM)
+11182	1240	Sports	KVSO
+11408	1240	Talk radio	WMMB
+11624	1240	Talk	WATN (AM)
+12212	1240	Active rock	WSNJ
+13667	1240	Sports	WBBW
+13803	1240	Classic hits	KASO
+14759	1240	News/Talk	KBEL (AM)
+15272	1240	Classic country	KDLR
+15300	1240	Classic rock	KXIT (AM)
+16368	1240	Adult contemporary	KDEC (AM)
+16847	1240	Ukrainian programming	WSBC
+16898	1240	Regional Mexican	WNVL
+17382	1240	Sports	WJIM (AM)
+18225	1240	Classic hits	WPKE (AM)
+18653	1240	Religious	KSOX
+19371	1240	Adult contemporary	KELK
+19823	1240	News/Talk	WEBJ
+21626	1240	News/talk	WSFC (AM)
+21817	1240	Urban Contemporary	WMGJ
+22017	1240	Southern gospel	WWWC (AM)
+23049	1240	Mainstream rock	WSKI
+24161	1240	Oldies	KJAA
+24207	1240	News/talk	KBIZ
+24243	1240	Country	KLTZ
+24734	1240	Classic hits	KVRC
+25828	1240	Full service adult standards; middle of the road; oldies	WJEJ
+27538	1240	Variety	WBGC
+28663	1240	Spanish Religious	KEZY
+29030	1240	Sports	KADS
+29078	1240	News/talk	KICD (AM)
+29297	1240	Spanish language Catholic Radio	KCVV
+29339	1240	Regional Mexican	WKIQ
+29541	1240	Conservative talk	WLSQ (AM)
+29922	1240	Full-service; gold-based adult contemporary	WJTN
+30831	1240	Christian radio	KNSN (AM)
+31589	1240	Catholic radio	KJOP
+32199	1240	Classic rock	WEKR
+32977	1240	Adult contemporary	WGGA
+32980	1240	Sports	WLAG
+33300	1240	Mainstream rock	KAMQ
+33469	1240	Talk	WSYY (AM)
+34436	1240	News/talk	KFOR (AM)
+34486	1240	Catholic radio	KBUP
+35216	1240	Adult contemporary	KNEM
+35276	1240	Classic hits	KMBY (AM)
+35885	1240	News/talk	KWIK
+35958	1240	Classic country	KXLE (AM)
+36290	1240	Talk radio	WGVA
+37034	1240	Adult standards	WPAX
+37207	1240	News/Talk, Adult Contemporary	WSDR
+37746	1240	Adult album alternative	WGMN
+39255	1240	Music / Educational	KWLC
+39573	1240	Sports	KEJO
+40182	1240	Country	WDNE (AM)
+40386	1240	News Talk Information	KQEN
+40678	1240	Contemporary hit radio / reggaeton / tropical music	WWCO
+41600	1240	Catholic talk radio	KJCR (AM)
+43629	1240	Sports	KFBC
+43980	1240	News/Talk	WVOS (AM)
+44001	1240	Soft adult contemporary	WKEZ (AM)
+48452	1240	Full service oldies	KANE (AM)
+48706	1240	Oldies	WKDK
+48950	1240	Classic hits	KDOK
+49195	1240	Country	KCVL
+49801	1240	Sports	WOBT
+50011	1240	Spanish variety format	WALO
+50077	1240	Talk radio	WTON (AM)
+52026	1240	Classic hits / (since July 13, 2021)	WZQK
+52475	1240	Adult hits	KCRT (AM)
+53598	1240	Sports radio	KFH (AM)
+54616	1240	Classic hits	WSQL
+54617	1240	Catholic radio	WHFA
+54798	1240	Oldies	WJLX
+54804	1240	Conservative talk	WWNS
+55100	1240	News/talk	KFMO
+55267	1240	News Talk Information	WDXY
+55307	1240	Rhythmic CHR	WRLD (AM)
+55496	1240	Classic hits	KOKL
+55657	1240	News Talk Information	KDGO
+56074	1240	Classic Country	WCBY
+58903	1240	Country	KBGV
+59610	1240	Adult contemporary; full service	WOMT
+59687	1240	Oldies	KDSK (AM)
+60271	1240	News/talk/sports	WFOY
+60302	1240	Talk radio	KSUE
+60858	1240	Full service Classic hits	KCCR (AM)
+60911	1240	Adult standards	WMFG (AM)
+61041	1240	Contemporary Christian / Christian talk and teaching	WIFA (AM)
+61218	1240	Full-service radio	WHIZ (AM)
+62002	1240	Regional Mexican	KTAM
+62215	1240	Sports	WFTM (AM)
+63197	1240	Country	KXOX
+65201	1240	Talk radio	WWZQ
+65263	1240	Classic hits	KOFE
+65928	1240	News-Talk-Sports	WATT
+66250	1240	News/talk	KRDO (AM)
+66365	1240	Classic rock	WFUZ (AM)
+67041	1240	News Talk Information	KIUL
+67196	1240	MOR/News/Talk	WJMC (AM)
+67505	1240	News/talk	WRTA (AM)
+68147	1240	News/talk	KLIK
+70348	1240	Country music	WEBQ (AM)
+70690	1240	Sports	KLAV
+71105	1240	News-talk	KXYL (AM)
+71504	1240	Oldies	WENK
+72091	1240	Brokered programming	WGBB
+72331	1240	Religious	WHVN
+72537	1240	Talk and sports	KPOD (AM)
+72657	1240	Christian radio	KMHI
+73144	1240	News/talk	WJON
+73314	1240	Mainstream rock	WVSL (AM)
+73408	1240	Classic country	WZCC
+73676	1240	Full service	WOON
+74565	1240	Talk	KCLV (AM)
+102732	1240	Regional Mexican	XEWG-AM
+102760	1240	Grupera	XEBQ-AM
+102762	1240	Regional Mexican	XECG-AM
+103365	1240	Classic hits	CFNI (AM)
+129314	1240	Regional Mexican	KRDM
+160441	1240	Sports	KHNK (AM)
+160745	1240	Regional Mexican	KRJW
+1000005519	1240	Classic hits	CJOR (AM)
+3156	1250	Regional Mexican	KZER
+4600	1250	Oldies	WJMK (AM)
+9726	1250	Oldies	KCFI
+9797	1250	Country	WZOB
+9884	1250	Traditional and urban contemporary gospel	WYTH
+12112	1250	South Asian music and talk	KKDZ
+12138	1250	Adult Standards/MOR	KCFM (AM)
+14062	1250	Country music	KNEU
+15872	1250	News Talk Information	WQHL (AM)
+17201	1250	Regional Mexican	KZOI
+20490	1250	Christian radio	KDEI
+21400	1250	News/talk	KBRF
+22285	1250	All-news	WGL (AM)
+23018	1250	Adult contemporary	KIKZ
+23077	1250	Talk radio	WHNZ
+27030	1250	Sports radio	WSSP
+29343	1250	Spanish	WRBZ
+36525	1250	Regional Mexican music	WLRT
+37451	1250	Sports	WSRA
+39566	1250	Catholic radio	KHOT (AM)
+43244	1250	Black Gospel	WDVA
+43522	1250	1980's hits	WRKQ
+46743	1250	Country / Americana	WYKM
+48301	1250	Classic country	KIKC (AM)
+49586	1250	Oldies	WMTR (AM)
+50276	1250	Religious	WJIT
+52172	1250	Christian talk and teaching	WYYC
+52368	1250	Black Gospel	WJZU
+53566	1250	Talk radio	WRAY (AM)
+53581	1250	Classic hits	WLEM
+56324	1250	Gospel	WKDX
+57088	1250	Oldies	WGAM
+57355	1250	Oldies	WCHO (AM)
+57887	1250	Classic Hits	WKBL (AM)
+60149	1250	Southern Gospel	WLCK
+60855	1250	Classic country	KCUE
+65317	1250	Christian talk and teaching	KBTC (AM)
+65330	1250	Sports	KZDC
+65691	1250	Conservative talk radio	WPGP
+65697	1250	Classic hits	KLLK
+70877	1250	Classic hits	WARE
+71025	1250	Public radio–news/talk	KWSU (AM)
+71233	1250	Country/Classic country	WBRM
+71406	1250	News/Talk	KZHN
+72376	1250	News/talk	WTMA
+72491	1250	Regional Mexican	KPBI (AM)
+72656	1250	Classic country	KHIL
+73938	1250	Regional Mexican	KYYS
+102797	1250	News/talk	XEDK-AM
+103687	1250	Easy listening	CHSM (AM)
+73	1260	Classic hits	WUFE
+4622	1260	Catholic radio	WSDZ
+6322	1260	Classic hits	KLYC
+6369	1260	Catholic radio	KSFB
+6416	1260	Regional Mexican	KDLF
+7149	1260	Religious	KLDS
+8681	1260	Catholic radio	WQOF
+10337	1260	Talk and country music	KPOW (AM)
+11217	1260	Urban AC	KBSZ
+12970	1260	Progressive talk	KTRC
+17015	1260	Religious (Catholic)	WCCR (AM)
+18106	1260	Urban contemporary gospel and urban adult contemporary	KSML (AM)
+18184	1260	Rhythm and blues	KBRH
+18713	1260	Classic hits	WDKN
+19541	1260	Classic hits leaning Classic rock	WMDG
+19629	1260	Conservative talk	WBNR
+19838	1260	News/talk/sports	WCHV (AM)
+22156	1260	News/talk	KKSA
+25131	1260	Classic country	WEKZ (AM)
+25862	1260	Classic Country	WIYD
+32982	1260	Adult contemporary	WRIE
+34822	1260	Conservative talk / Christian radio	WYDE (AM)
+35647	1260	Contemporary hit radio	KTAE (AM)
+36466	1260	Country music	WOCO (AM)
+36532	1260	Contemporary worship music	WPNW
+36765	1260	Classic country	WZBO
+41838	1260	Classic hits	WGVM
+42112	1260	Country music	KWYR (AM)
+43126	1260	Public radio (news and information)	WSHU (AM)
+43879	1260	Classic country	WLGJ
+43937	1260	Classical	KMZT (AM)
+47079	1260	Country music	WLAK (AM)
+48403	1260	Christian radio	WBIX
+49124	1260	Classic hits	KDUZ
+50515	1260	Sports	WSKO (AM)
+53443	1260	Religious (Catholic)	WFJS
+53955	1260	Urban contemporary/gospel	WNOO
+55102	1260	Classic country	WKXR
+55403	1260	Spanish news/talk	WSUA
+59591	1260	Sports	WNDE
+60196	1260	Jazz	KCCB
+61147	1260	News-talk	WAPA (AM)
+62328	1260	Sports	WNXT (AM)
+65629	1260	Country	KWSH
+67613	1260	Christian	KTRP (AM)
+70735	1260	Religious radio	WMCH
+71775	1260	Farm and classic country	KNBL
+73297	1260	Christian Talk in Spanish	WPJF
+74188	1260	Adult contemporary; full service	WWIS (AM)
+102819	1260	Contemporary pop in English and Spanish	XEL-AM
+102832	1260	Indigenous community radio	XEJAM-AM
+102842	1260	Variety hits	XEMW-AM
+165771	1260	Contemporary pop in English and Spanish	XEL-AM
+792488	1260	Country	CKHJ (AM)
+215	1270	Talk	WMKT
+2814	1270	Talk and sports	KEDO (AM)
+3363	1270	Country	WILE (AM)
+3533	1270	Christian talk	WPMH
+4260	1270	Talk	KIIK (AM)
+6663	1270	Classic hits	WQKR
+7822	1270	Conservative talk radio	WUSW
+9051	1270	Regional Mexican	WMPM
+11973	1270	Spanish tropical	WMIZ
+14056	1270	Sports radio	KFSQ
+17624	1270	Classic hits	WXGO
+18717	1270	Rhythmic contemporary	WACM (AM)
+23254	1270	Talk radio	WTSN (AM)
+24822	1270	AC/Classic Hits/News/Talk	KAJO
+25675	1270	News/talk	WGSV
+25916	1270	Silent	WHGS (AM)
+27218	1270	Catholic radio	WCGC
+28627	1270	Sports gambling	WXYT (AM)
+29636	1270	Classic hits	WDLR
+32997	1270	News Talk Information	KINN
+34298	1270	Adult contemporary and regional Mexican (daytime) / Sports radio (nightime)	KFLC
+35526	1270	Sports	KFAN (AM)
+36685	1270	Classic hits	WBOJ
+36874	1270	Full-service radio–classic hits	WLBR
+41332	1270	Catholic radio	WWCA
+43223	1270	News/talk	KLXX
+46335	1270	Classic hits / Oldies	WHEO
+47887	1270	News Talk Information	KDJI
+49201	1270	Classic hits	KXBX (AM)
+49774	1270	Christian talk and teaching	KNWC (AM)
+50511	1270	Classic rock	KYSJ
+51592	1270	Sports	WTLY
+53144	1270	Christian Talk	WIJD
+53650	1270	Southern gospel	WCMR (AM)
+57931	1270	Christian radio	WIWA (AM)
+59803	1270	News Talk Information	KSCB (AM)
+67359	1270	Talk	WWWI (AM)
+67857	1270	Classic hits	WAIN (AM)
+69857	1270	Catholic	KTFI (AM)
+71716	1270	Soft adult contemporary	KVMI
+73141	1270	Country music	WJJC
+73208	1270	Oldies	WLIK
+73957	1270	Country	WRJC (AM)
+102853	1270	Romantic	XEAZ-AM
+104206	1270	Country	CJCB (AM)
+791756	1270	Variety	XEGL-AM
+660	1280	Talk radio	WGBF (AM)
+3711	1280	Contemporary Christian	KLDY
+4339	1280	Spanish Regional	WSUX (AM)
+5217	1280	Talk/home shopping/sports	WTFN (AM)
+8792	1280	News	WCMN (AM)
+9676	1280	Talk radio	WWTC
+10975	1280	Adult hits	KXEG
+11947	1280	Black-oriented news	WODT
+14238	1280	Classic country	KSOK (AM)
+14766	1280	Country music	KCNI
+24997	1280	Classic hits	WUZZ (AM)
+27001	1280	stunting	WBWX
+29518	1280	Regional Mexican	KRZE
+32214	1280	Sports	KWSX
+35863	1280	Catholic	KVXR
+36026	1280	Sports	KXTK
+36476	1280	Talk	WZXI
+37089	1280	Soft oldies / Adult standards	KPRV (AM)
+37549	1280	Sports radio	WHTK (AM)
+40710	1280	News/talk/sports	WONW
+40740	1280	Country	WMCP
+41989	1280	Classic country	WIHB (AM)
+43140	1280	Oldies	WSAT
+48750	1280	Oldies	KNBY
+50053	1280	Soft oldies / adult standards	WNAM
+51440	1280	Regional Mexican	WTMY
+52048	1280	Classic country	KMFR
+53149	1280	Classic hip hop	KZFS
+54009	1280	News and information	KRVM (AM)
+54607	1280	Adult contemporary	WHVR
+58317	1280	Oldies	KQLL
+59251	1280	Conservative talk radio	KYRO (AM)
+59616	1280	Spanish Christian radio	WIPC
+59686	1280	Full service country	WYVE
+59956	1280	Regional Mexican	KBNO (AM)
+60458	1280	Sports radio	KZNS (AM)
+60786	1280	Sports radio	WFYC
+64398	1280	News/talk	KIT (AM)
+66139	1280	Urban contemporary gospel	WJAY
+67300	1280	Full-service	KWHI
+68296	1280	Rhythmic CHR	WHTP (AM)
+68420	1280	Urban adult contemporary	WMXB
+70684	1280	Regional Mexican music	WADO
+70783	1280	Soft adult contemporary	WALI
+71434	1280	News/talk/sports	WPKZ
+74223	1280	Talk radio	WYAL
+99345	1280	Multilingual	CFMB (AM)
+102914	1280	Romantic	XEAW (AM)
+166342	1280	Defunct	XEPVI-AM
+1000009828	1280	Campus and community radio	CJTM
+542	1290	Talk radio	KOIL
+1917	1290	News/talk	WJNO
+3038	1290	News/talk/sports/oldies	WLYV
+8183	1290	Southern Gospel	WJCV
+8589	1290	Conservative talk	WTKS (AM)
+10134	1290	Catholic radio	KKDD
+10694	1290	Latin pop	WCHK (AM)
+11081	1290	Spanish Religious	KRGE
+13012	1290	Christian radio	WPCF
+13040	1290	Conservative talk	WIRL
+14244	1290	Talk radio	WHIO (AM)
+14373	1290	Sports	WWTX
+17829	1290	Country; oldies; southern gospel	WOPP
+19089	1290	Gospel	KDMS
+21723	1290	Conservative Religious	WDZY
+22975	1290	Sports	KPAY (AM)
+24700	1290	News Talk Information	KOWB
+25073	1290	Christian radio	WNWW
+28255	1290	Classic Country	KOUU
+35729	1290	Regional Mexican	KUOA
+36833	1290	News/talk	WKBK
+37126	1290	Classic country	KMMM
+38268	1290	Full-service	WVOW (AM)
+38269	1290	Contemporary hit radio	WFBG
+41081	1290	Talk	WLBY
+43833	1290	Classic hip hop	WWHM
+48308	1290	Public radio	WPVD (AM)
+48912	1290	Adult contemporary gold	WNIL
+51106	1290	Southern gospel	KALM
+53943	1290	Oldies	WCBL (AM)
+54253	1290	News/Talk	KBMO
+54572	1290	Music and talk	KAZA (AM)
+56051	1290	Sports	KCUB (AM)
+57731	1290	Local News/Talk	KZSB
+57756	1290	News/talk	KUMA (AM)
+60607	1290	Adult standards	WBTG (AM)
+61681	1290	Sports	WKLJ
+63597	1290	Full service oldies	WRJM (AM)
+70638	1290	Country	WYEA
+71751	1290	News/talk	KGVO (AM)
+72127	1290	Urban Gospel	WXKL
+72372	1290	News-talk	WNBF
+102925	1290	News/talk	XEDA-AM
+104495	1290	News/talk/sports	CJBK (AM)
+1000000454	1290	Multilingual	CJRC (AM)
+3	1300	Classic country	WPDX (AM)
+9886	1300	Country music	KLER (AM)
+11662	1300	Classic country	WWCH
+11920	1300	Sports radio	WAVZ
+11939	1300	Conservative talk	KAKC
+12382	1300	Southern gospel	WMTM (AM)
+14390	1300	Urban contemporary	WSSG
+17068	1300	Classic country	WXRL
+17468	1300	Sports	KDSO (AM)
+22191	1300	Adult contemporary, Oldies, and Carolina Beach Music	WLNC
+22338	1300	Classic country	WMTN (AM)
+22667	1300	Tropical music	WLMZ (AM)
+28309	1300	Polish	WRDZ (AM)
+28636	1300	Sports gambling	WJZ (AM)
+30114	1300	News/talk	KGLO
+31108	1300	Conservative talk	KHTW
+31596	1300	News/Talk (Public)	KPMO
+35850	1300	Sports	KVET (AM)
+36114	1300	Sports	WLXG
+40768	1300	Talk	WGDJ
+40780	1300	News talk	WOSO (AM)
+40801	1300	Classic country	KCMY
+41389	1300	Tropical music	WJMO
+41815	1300	Talk radio	WKCY (AM)
+43228	1300	Country music	KMMO (AM)
+43330	1300	Classic hits/news/talk	KOLY (AM)
+48011	1300	Talk/Sports/Classic Hits	WTLS
+49857	1300	Country	KTDS
+50404	1300	Urban gospel	WOAD (AM)
+52370	1300	Sports radio	WOSW
+53979	1300	Sports	WFRX
+55005	1300	Catholic radio	WDMC (AM)
+57516	1300	News/Talk	KBRL
+59618	1300	Silent (open-carrier)	WQPM
+60503	1300	Catholic programming	WCKI
+61159	1300	Reggaeton	WJDA
+62039	1300	Sports	KCSF
+63385	1300	Full-service	WJBB (AM)
+63470	1300	Christian radio	KROP
+64066	1300	Oldies	WSYD
+65664	1300	News/talk	WFFG (AM)
+65774	1300	Punjabi language	KWRU
+71098	1300	Christian and southern gospel	WBSA
+72788	1300	Spanish	WBZQ
+73176	1300	Sports	WJYP
+73317	1300	Christian talk and teaching	WNEA
+73349	1300	Christian radio	WNQM
+73604	1300	News/talk	WOOD (AM)
+74155	1300	Spanish Variety	WQBN
+102943	1300	Pop	XEXV-AM
+137670	1300	Regional Mexican, News/talk	XEP-AM
+160495	1300	Classic Country	KPMI (AM)
+96	1310	South Asian	KMKY (AM)
+290	1310	Classic hits	WAFN (AM)
+3404	1310	News/talk	KLIX (AM)
+6593	1310	Contemporary hit radio and regional Mexican	WDTW (AM)
+7050	1310	KTNN (Simulcast)	KKNS
+7741	1310	Christian radio	WYND (AM)
+8551	1310	Oldies	WTZN
+8773	1310	Sports radio	KTCK (AM)
+9202	1310	News–talk	WLOB
+10071	1310	News/Talk and Sports	WBFD
+10631	1310	Spanish tropical	WGSP (AM)
+12202	1310	Southern gospel	WOKA (AM)
+13799	1310	Contemporary Christian	WTTL (AM)
+14895	1310	Oldies	WOBM (AM)
+16415	1310	Regional Mexican	KZIP
+17384	1310	News/Talk	WIBA (AM)
+19468	1310	Catholic radio	KIHP (AM)
+20421	1310	Sports	WCCW (AM)
+20668	1310	Korean	WDCT
+29957	1310	Indian talk / music	WXMC
+31874	1310	Classic country	KGLB
+34928	1310	Contemporary hit radio	WICU (AM)
+36144	1310	Latin pop	WWWE (AM)
+37244	1310	Sports	WDXI
+39750	1310	Silent: was Classic hits	KZYP (AM)
+40387	1310	Real Country	WAUC
+51433	1310	Urban gospel	WTLC (AM)
+52314	1310	Adult contemporary	KDLS (AM)
+53105	1310	Regional Mexican	WTIK
+53675	1310	Silent (formerly Regional Mexican)	KZXR (AM)
+54592	1310	News/talk	KNOX (AM)
+54864	1310	Sports	WPCH (AM)
+56664	1310	Comedy	KEIN
+57472	1310	Urban Gospel	WJUS
+58264	1310	Talk & Sports	KOKX (AM)
+59678	1310	News/talk	WSLW
+60292	1310	Oldies	KGMT
+60423	1310	Travelers information	KKZI
+63429	1310	Full service/oldies	WHEP
+68835	1310	Sports	WISE (AM)
+70273	1310	Christian music and teaching	WRVP
+71348	1310	Southern Gospel	WDOC
+71443	1310	News/talk	KFKA
+71605	1310	News/talk	KZRG
+71854	1310	News Talk Information	KYUL
+72103	1310	Sports	WGH (AM)
+72347	1310	adult standards / soft oldies / talk radio	WICH
+74073	1310	Contemporary hit radio	WEMG
+88676	1310	Classic country	WOKR (AM)
+102967	1310	talk	XEC-AM
+103000	1310	News/talk and Spanish classic hits	XEAM-AM
+104808	1310	News/talk	CIWW (AM)
+166371	1310	Romantic	XETIA-AM
+792591	1310	News/talk, Spanish classic hits	XEVB-AM
+2758	1320	Public Radio, Full service	KOFA (AM)
+3060	1320	Oldies	WDIZ (AM)
+6411	1320	Classic hits	WENN (AM)
+10829	1320	Southern gospel	WKRK (AM)
+12205	1320	News/Talk	WMSR (AM)
+14763	1320	Sports	KCLI (AM)
+22099	1320	News/talk	KWHN
+23609	1320	Haitian Creole	WLQY
+24448	1320	Oldies	WDMJ
+27510	1320	Spanish CHR	WTKZ
+29736	1320	Tropical music	WJNJ
+30102	1320	country music	KVMC
+30278	1320	Urban Talk	WDSA
+34971	1320	Commercial; Oldies/Sports/Talk	KOZY (AM)
+35124	1320	News/Talk	KGDC
+36744	1320	News Talk Information	KLWN
+36830	1320	Eclectic	KSDT Radio
+39463	1320	Country	KNIA
+39537	1320	Talk radio	WILS
+41981	1320	Talk radio	KELO (AM)
+48244	1320	Country music	WBRT
+51506	1320	Alternative rock, freeform	KKSM
+52043	1320	Country music	WRJW
+52050	1320	Spanish CHR	WBTL (AM)
+52674	1320	News/talk	KXRO
+53485	1320	Classic rock	WJKI (AM)
+53500	1320	Christian Radio (Christian music and teaching programs)	KNIT (AM)
+55705	1320	talk radio	WJAS
+56220	1320	Brokered programming - Urban Gospel	WCVG
+62359	1320	Talk/Personality	WKAN
+63472	1320	Country music	WCVR
+65197	1320	Community radio	WARA (AM)
+67132	1320	Contemporary Christian	WGET
+67848	1320	Sports	KIFM
+70330	1320	Sports radio	WVGM
+70466	1320	Oldies	KRLW
+70700	1320	Oldies	WAGY
+71102	1320	classic hits / full-service radio	WATR
+73053	1320	Oldies	WFHR
+73217	1320	Country	WLOH
+73364	1320	Country	WOBL
+74203	1320	Oldies	WCOG (AM)
+122805	1320	Multicultural (12 languages)	CHMB (AM)
+204112	1320	Easy Listening Instrumental Music	XEARZ-AM
+64	1330	Sports	WEBY
+671	1330	Sports talk radio	WNTA
+5848	1330	Talk radio with sports	WFIN
+8674	1330	Christian radio	WHAZ (AM)
+9415	1330	Oldies	KVOL
+9967	1330	Conservative Talk	WHBL
+12572	1330	Classic country	WRAA
+14018	1330	Spanish Religious	KINE (AM)
+14061	1330	Off the air and currently streaming Classic alternative	KGRG (AM)
+14619	1330	Talk radio	WAEW
+18385	1330	Country	WESR (AM)
+19478	1330	Black gospel	WHNK (AM)
+19801	1330	World Ethnic	KLBS
+19815	1330	Country music	WKDP (AM)
+20437	1330	Regional Mexican	WJNX (AM)
+22624	1330	Talk radio	KOVE (AM)
+23050	1330	Native American	KGAK
+23911	1330	Christian radio	WGTJ
+24138	1330	Christian radio	WBGW (AM)
+24246	1330	Gospel	KGLD
+26221	1330	Conservative talk	WINT (AM)
+26514	1330	Classic hits	WETZ
+26611	1330	Sports	WFNN
+29689	1330	Oldies	WYPC
+33712	1330	Classic Country	WRAM
+34389	1330	Conservative talk radio	WYRD (AM)
+35048	1330	Classic Country	KCKM
+35120	1330	Adult hits	WHGM
+38454	1330	Talk radio with sports	KWKW
+42367	1330	Religious	KTON
+51662	1330	Classic country	KPTY (AM)
+52544	1330	Adult contemporary	WBTM
+52909	1330	Russian (weekdays 7 a.m.–7 p.m.) / Latin pop and reggaeton (weekdays 7 p.m.–7 a.	WKTA
+53152	1330	News/talk	KNSS (AM)
+54515	1330	News Talk Information	WLBB
+54837	1330	Variety	WWAB
+54874	1330	Christian music / and teaching	WWRV
+60695	1330	Mainstream rock	WRCA
+61257	1330	Variety	WENA
+62475	1330	Contemporary Christian	WMLT
+65985	1330	Worship music	KYOZ
+66328	1330	Talk radio	WNIX
+71303	1330	Catholic radio	WCVC
+71398	1330	Full-service (AC/News Hybrid)	WEBO
+74124	1330	Country music	WTRE (AM)
+74164	1330	Classic hits	WGFT
+105110	1330	Classic hits	CJYM (AM)
+161171	1330	Classic hits	KXXJ
+97	1340	Talk and oldies	WMSA
+438	1340	News Talk Information	WBIW
+700	1340	Classic rock	WFEB
+947	1340	Urban Adult Contemporary	WJAM
+1019	1340	1980's hits	KGKG
+1056	1340	Classic hits	WTRN
+1098	1340	Sports	WIFN (AM)
+1307	1340	Oldies	WMID
+2874	1340	News Talk Information	WDSR
+2926	1340	Sports	WNCO (AM)
+3137	1340	Classic hits	WALL
+4811	1340	Classic hits	WEKY
+5212	1340	Oldies	KBBR
+5272	1340	Sports	WSBM
+7038	1340	Urban gospel	WYCB
+7336	1340	Oldies and talk radio	KLID
+7829	1340	Classic country	WGAA
+9749	1340	Sports	KCBL
+9933	1340	News Talk	KGFW
+10327	1340	Public radio	KCLU (AM)
+10338	1340	Contemporary hit radio	KSGT
+11709	1340	News/talk	WGAU
+12189	1340	Talk radio	KTOX
+12433	1340	Country	KIHR
+14478	1340	Talk	KTMP
+14514	1340	Christian	KCCE (AM)
+14714	1340	Talk radio	WLVL
+15264	1340	Adult contemporary	KIJV
+15846	1340	Urban oldies	WOKS
+16570	1340	Oldies	KZNG
+17574	1340	Talk radio / adult standards	WTAN
+17601	1340	Talk; sports	WMUN
+17740	1340	Christian Radio	KVIV
+19058	1340	Talk radio	WJPF
+20298	1340	News/talk	KUOW (AM)
+21588	1340	Sports	WCMI (AM)
+21696	1340	Classic country	WLDY
+22352	1340	Sports radio	WCDT
+22694	1340	Talk radio	KOMY
+24214	1340	Gospel music	WLOK
+24252	1340	Variety	KWXY
+24584	1340	News / Talk (as of January 5, 2009)	WAGN (AM)
+25001	1340	Classic hits	WMBO (AM)
+25866	1340	Variety hits	WNBH
+27243	1340	Country	WBVR (AM)
+28474	1340	News Talk Information	KVNN
+28816	1340	Urban Gospel / Christian talk and teaching	WADE (AM)
+29196	1340	Sports	KRBT
+29237	1340	Punjabi music, talk and news	KWLE
+29520	1340	Sports	KCQL
+29695	1340	Classic Hits	WNBS
+30138	1340	Urban oldies	KCAT
+32389	1340	Soft rock, Adult standards	KYLT
+33215	1340	Regional Mexican	WWFL
+33686	1340	Contemporary hit radio	WHAT (AM)
+33697	1340	Mexican Regional music	KDTD
+33698	1340	Classic Rock	KSEK (AM)
+33900	1340	Country music	WHAP
+34475	1340	News/Talk, Country	KXPO
+34550	1340	Country	KHUB
+34563	1340	Conservative talk radio	KICK (AM)
+34585	1340	Catholic radio	KDCO (AM)
+35557	1340	Variety	KROS
+35602	1340	Classic country	KSID (AM)
+35610	1340	Country music	KSMO (AM)
+35897	1340	Talk	KWOR
+35951	1340	Adult contemporary	KXEO
+36169	1340	Conservative talk	WROD
+36349	1340	Country	KPGE
+36371	1340	Christian talk and teaching	WJOI
+36835	1340	Classic hits	WYCK
+37000	1340	News/talk/classic hits	KDLM
+37469	1340	Religious children's radio	WMDR (AM)
+37816	1340	News/talk	KPRK
+39621	1340	Christian	WSSC (AM)
+40756	1340	Sports	KKGK
+41244	1340	Sports	KATA (AM)
+41310	1340	Gospel	WAGR (AM)
+41679	1340	Sports	WJRW
+41995	1340	Variety hits	WKRM
+47101	1340	Urban gospel	KJMU
+47151	1340	Sports	KTMM
+48921	1340	Southern Gospel / Black Gospel	WBLB
+49403	1340	Adult album alternative	WSTJ
+49815	1340	Spanish Variety	WWNA
+50145	1340	Public radio; community radio	WOUB (AM)
+50333	1340	Haitian Creole talk and contemporary hits	WPBR
+50710	1340	Catholic radio	KPYV
+50777	1340	News/Talk	WRHI
+52617	1340	Gospel	WAML (AM)
+53139	1340	Sports	KJOX (AM)
+53484	1340	News/talk and sports radio	WEPM
+54594	1340	Gospel	WCBQ
+54602	1340	News/talk	WGRV (AM)
+54873	1340	Country	WVCV
+57629	1340	Classic hits	WITS (AM)
+58315	1340	Conservative talk radio	WWPA
+58364	1340	Regional Mexican	WLSG
+58388	1340	Sports	KGHM (AM)
+59049	1340	Sports	KYSP
+59248	1340	Black-oriented news	WYNF
+60496	1340	Entertaimment talk	KVBR
+60644	1340	Country music	KYCN
+60798	1340	Silent (Previous format: News/talk/sports )	KKAM
+61321	1340	News/talk	KROC (AM)
+61679	1340	Urban gospel	WCHB
+62208	1340	All-news radio	WIZE
+62235	1340	News talk/sports	WJOL
+62238	1340	Classic country	KOLE
+63326	1340	Country music	KRBA
+65592	1340	Adult standards	WKSN
+65929	1340	Sports	WMBN
+66229	1340	Talk radio	KTPI (AM)
+66967	1340	Oldies	WBBT (AM)
+67045	1340	Country	WLEW (AM)
+67097	1340	Silent	WTIF (AM)
+67309	1340	Sports	KTOQ
+67594	1340	Talk radio	KLOO (AM)
+67796	1340	Country	KPOK
+68146	1340	Sports	WKGN
+69566	1340	Talk	WRAW
+70744	1340	News/Talk/Sports	KWVR (AM)
+71232	1340	Classic hits	WBRK (AM)
+72088	1340	Talk	WGAW
+72260	1340	Oldies/Adult Standards	KBTA (AM)
+72291	1340	Full Service Adult Contemporary	WENT
+72477	1340	Talk	KIKO (AM)
+72512	1340	Country/Bluegrass	WTYS (AM)
+72820	1340	news/talk / public radio	WYBC (AM)
+72970	1340	Gospel	WPOL
+73035	1340	Full service	WIRY (AM)
+73039	1340	Classic country	KYNS
+73149	1340	Adult contemporary	WJRI
+73682	1340	Sports radio	KWKC
+74476	1340	Classic hits	KACH
+103099	1340	Silent	XEAA-AM
+103111	1340	Sports	XEDKT-AM
+103117	1340	Grupera	XECR-AM
+103131	1340	Cumbia and vallenato music	XENV-AM
+103148	1340	Country music	XEBK (AM)
+128808	1340	Adult contemporary	WBAN
+137840	1340	Christian Contemporary music	KVOT
+160449	1340	Classic hits and full-service	KVGC
+160700	1340	Urban Contemporary	KQDE
+160749	1340	News–talk	KBNW (AM)
+160947	1340	Regional Mexican	KGGS
+161077	1340	Soft adult contemporary	WBNC
+204546	1340	Cumbia and vallenato music	XENV-AM
+2399	1350	Sports	KPWK (AM)
+4046	1350	Classic Country	KHDY (AM)
+4534	1350	News/talk	WBLT
+11076	1350	Sports	WFNS (AM)
+12294	1350	Talk radio / adult standards	WDCF
+13849	1350	Country	WTDR (AM)
+14378	1350	Catholic radio	WNLK
+16567	1350	Classic Country	KTLQ
+16854	1350	Sports	KTIK (AM)
+17730	1350	News/Talk	KFTP
+20661	1350	Southern Gospel	WLLY (AM)
+22881	1350	Talk radio	KSRO
+23321	1350	Classic hits	WHNM
+24112	1350	adult contemporary / full-service radio	WINY
+26470	1350	Country	WCSM (AM)
+31883	1350	Urban adult contemporary	WLOU
+33878	1350	Urban adult contemporary	WVBP
+34904	1350	Classic country / polka	KCHK (AM)
+35516	1350	Classic rock	WAUN (AM)
+39783	1350	Talk radio	KMAN
+39798	1350	Urban adult contemporary	WZKO
+40654	1350	Classic country	WZGM
+41849	1350	Sports	WIOU (AM)
+43740	1350	Oldies	WHIP (AM)
+47426	1350	Christian music	WHWH
+48761	1350	Full-service / (News Talk Information, oldies)	WRWH
+49951	1350	Sports radio	WARF
+52622	1350	Classic country	WCMP (AM)
+53657	1350	Sports	WRNY (AM)
+53850	1350	Sports	KUBE (AM)
+54895	1350	Sports	WNVA (AM)
+55078	1350	Classic hits	KBRX (AM)
+58534	1350	Sports	KRNT
+61420	1350	Ethnic/Punjabi	KLHC
+65394	1350	Sports	KABQ (AM)
+65640	1350	News/talk/sports	WNTX
+67069	1350	Tejano	KXTN (AM)
+67210	1350	Classic hits	WBML
+67770	1350	Classic country	KDIO
+69560	1350	Black gospel	WGPL
+69853	1350	Religious	WEGA (AM)
+70298	1350	country music	WSIQ
+72959	1350	Sports gambling	WWWL
+73598	1350	Sports	WRKM
+73873	1350	Sports radio	WOYK
+74225	1350	Soft adult contemporary	WCHI (AM)
+103158	1350	English classic hits	XETB-AM
+103171	1350	Indigenous community radio	XECTZ (AM)
+103181	1350	Romantic	XELBL-AM
+198590	1350	Multilingual - South Asian	CIRF
+796413	1350	Women's Community radio (feminist), talk and music	XEQK-AM
+5301	1360	Oldies	KRKK
+6349	1360	Catholic radio	KNIR
+7044	1360	Country	WGJK
+7711	1360	Conservative talk	WDRC (AM)
+10825	1360	Spanish / Christian radio	KMNY
+12959	1360	Talk radio	KFIV
+13724	1360	Oldies	WWOW
+14659	1360	Sports Radio	WKMI
+16410	1360	talk / adult contemporary	WLBK
+16520	1360	Country	KFFA (AM)
+17183	1360	Conservative talk radio	KHNC
+17283	1360	Full-Service	KRWC
+18134	1360	Sports	WLWE
+19708	1360	Classic rock	WOEN
+21691	1360	News/talk	KSCJ
+21766	1360	Variety (classic country, oldies)	WHNR
+22056	1360	Regional Mexican	KGMR
+24585	1360	Talk and sports	WMOV (AM)
+25414	1360	Spanish Christian	WTOC (AM)
+27077	1360	Classic Country	KOHU
+27079	1360	Urban Gospel	WNAH
+27423	1360	Religious	WELP
+27713	1360	Haitian	WQVN
+29679	1360	Classic Country	WKYO
+30157	1360	Classic country	KWDJ (AM)
+30609	1360	Urban gospel	WCGL
+33301	1360	Classic regional Mexican	KKMO
+34452	1360	Talk	KLSD
+41994	1360	Sports radio	WSAI
+48509	1360	Catholic radio	KDJW
+48538	1360	Catholic radio	KPHN
+50744	1360	Classic country	KMRN
+53134	1360	Full-service radio	WPPA
+53948	1360	Oldies; classic hits	WLYN
+54164	1360	Oldies	KMJM (AM)
+54676	1360	Sports radio	WBMZ (AM)
+55912	1360	Christian radio	KPXQ
+57257	1360	Oldies	WVRQ (AM)
+58724	1360	Urban contemporary gospel	KWWJ
+59695	1360	Urban contemporary gospel	WGBN
+60508	1360	Rhythmic Oldies / Blues / Gospel / Talk	WIXI
+63324	1360	Classic Country	WFLW
+64567	1360	Sports	KBKB (AM)
+65925	1360	Religious	KNGN
+67038	1360	Southern Gospel	WHJC (AM)
+68600	1360	Oldies	WCGX
+70191	1360	News/talk; sports; adult album alternative	WCHL (AM)
+70826	1360	Classic hits	KBUY
+72143	1360	Sports	WHBG
+74562	1360	News/Talk	KACT (AM)
+103213	1360	Indigenous community radio	XEZON-AM
+1243	1370	Talk radio	KJCE
+5225	1370	True Country	KWRT
+8392	1370	Religious	WIVV
+9210	1370	Classic country	WGOH
+9309	1370	Full service variety	WBTN (AM)
+9932	1370	Classic hits	KAWL
+10027	1370	Soft adult contemporary	WCCN (AM)
+10136	1370	Conservative talk radio	WLID
+12142	1370	Talk radio	WCOA (AM)
+13967	1370	Classic hits	WWCB
+17671	1370	Adult standards	WDEA
+22027	1370	Mainstream urban	WGIV
+25002	1370	Christian, traditional hymns and songs	WPAZ
+26151	1370	Spanish	WLLN
+26441	1370	Alternative rock	KHXM
+27691	1370	Sports radio	WQLL
+29047	1370	Classic hits	KIOL
+29647	1370	Talk	KWNC
+31095	1370	Fox Sports Radio	WLOP
+37130	1370	Classic country	KGNO
+38402	1370	Urban Adult Contemporary	WLTH
+39692	1370	All-news radio	KWRM
+41067	1370	Conservative talk radio	WZTA
+48742	1370	News/Talk	KAWW
+50235	1370	Urban adult contemporary	WSHV
+51125	1370	Classic hits	WLOV (AM)
+51825	1370	Full-service	WHEE
+53369	1370	Talk radio	WVLY (AM)
+53678	1370	Classic hits	WFDR (AM)
+53976	1370	Country	KCRV (AM)
+54978	1370	Talk radio	KRAC
+57064	1370	News/Talk	WOCA
+57446	1370	Regional Mexican	KGEN (AM)
+57845	1370	Adult album alternative	WXCT
+58543	1370	Talk	WFEA
+59131	1370	Sports	WWZN
+61260	1370	Spanish CHR & Regional Mexican	WQEZ
+62187	1370	Conservative talk	WSPD
+63528	1370	News/talk	WJIP
+63871	1370	Talk	KXTL
+68841	1370	Regional Mexican	KZSF
+69201	1370	Catholic	KWTL
+70455	1370	Classic hits	KFRO (AM)
+72104	1370	Regional Mexican	WGHA
+72315	1370	Classic country	WKMC
+73259	1370	Full-service	WMGO
+73656	1370	Country music	KSUM
+73662	1370	Adult standards/MOR	KDTH
+73944	1370	Classic country	WRGS
+74220	1370	news/talk / public radio	WXXI (AM)
+74433	1370	Talk radio	KAST (AM)
+103223	1370	Spanish Contemporary	XEHG-AM
+103235	1370	Catholic radio	XEPJ-AM
+665	1380	Gospel music	KZTS (AM)
+681	1380	Spanish Variety	WHEW
+1734	1380	News/talk	WNRI
+2552	1380	Classic country	WRAB
+6013	1380	Classic hits	WMTD (AM)
+7321	1380	Adult contemporary	KBWD
+7902	1380	Talk radio	WGYV
+8517	1380	Portuguese contemporary hit radio	WFNW
+9109	1380	Classic hits	KCIM
+10826	1380	Christian radio	KCNW
+11954	1380	Catholic radio	WWMI
+12049	1380	Classic Country	WYSH
+14228	1380	Spanish Religious	KRCM
+15670	1380	Blues	WLRM
+17678	1380	News/talk	KOTA (AM)
+18947	1380	Hot adult contemporary	WMTA
+19702	1380	Talk radio	KOSS
+24461	1380	Mainstream rock	WWRF
+25129	1380	Spanish popular music, news / Brokered programming	KMUS
+25740	1380	Classic hits	WSYB
+27178	1380	Classic hits	KUVR (AM)
+27402	1380	Top 40 (CHR)	WIKG
+29514	1380	Southern gospel	WLRV
+33276	1380	Country music	KHWK (AM)
+35423	1380	Full-service adult hits	WGLM
+36453	1380	Gospel	WVSA
+48381	1380	Traffic	WTMC
+50213	1380	Urban adult contemporary	KKRX
+51724	1380	Sports radio	WKJG
+52119	1380	Country	WABH
+55415	1380	Spanish Catholic	KWMF
+57831	1380	Religious	WBTK
+58582	1380	Sports	WOTE
+58732	1380	1990s hits	WBEL (AM)
+59270	1380	Silent, was Spanish language	WWNT
+59599	1380	Conservative talk radio	KTKZ
+62056	1380	Classic Hits	KRKO
+63775	1380	Urban talk radio	WAOK
+67343	1380	Spanish Adult Contemporary	WOLA (AM)
+67771	1380	Sports radio	KHEY (AM)
+69975	1380	Classic hits	WKFO
+70083	1380	Full Service	KQKD
+70108	1380	Classic rock	WDLW
+71137	1380	Brokered Mandarin Chinese (weekdays) / Spanish language Christian radio (weekend	WKDM
+72321	1380	Christian radio	WMJR
+72467	1380	Silient	WNRR
+72937	1380	Progressive talk radio	WELE
+73271	1380	Conservative talk radio	WMLP
+74579	1380	Christian	KXFN
+136594	1380	Romantic music	XECO-AM
+161424	1380	Regional Mexican	KVSM
+3710	1390	Country music	KULP
+6811	1390	Gospel	WHMA (AM)
+9423	1390	Catholic radio	WEGP
+9679	1390	Classic hits	KRRZ
+10076	1390	Southern Gospel	WABB
+10856	1390	Sports	KCRC (AM)
+13669	1390	Sports	WNIO
+13931	1390	Oldies/Talk/Personality	WYXI
+14647	1390	Adult standards	WRIV
+14742	1390	Sports radio	WTJF (AM)
+17478	1390	Classic country	WROA
+18021	1390	Sports talk	WMPO
+21233	1390	Classic Texas Country	KBEC
+24209	1390	Urban Contemporary	WAJD
+29218	1390	Spanish News/Talk	WISA
+30121	1390	Classic hits	KRFO (AM)
+30600	1390	Spanish Music	KDQN (AM)
+31882	1390	Red Dirt country	KFFK
+31887	1390	Classic Country	WMCT
+33055	1390	Oldies	KCLN
+33953	1390	Talk radio	KENN (AM)
+34821	1390	Classic hits	WFBL
+35210	1390	Classic hits	KNCK (AM)
+39580	1390	Classic hits	KJAM (AM)
+42076	1390	Catholic	WLCM
+43632	1390	Gospel	WJRM
+43981	1390	Top 40/CHR	WKIC (AM)
+48542	1390	Gospel music	WMER
+49875	1390	Sports	KBBO (AM)
+51162	1390	Urban gospel	WGRB
+52837	1390	Talk radio	WPLM (AM)
+53877	1390	News talk information	KJPW
+54328	1390	Christian radio	WWTM
+54825	1390	Gospel music	WEED (AM)
+58381	1390	Oldies–classic hits	WZZB
+59971	1390	Gospel	WNLA (AM)
+60038	1390	Urban gospel	WSPO
+60426	1390	Catholic radio	KLOC
+62340	1390	Sports	WKLP
+63831	1390	Sports	KLGN
+64849	1390	Contemporary hit radio	WBHV (AM)
+69627	1390	Country music	WBLL
+70669	1390	Oldies / Beach Music	WOHS
+71513	1390	Adult hits	WEOK
+72475	1390	Christian radio	KZGD
+72684	1390	Variety	WAVP
+73306	1390	Regional Mexican	WZHF
+73931	1390	Southern Gospel	WTNL
+73946	1390	Sports	WRIG
+103307	1390	Pop	XEQC-AM
+103311	1390	All-news radio / Talk radio	XEOR-AM
+131783	1390	All-news radio / Talk radio	XEOR-AM
+99	1400	Regional Mexican	KMNV
+503	1400	Talk radio	WSIC
+978	1400	News/Talk	WKNW
+2096	1400	Talk radio	KRZR
+2107	1400	Sports	WBIZ (AM)
+2681	1400	Latin-American music	WIRA
+3026	1400	Sports	WSPG
+3119	1400	News/talk	WJMX (AM)
+4078	1400	Classic country	WATW
+4439	1400	News/talk	KKTK
+4673	1400	Sports	WCOS (AM)
+4683	1400	Public radio	WAMC (AM)
+5917	1400	Country	KJDY (AM)
+5989	1400	News Talk Information	KSPT
+6606	1400	Religious	KJYE
+7047	1400	Classic hits	KBLJ
+10025	1400	Country	KRUN
+10651	1400	Christian adult contemporary	WKAV
+10660	1400	Public radio / news/talk	WSTC
+12396	1400	News–talk	KFRU
+12495	1400	Conservative talk	WNZE
+14961	1400	News-talk	WDWS
+15325	1400	News/Talk	WRAK (AM)
+15369	1400	Adult contemporary	WDNY (AM)
+16782	1400	Adult Contemporary	KADR
+17390	1400	Classic Country	KRVZ
+17590	1400	Classic hits	KBYG
+18074	1400	Oldies	KAYS (AM)
+18089	1400	Classic hits	KCOW
+18183	1400	Classic Country	KWYN (AM)
+19355	1400	Sports	WIEL
+20412	1400	Classic country	WFTG
+21430	1400	Regional Mexican	KSUN
+21598	1400	Sports radio	KGVL
+22192	1400	Sports	KREF (AM)
+23039	1400	Talk radio	WGIL
+23899	1400	Classic country	WGTN (AM)
+24697	1400	Gospel	WMFA
+24971	1400	Latin pop–reggaeton–tropical music	WLLH
+25119	1400	Sports	WDUZ
+25350	1400	Regional Mexican	KRSC (AM)
+25548	1400	Sports	WSEG
+27495	1400	Sports	WKPT (AM)
+32944	1400	Sports radio	WHGB
+32999	1400	News/talk / classic Country	KMHL
+33445	1400	Classic Country	KART (AM)
+33736	1400	Classic hits	KCOG
+33777	1400	Regional Mexican	KUNO (AM)
+35060	1400	Talk	KLCK (AM)
+35064	1400	Talk radio	KLIN
+35532	1400	News-talk	KJFF
+35561	1400	Sports	KRPL
+35605	1400	News/talk	KSIM
+35684	1400	Conservative talk radio	KTUC
+36004	1400	News/Talk	KWON
+36489	1400	Oldies	WICK
+37023	1400	Classic rock	WZNG
+37462	1400	Religious	WBFN
+38379	1400	Country	KBAM (AM)
+38636	1400	Classic hits	KFTM
+39616	1400	Classic country	KCYK
+39626	1400	Southern gospel	WHHV
+39675	1400	Sports	WSMY
+40979	1400	Sports	WMXF
+40994	1400	Country (day)/Oldies (night)	KBJM
+41437	1400	Full service oldies	WRJN
+41809	1400	News/Talk/Sports	WINC (AM)
+41826	1400	Christian adult contemporary	WQXO
+42660	1400	Christian radio	WLTA
+46962	1400	News/talk	WHMP
+47137	1400	Country music	KCHS (AM)
+48739	1400	Sports	WRZX (AM)
+48945	1400	Talk radio	KELD (AM)
+50004	1400	Adult standards; news–talk	KBCH
+50409	1400	Sports radio	WJQS
+51287	1400	Country music	KWUF (AM)
+51639	1400	Sports	KNRO
+52064	1400	Country music	KIUN
+52328	1400	Country	KEYE (AM)
+53103	1400	Talk	KIXR
+53300	1400	Country	KEYL
+53635	1400	Oldies	WLTN (AM)
+54034	1400	Urban contemporary gospel	WUXL
+54166	1400	Country	KTNM
+54562	1400	Urban adult contemporary	WVGC (AM)
+54612	1400	Sports	WFOR (AM)
+54683	1400	News/Talk/Sports	KREW
+54709	1400	All-news radio	WWIN (AM)
+54870	1400	Spanish Christian	WIDA (AM)
+55502	1400	Sports - Brokered Programming	KSHP
+56104	1400	Urban oldies	WWWS
+56299	1400	Urban oldies / Blues	WJLD
+58897	1400	Adult standards	KKJL
+59101	1400	Sports	KVSF (AM)
+59233	1400	Oldies / Sports radio	WRDB
+60701	1400	Brokered Portuguese	WHTB
+60862	1400	Talk	KVFD (AM)
+61042	1400	Urban contemporary	WEOA
+61102	1400	Talk radio	WOND
+62294	1400	Southern gospel	WVRC (AM)
+63200	1400	Talk	KTEM
+63425	1400	Adult hits	WYUP
+63796	1400	News/talk	WANI
+63861	1400	Catholic	WAWO
+63878	1400	Sports	KXGF
+63886	1400	Sports	KGMY
+65603	1400	Adult standards	WKBI (AM)
+65672	1400	Top 40 (CHR)	WCCY
+65930	1400	Soft adult contemporary	WSAM
+66663	1400	Sports	WSLB
+66972	1400	Classic country	KNND
+67330	1400	Talk radio	KAOK
+67593	1400	Adult contemporary	KTMC (AM)
+67609	1400	News/talk	WMAN (AM)
+67812	1400	Portuguese talk	WFLL
+68626	1400	Soft adult contemporary	KQDJ (AM)
+68641	1400	Conservative talk radio	WDTK
+68761	1400	Gospel music	WZAZ
+69777	1400	News/talk/sports / adult contemporary music	KVOE (AM)
+70514	1400	Contemporary Christian music	WHUB
+70562	1400	Regional Mexican	KUNX
+70741	1400	Silent	KEBE
+71213	1400	Country	WBIP
+71307	1400	Classic hits	WCYN (AM)
+72087	1400	Adult hits	WGAP
+72813	1400	Traditional Urban Gospel	WPCE
+73156	1400	Gospel music	WKEW
+73192	1400	Sports	WBBD
+74004	1400	Sports	WQYQ
+74351	1400	News/talk/sports	KODI
+74550	1400	Variety (oldies, classic country and rockabilly)	WZHR
+86873	1400	Classic country	KKTL
+89558	1400	Variety	KNNR
+103342	1400	University radio	XEUBJ-AM
+105786	1400	News/Talk	CBG (AM)
+128805	1400	Rhythmic contemporary hit radio	WHZP
+129158	1400	Christian radio	WHLJ (AM)
+129732	1400	Sports	KAZZ (AM)
+160359	1400	Southern gospel and bluegrass	WAJL
+160910	1400	Catholic	KIHH
+161860	1400	Beach music	WAVQ (AM)
+854	1410	Catholic	WNGL
+3157	1410	Soft oldies	WENU
+4670	1410	News/Talk	WDOV
+6561	1410	Oldies–full-service radio	KNTX
+6640	1410	Brokered Christian	KERI
+8445	1410	Easy listening	KQV
+10345	1410	Spanish-language Christian radio	KKLO
+12076	1410	Americana / folk	WSCW
+12942	1410	Classic country	KWYO
+14502	1410	News Talk Information	WLAQ
+17761	1410	Spanish Christian	WRJD
+18232	1410	Adult standards	WLSH
+19222	1410	Talk / sports	WRMN
+20667	1410	News Talk Information	WIZM (AM)
+21512	1410	Conservative talk radio	WSHY
+23466	1410	Oldies	WHAG (AM)
+25039	1410	Sports radio	WING
+26940	1410	Classic Country	WKKP
+27532	1410	Classic hits	KITE (AM)
+30274	1410	Christian Radio	KHCH
+32995	1410	Sports	KDBS
+32998	1410	Classic hits	KLEM
+36720	1410	Rhythmic oldies, Beach music	WPCC
+37232	1410	Conservative talk with sports	WPOP
+38632	1410	Classic hits	KLVQ
+40633	1410	News/talk	KMYC
+41175	1410	Sports	KDKT
+41820	1410	Variety	KLFD
+42644	1410	Catholic	WIHM (AM)
+43242	1410	Adult contemporary	KGRN
+47087	1410	Urban AC	WZZA
+49209	1410	Classic hits	WDOE
+49971	1410	Spanish News/Talk	WRSS
+51263	1410	Classic hits	KTNK
+52120	1410	news/talk	WELM
+52597	1410	Top 40	WVVB (AM)
+53150	1410	Sports	KGSO
+54610	1410	Adult contemporary	WHLN
+55416	1410	Classic regional Mexican	KCAL (AM)
+55648	1410	Urban contemporary	WNWZ
+56984	1410	Catholic radio	WMYR
+57076	1410	Classic hits, News	KRWB (AM)
+65316	1410	"A Little Bit Rock and Roll"/70s-80s	KROY (AM)
+67054	1410	News–talk	WCMT (AM)
+68966	1410	Classic country	KIIX (AM)
+69701	1410	Classic hits	KOOQ
+71093	1410	Sports	WNER
+71317	1410	Classic hits	WYIS
+72323	1410	Oldies	WHTG (AM)
+73064	1410	Adult album alternative (AAA) (Community)	KRML
+73913	1410	Soft Oldies	WQBQ
+73955	1410	Oldies	WRTZ
+103395	1410	Tropical music	XEBS-AM
+183811	1410	multilingual	CJWI (AM)
+1172	1420	Sports	KGIM (AM)
+2706	1420	Christian Talk and Teaching (WAYR simulcast)	WAOC
+2714	1420	Talk and sports radio	WBEC (AM)
+10452	1420	News/talk/sports	WBSM
+11025	1420	Urban Gospel	WFLT
+12682	1420	Sports	KPEL (AM)
+12919	1420	Southern gospel; Christian talk and teaching	WAMV
+14377	1420	Sports	WZWB
+14745	1420	Mainstream urban	WWSZ
+16405	1420	Classic hits	WCRE
+16418	1420	talk radio / adult standards	WLIS
+17589	1420	Christian Contemporary	KWBF (AM)
+21218	1420	Country	KMOG
+22084	1420	Country music	WHBN
+22622	1420	Regional Mexican	KIGO
+22821	1420	Country music	KTJS
+23446	1420	Classic rock	KTAN
+30195	1420	Classic Country	KPIR
+32846	1420	Classic country–classic rock	WGXI
+33687	1420	Sports	KBTN (AM)
+34551	1420	Sports talk	KKEA
+34812	1420	Full service	WKAF (AM)
+35549	1420	Urban gospel	KRIZ
+35718	1420	News/Talk	KUJ (AM)
+39383	1420	Classic hits, news/talk	WIMS
+39515	1420	Urban Gospel / Christian talk and teaching	WGAS
+42899	1420	Commercial; News/Talk	KTOE
+48378	1420	Country	KGNB
+48643	1420	Adult contemporary	WACT
+48948	1420	Regional Mexican	KBHS
+50307	1420	Oldies	KXCB
+51071	1420	Oldies / classic hits	WVJS
+52030	1420	Country music	WPEH (AM)
+52123	1420	Full-service (talk/classic hits)	WACK
+52798	1420	Classic hits	KJCK (AM)
+53398	1420	Oldies	KITI (AM)
+53874	1420	Classic hits	WKSR (AM)
+54038	1420	Oldies	WDJA
+54444	1420	Full-service radio	WKWN
+54817	1420	Oldies	WINI
+54852	1420	Conservative Talk	WLNA
+54889	1420	Country	WASR (AM)
+55243	1420	Country	KMHS (AM)
+58838	1420	Country	KSTN (AM)
+59408	1420	Contemporary Christian	KPOC (AM)
+60360	1420	News/Talk	WOC (AM)
+63593	1420	Catholic radio	WCOJ
+63985	1420	Religious broadcasting	WBRD
+67703	1420	News/talk and sports radio	WCED
+72090	1420	Classic rock	WRCG
+73190	1420	Classic hits	WKCW
+74208	1420	Oldies	WXGM (AM)
+103431	1420	Cumbia / Vallenato music	XEH-AM
+103442	1420	Talk radio / Spanish Oldies	XEEW-AM
+177873	1420	Talk radio	XEF-AM
+177875	1420	Regional Mexican	XEXX-AM
+792984	1420	Talk radio / Spanish Oldies	XEEW-AM
+2116	1430	Talk radio	KASI
+4475	1430	Sports	WBEV (AM)
+8438	1430	Adult album alternative	WHAN (AM)
+10341	1430	Talk radio	WLKF
+11722	1430	Sports	KCLK (AM)
+13776	1430	Spanish Contemporary Christian	WOIR
+13833	1430	Classic Country	WMNC (AM)
+15263	1430	Adult standards	KBRK (AM)
+19554	1430	Oldies	WNAV
+19625	1430	Sports	WENE
+21473	1430	Classic hits	WYGI
+21728	1430	Adult album alternative	WOWW
+22028	1430	Urban Gospel / Christian talk and teaching	WDEX
+23022	1430	Christian radio	WTMN
+26592	1430	Sports	KFIG
+27694	1430	Spanish Christian	WLTG
+30016	1430	Sports	KNSP
+30619	1430	Full service oldies	WYMC
+32382	1430	News Talk Information	KRGI (AM)
+33298	1430	Catholic radio	KWST
+33387	1430	CHR	KROL
+39496	1430	Classic rock	KBRC
+39533	1430	Full-service adult hits	WION (AM)
+40213	1430	Classic Country	WLCB (AM)
+40873	1430	News/talk/sports	WEIR
+43280	1430	Progressive country	KALV (AM)
+43909	1430	diversified	WDJS
+47089	1430	Classic hits	WTNA
+47145	1430	Sports radio	WXNT
+52913	1430	Cantonese talk and music	KMRB
+53964	1430	Christian radio	WKOX (AM)
+54518	1430	Classic hits	WDAL (AM)
+54551	1430	Urban and contemporary Christian music	WYKG
+55419	1430	Classic country	WRMG
+57790	1430	Classic Country	WRXO
+62109	1430	Adult contemporary	WFHK
+65226	1430	Hmong talk and music (weekdays) / Russian and Christian radio (weekends)	KJAY
+65633	1430	Country music	WRDN
+67681	1430	Swamp pop	KMRC (AM)
+67699	1430	Sports	WFOB
+67843	1430	Sports gambling	KAMP (AM)
+68293	1430	Sports	KTBZ (AM)
+68355	1430	News/Sports/Spanish Oldies	WNEL
+70305	1430	Adult Standards	WCMY
+71284	1430	Adult contemporary	WCLT (AM)
+72474	1430	Talk Radio	KYKN
+72781	1430	Catholic	KEES
+72957	1430	Multicultural ethnic	WEEF
+103486	1430	Regional Mexican	XETT-AM
+105809	1430	Multilingual	CHKT (AM)
+161023	1430	Mainstream rock	KVHZ
+502	1440	Talk	WHIS
+1060	1440	Country and southern gospel	WVGG
+5208	1440	News/talk	WLIM
+11272	1440	Oldies	KAZG
+15838	1440	Southern gospel	WLXN
+16584	1440	Oldies, classic hits	WKLV (AM)
+17807	1440	Spanish Christian	KELG
+19826	1440	Gospel	WJBS
+20324	1440	Sports	KKXL (AM)
+24130	1440	sports radio	WSGO
+24966	1440	Urban Gospel	WMKM
+25476	1440	Sports	WRGM
+25901	1440	Religious broadcasting / Gospel Music (WIOK-FM Simulcast) (primary), Spanish (se	WYGH
+26623	1440	Regional Mexican	WDXQ
+27390	1440	Black-oriented news	KFOO (AM)
+29341	1440	Spanish language variety	WPRD
+34562	1440	Catholic talk and teaching	KEXB (AM)
+34988	1440	Urban Oldies	KTUV
+35504	1440	Business journalism / Talk radio	KYCR (AM)
+36629	1440	News/Talk	KODL
+39517	1440	Soft adult contemporary	WEBR
+39715	1440	Conservative talk	KEYS
+42014	1440	Talk radio	KMAJ (AM)
+48395	1440	Classic hits	KRDZ
+50233	1440	Spanish Christian music and teaching	WWCL
+52895	1440	Classic rock	KETX (AM)
+55352	1440	Variety	WLCH (AM)
+56183	1440	Regional Mexican	WMVB
+57235	1440	Catholic radio	WHKZ
+58316	1440	Oldies	WCDL
+59467	1440	Gospel music	WBLA
+59821	1440	Black-oriented news	WGVL
+61591	1440	Oldies	WHDM
+63432	1440	News/talk	WGIG
+67170	1440	Adult hits	WZYX
+68795	1440	Classic Country	WIBH
+71671	1440	News/talk/sports	WAJR (AM)
+72037	1440	Country	KPUR (AM)
+73347	1440	Classic hits	WNPV
+73877	1440	Adult contemporary	WPGW (AM)
+74430	1440	Spanish AC	KVON
+74466	1440	Sports radio	WVEI (AM)
+129191	1440	Variety	WFNY
+129638	1440	News-Talk Variety	KHLY
+792583	1440	Christian radio	XEEST-AM
+793613	1440	Sports radio	CKJR (AM)
+1195	1450	Country music	KWHW (AM)
+2863	1450	Classic hits	WOLY (AM)
+3402	1450	Catholic radio	KEZJ (AM)
+4782	1450	Daytime (school days): / Top 40, hot adult contemporary, contemporary hit radio 	KBPS (AM)
+4815	1450	Classic country	KSEL (AM)
+4926	1450	Regional Mexican	WZGX
+5201	1450	Christian Radio	KEYY
+5235	1450	Oldies	WHRY
+5268	1450	Contemporary Hit Radio	KQYX
+7834	1450	Oldies/Sports	WSMG
+8493	1450	Southern Gospel	WLAF (AM)
+8694	1450	News/talk	WKXL
+9248	1450	Country music	WIBM
+10448	1450	Talk radio	WPGG
+10538	1450	Oldies	WTHU
+10810	1450	Oldies	WKLA (AM)
+11611	1450	Classic hits / classic rock / blues / deep cuts	WROX (AM)
+11711	1450	News-Talk	KVML
+12136	1450	Spanish variety format	WCPR (AM)
+12325	1450	Conservative talk radio	KSGO
+12634	1450	Sports	KRZY (AM)
+12670	1450	News/talk; soft oldies	KATE
+12814	1450	Classic Hits	KGIW
+12950	1450	Classic hits	KWBE
+15270	1450	Classic country	KCLX
+15338	1450	Business news	WNBP
+15959	1450	Classic rock	WWRI (AM)
+16783	1450	Oldies	WKEU (AM)
+17388	1450	Rhythmic oldies	KTIP
+17408	1450	Punjabi language	KOBO
+17410	1450	Talk radio	KEST
+17461	1450	Oldies	WDIG (AM)
+17697	1450	Classic hits	KMRY
+18069	1450	Talk radio	KWBW
+18399	1450	Sports	WBSR
+19671	1450	Classic country	WREL
+19705	1450	Full-service and oldies	WLEC
+19875	1450	Classic rock	WMRV (AM)
+20378	1450	Classic Country	WNBY (AM)
+21605	1450	Rhythmic AC	WNAT
+22669	1450	Full service (Adult standards, News/Talk & Sports)	WBHF
+22793	1450	Full service oldies	WRCE (AM)
+22822	1450	Sports	KSIW
+24170	1450	News/talk	KMMS (AM)
+24443	1450	Classic hits	WDLB
+24564	1450	News/Talk	KCTI
+24721	1450	Religious	WLMR
+24775	1450	Currently silent	WWHK
+25239	1450	News/Talk	WCRS (AM)
+25813	1450	Soft AC	WCON (AM)
+26641	1450	Classic rock	WTCO
+27094	1450	Country	WWJB
+27470	1450	News Talk (mornings), oldies (other times)	WHTC
+28152	1450	Classic hits	KGFF
+29953	1450	Classic hits	WLAR
+30965	1450	Soft AC	WTKI
+31888	1450	Christian	KLMX
+31890	1450	Full service oldies	KOKO (AM)
+32339	1450	K-pop / news	KSUH
+32387	1450	News/talk	KQDI (AM)
+32988	1450	Classic Country	KBBS
+33623	1450	Catholic radio	KBKW
+34974	1450	Full Service (local news, sports; 1950s' & 1960s' oldies)	KIRX
+35047	1450	Talk radio	KLBM
+36419	1450	News/talk	KFIZ (AM)
+36545	1450	contemporary hit radio / latin pop / reggaeton / tropical music	WHLL
+37002	1450	Talk radio	KNSI
+38458	1450	Sports	KHIT
+40637	1450	Classic hits	WDXR
+40889	1450	Classic country	KEED
+42068	1450	Oldies	WRLL (1690 AM)
+42082	1450	Oldies	WIOE (AM)
+42649	1450	Oldies	KKOO (AM)
+43034	1450	Spanish Christian radio	WKAT (AM)
+47067	1450	Classic country	KMBL
+47952	1450	News Talk	KWPM
+48333	1450	Sports radio	WFMB (AM)
+48671	1450	Hot adult contemporary	WSDV
+48923	1450	Classic country	WLEJ (AM)
+49092	1450	Classic rock	WWSC
+49205	1450	Catholic radio	KFSD
+49777	1450	Top 40/CHR	WFRA
+50238	1450	News Talk Information	WAOV
+51879	1450	Sports	KBUN (AM)
+52000	1450	Contemporary Christian	KNOT
+52176	1450	Conservative talk	WPNO
+54363	1450	News/Talk/Sports	WNOS
+54500	1450	News Talk Information	KBFI
+54553	1450	Contemporary hit radio	WZKZ
+54615	1450	Real Country/Talk	WHKP
+54713	1450	Urban talk	WOL (AM)
+54717	1450	News/Talk	KONP
+54945	1450	Conservative talk radio	KOBE (AM)
+55180	1450	Sports radio	WCTC
+55330	1450	Gospel	WTAL
+56491	1450	Country/Classic rock/Talk	KLAM
+56591	1450	Talk/Personality	KVOW
+56645	1450	Classic hits	WDAD
+57081	1450	Christian talk and teaching	WMFJ
+57203	1450	Oldies	WTRO (AM)
+57584	1450	News/Talk	KCYL
+57674	1450	Full-service radio (Country, beach, oldies, talk and sports)	WIZS
+57928	1450	Country	KZZJ
+60611	1450	Silent was Oldies	WLAY (AM)
+60710	1450	Sports	KSNY (AM)
+60857	1450	Soft adult contemporary	KYNT
+63530	1450	Sports radio	WFTR
+63879	1450	Sports	KGRZ
+63935	1450	Sports	WXVW
+64026	1450	Oldies	WMIQ
+65467	1450	Business news/talk	WPSE
+65955	1450	News/Sports Talk	WMOH
+66335	1450	Talk radio	WGNS
+67763	1450	All-news radio	WTSA (AM)
+67811	1450	Adult contemporary	KVSI
+68316	1450	Sports radio	KTZR (AM)
+68739	1450	Talk radio	KBFS
+69647	1450	Mainstream rock	WVLD
+70276	1450	News/talk	WKEI
+70500	1450	Country	KBMW (AM)
+70869	1450	Rhythmic throwbacks	WWKU
+71065	1450	Sports	WASK (AM)
+71068	1450	Local News Talk Information	WATA
+71281	1450	Classic hits	WCJU (AM)
+71344	1450	Classic hits	WDNG
+72067	1450	Adult Contemporary	WKAL
+72837	1450	Classic hits	KNET (AM)
+73075	1450	News/talk	WHLS
+73134	1450	Full-service	WJER
+73163	1450	Talk radio	WKIP
+73302	1450	Adult contemporary	WMVG
+73353	1450	Oldies	WVAM
+73385	1450	Classic hits	KVCK (AM)
+73728	1450	Contemporary hit radio	WULT
+74076	1450	Oldies	WSTU
+74082	1450	Oldies	WTBO
+74250	1450	News Talk Information	KFLS (AM)
+82282	1450	Sports	KAVP
+103530	1450	Variety	XERY-AM
+105816	1450	Country	CFAB (AM)
+160413	1450	Sports	KQTE
+160917	1450	Country	KWES (AM)
+160953	1450	Catholic Religious	WLUX
+161541	1450	Adult contemporary	WYNY (AM)
+165287	1450	multilingual, predominantly Arabic	CHOU (AM)
+1000001566	1450	community radio	CHMO (AM)
+3244	1460	Classic country	KKAQ
+7088	1460	Country music	WBCU
+7114	1460	Catholic	KHOJ (AM)
+8672	1460	Regional Mexican	WKDV (AM)
+9011	1460	Oldies	WROY
+9077	1460	Gospel	WEWO
+9301	1460	Classic country	WBUC
+9705	1460	Spanish Sports	KBZO (AM)
+11606	1460	Urban gospel	WXOK
+11667	1460	Oldies	WKHZ
+12964	1460	Sports radio	KXNO (AM)
+13685	1460	Urban contemporary gospel	WCCD
+14732	1460	Full service	WRVK
+17266	1460	Country–rock hybrid	WMBA
+18052	1460	Full-service Country	KDMA (AM)
+19563	1460	Classic hits	WGMM
+19631	1460	Haitian Creole	WBMS (AM)
+21201	1460	Oldies	WIXN
+21673	1460	country music	KCWM
+22029	1460	Southern gospel	WRKB
+22045	1460	Oldies	WPON
+23463	1460	Sports	WTKT
+26925	1460	Talk radio (brokered programming)	KIQI
+28116	1460	Blues	WELZ (AM)
+32383	1460	Black-oriented news	WHTY (AM)
+32972	1460	Contemporary Christian	WEKB
+32986	1460	Talk/Personality	KDWA
+36158	1460	Regional Mexican music	WXEM
+36185	1460	Spanish variety	KZUE
+36220	1460	Southern Gospel	WEEN
+36637	1460	News Talk/Spanish Variety format	WLRP
+38449	1460	Sports radio	KENO (AM)
+43710	1460	Regional Mexican	KRRS
+48292	1460	Country	KKOY (AM)
+48497	1460	Southern Gospel	WXRQ
+49559	1460	Regional Mexican	WKAM
+51976	1460	Catholic radio	WQOP
+52533	1460	Classic country	WBOG
+52803	1460	Sports	KXPN (AM)
+54035	1460	Urban contemporary	WJAK
+54564	1460	Religious	WRRE
+54901	1460	Sports radio	WBNS (AM)
+55310	1460	Contemporary hit radio	WIFI (AM)
+57467	1460	Spanish variety	WKJR
+59263	1460	Christian radio	KCLE
+61196	1460	Full-service / Classic hits	WJCP
+61264	1460	Southern gospel	WHBK
+62035	1460	Christian	KTKC (AM)
+64414	1460	Conservative talk	KCNR
+65569	1460	Spanish language Christian radio	KCKX
+67519	1460	Catholic radio	KTYM
+68759	1460	Christian contemporary music	WEMK
+70506	1460	News/Talk	WBRN (AM)
+70821	1460	Variety	WZEP
+70825	1460	Conservative talk	KZNT
+71202	1460	Silent (formerly Spanish language Contemporary Hits)	WQXM
+71870	1460	Classic country	KLTC
+73919	1460	Talk radio	WRAD (AM)
+103575	1460	Talk radio	XEYC-AM
+103591	1460	Regional Mexican	XEKC-AM
+105824	1460	Oldies/Classic Hits/Variety	CJOY (AM)
+2	1470	Hot adult contemporary (partial simulcast of KZBK)	KFMZ
+101	1470	Spanish AC	KMNQ
+1220	1470	Urban adult contemporary	WBOM
+3900	1470	Oldies	WPIF
+4153	1470	Sports	KMAL
+5887	1470	Religious and conservative talk	WBCR (AM)
+7070	1470	Oldies	WNAU
+8769	1470	Spanish adult hits	KWSL
+12297	1470	Country music	KDHN
+13672	1470	News/talk	WJDY
+17035	1470	Sports	KGND
+18233	1470	Oldies	WSAN
+22011	1470	Regional Mexican	KUTY
+31074	1470	Southern gospel; Christian talk	WBFC (AM)
+32391	1470	Oldies	WNYY
+32996	1470	Talk and sports	KELA (AM)
+33693	1470	Country	KXSL
+35597	1470	Classic country	KBSN
+38387	1470	Classic hits	KKTY (AM)
+40649	1470	Southern Gospel	WBTX
+40856	1470	Conservative talk	WRGA
+40974	1470	Urban adult contemporary	WXAG
+40997	1470	News/talk	KYYW
+41333	1470	Talk	WQXL
+42119	1470	News/Talk	WMBD (AM)
+46322	1470	Oldies	WTOE
+47569	1470	Rhythmic contemporary	WLOA
+52522	1470	Urban oldies	WVOL
+53309	1470	Adult contemporary	KHND
+53646	1470	Talk radio	KLCL
+54782	1470	Spanish Variety format/News talk	WKUM
+59975	1470	Full service classic hits	WTTR
+62134	1470	Country music	WPDM
+64434	1470	Adult standards / oldies	WLAM
+64664	1470	Christian Rock	WTZE
+65482	1470	Punjabi	KIID
+65608	1470	Adult standards	WCLA
+67135	1470	Tropical	WMGG
+67831	1470	Classic hits	WBIG (AM)
+70523	1470	Christian radio	WAZN
+71519	1470	Classic country / Texas Country	KWRD (AM)
+71541	1470	Classic rock	WRYU
+73372	1470	News/Talk	WNWF
+73930	1470	Christian radio	WWNN
+103616	1470	Silent	XEBAL-AM
+105827	1470	Multicultural	CJVB (AM)
+793461	1470	News/talk and Music	XERCN-AM
+726	1480	Catholic radio	WMMA (AM)
+2805	1480	Regional Mexican	KRXR
+2860	1480	Urban gospel	WQTM
+4909	1480	Classic hits	WCFR
+6542	1480	Gospel music	WBBP
+6879	1480	News/talk/sports	WSAR
+10889	1480	Christian radio	WGFY
+11162	1480	Urban adult contemporary	KBMS
+13790	1480	Christian radio	KPHX
+14726	1480	Adult standards	WTLO
+17566	1480	Gospel	WPFJ
+18402	1480	Classic Country	WJFC
+19054	1480	Full-service	WUNA
+20432	1480	News/talk	KSDR (AM)
+21915	1480	Oldies	KLEE
+22312	1480	Urban gospel; urban oldies	WYRN
+23265	1480	Country music	WJBM
+24145	1480	Gospel	WYZE (AM)
+25995	1480	Regional Mexican	WPWC
+26302	1480	Urban adult contemporary	WKND
+27398	1480	Cantonese news/talk and music	WZRC
+29210	1480	Urban adult contemporary / Urban gospel	WTOY
+31477	1480	News/Talk	WIOS
+32953	1480	Oldies	WDJO
+33714	1480	Christian radio	KIOU
+35335	1480	Spanish Contemporary Music	WSDS
+35510	1480	Oldies	KRAE
+35529	1480	Oldies	KEJB (AM)
+35668	1480	Regional Mexican	KTHS (AM)
+37053	1480	Country	WJLE-FM
+37154	1480	Christian	WNKW
+37223	1480	Vietnamese	KVNR
+38377	1480	Conservative talk radio	WJFG
+38442	1480	Ranchera	KSBQ
+40486	1480	Urban gospel	KCHL
+41174	1480	Talk radio (weekdays) / Oldies (weekends)	KYOS
+41901	1480	Spanish Full Service	WLMV
+47150	1480	Spanish tropical	WZJY
+48248	1480	Contemporary Christian	KBRO
+50677	1480	News/talk	KAUS (AM)
+51427	1480	Spanish tropical; news talk	WMDD
+52635	1480	Full service talk/oldies	KKCQ (AM)
+52841	1480	News/talk	WLEA
+54259	1480	Country	KIXD
+55651	1480	Oldies	WHVO
+56148	1480	Christian	KLVL
+57120	1480	Spanish music	KCZZ
+57375	1480	Full Service	KNGO
+57794	1480	Classic hits	WJTW
+58480	1480	Hindu music, chants and discussion	KHQN
+61362	1480	Talk radio	KQAM
+67452	1480	Country music	WRDD
+69700	1480	Country	WDYS (AM)
+70653	1480	Conservative talk	WPFR (AM)
+70656	1480	Oldies; adult standards	WABF (AM)
+71315	1480	Sports radio	WDAS (AM)
+72688	1480	Classic country	WCXS
+73968	1480	News/Talk	WRSW (AM)
+103661	1480	Urban	XEZJ-AM
+103669	1480	Christian	XETKR-AM
+129524	1480	Spanish CHR	WTOX
+132	1490	Classic hits	WGMA (AM)
+1093	1490	Polish-language talk and other ethnic programming	WEUR
+2311	1490	Urban contemporary	WFZX
+2433	1490	Sports	KFFN
+4487	1490	Country	KDBM
+4945	1490	Southern gospel	WAEY
+5175	1490	Silent, was Regional Mexican	KOGN
+7056	1490	Progressive talk	WLCX (AM)
+8174	1490	Spanish Christian Radio	KGBA (AM)
+8387	1490	News–talk	KZZZ
+8608	1490	Oldies	KBZY
+9216	1490	Adult standards	KDMO
+9680	1490	Country music	KLGR (AM)
+9685	1490	Adult contemporary	WCDO (AM)
+10761	1490	Urban gospel	WGCD
+10782	1490	Community radio	WKNY
+12511	1490	News/talk	KTEL (AM)
+12705	1490	News/talk/sports	WDBQ (AM)
+12816	1490	Oldies	WKUN
+13710	1490	Classic hits	WOHI
+14070	1490	Classic rock	WFXY
+14672	1490	Sports	WWNB
+14711	1490	Classic hits	WCVA (AM)
+14893	1490	Regional Mexican	KBIX
+15327	1490	Classic hits	WNTJ
+17415	1490	Sports	KSKR (AM)
+19507	1490	Classic Country	KZZN
+19534	1490	Sports	WSWW (AM)
+20461	1490	Conservative talk	WRLF (AM)
+20498	1490	Sports	WTKE (AM)
+21199	1490	Classic hits	WNDA
+21247	1490	Classic hits	KWMC (AM)
+21584	1490	Full-service classic hits	WMRC
+22648	1490	Talk radio	WABJ
+23456	1490	News/Talk	WCSS
+23872	1490	Southern gospel	KWXT
+24456	1490	Positive Country	WPAK (AM)
+24586	1490	Variety	KYNR
+24794	1490	Talk radio	KBKR (AM)
+24942	1490	Contemporary hit radio	WMGW
+24995	1490	Classic country	WGEZ
+25123	1490	Adult standards	WTJV
+25521	1490	Urban adult contemporary	KJIN
+25870	1490	Christian adult contemporary	WRKY (AM)
+25917	1490	Classic soul / urban oldies	WXTG (AM)
+27100	1490	Classic hits	KNDC
+27454	1490	Conservative talk and Gospel music	WHBB
+30040	1490	Regional Mexican	WBSS (AM)
+31405	1490	Sports	WOPI (AM)
+31585	1490	News–talk	WVBG (AM)
+31811	1490	Soft adult contemporary	WBTA
+31861	1490	News/Talk & Religious	WJOC
+32298	1490	Talk radio	WCHM
+32392	1490	Adult hits	WSVM
+33684	1490	Talk radio	KBST (AM)
+35420	1490	Full service	KORN (AM)
+35483	1490	Classic country	KPLT (AM)
+35681	1490	Sports	KTTR (AM)
+36122	1490	Country music	WICY
+36930	1490	Mainstream urban	WBGA
+36943	1490	Indian - South Asian - Bollywood Hits	WDUR
+37095	1490	Talk radio	WANG
+39268	1490	News/Talk	KBUR
+39523	1490	News Talk Information	KRUI (AM)
+39807	1490	News/talk	WARK (AM)
+40045	1490	Urban Gospel	WMBM
+40169	1490	Conservative talk	WMRN (AM)
+40476	1490	Sports	WJJM (AM)
+40662	1490	Country	KDRO
+40793	1490	News/Talk / Christian radio	WLOE
+41848	1490	Sports	WKBV
+41889	1490	Classic hits	WSGB
+42149	1490	Spanish christian	KLNT
+46480	1490	Regional Mexican	WYYZ
+46738	1490	Country music	KGOS
+47095	1490	Soft oldies; adult standards	KRIB
+48330	1490	News/Talk	WDAN
+48853	1490	Adult standards	KBLF
+49382	1490	Spanish CHR	WCCM (AM)
+49400	1490	Classic rock	WIKE
+49446	1490	Classic hits	WNGZ (AM)
+49983	1490	Soft adult contemporary	WBAE
+50165	1490	Southern Gospel - Christian talk and teaching	KMFS
+51487	1490	Variety	WPCI
+51523	1490	News/Talk	KXRA (AM)
+52041	1490	Talk radio / Sports radio	WBEX
+52345	1490	Regional Mexican	KZNB
+53035	1490	Country music	WDLC
+53648	1490	Talk/Sports	WBCB (AM)
+54258	1490	Variety	KXRE
+54265	1490	Full-service and adult contemporary	WMOA
+54347	1490	Talk	WSFB
+54554	1490	Country/Full service radio	KRKC (AM)
+54827	1490	Hot adult contemporary	WESB
+54887	1490	Country music (WSNT-FM simulcast)	WSNT (AM)
+55188	1490	Adult contemporary	KRTN (AM)
+55239	1490	Talk	KMET (AM)
+57880	1490	Classic Hits	WRLA
+57895	1490	Adult contemporary	WCLU (AM)
+58403	1490	Classic country	WSIP (AM)
+58781	1490	Christian adult contemporary	WCSV
+58947	1490	Talk radio	WTTB
+59151	1490	Mainstream rock	KDRS (AM)
+59540	1490	Oldies	KNEL (AM)
+60390	1490	Contemporary hit radio and tropical music	WSPR (AM)
+60497	1490	Full service country	KOVC
+60587	1490	Talk/Brokered	WWPR (AM)
+61433	1490	Talk radio	KYCA
+61712	1490	Classic regional Mexican	KSPE
+62236	1490	Sports	KTOP (AM)
+65661	1490	Worship music	KJOQ
+65674	1490	news/talk	WGCH
+67270	1490	Talk radio	WEMJ
+67746	1490	News Talk Information	KEUN (AM)
+67777	1490	News-talk	WOMI
+68057	1490	Sports	KWOK
+68353	1490	All-news radio	WTUP (AM)
+68593	1490	Spanish Religious	KCID
+69780	1490	News/talk	WOSH
+70405	1490	Public radio	KCFC
+70408	1490	Gospel	WVGB
+70517	1490	Country	WIGM
+70647	1490	Classic hits	KLOG
+70698	1490	Adult contemporary/Talk	KUGR
+70707	1490	Regional Mexican	WIEZ (AM)
+70720	1490	Classic hits	KHVL
+70891	1490	Regional Mexican	KXLQ
+72058	1490	Contemporary hit radio	WAZZ
+72369	1490	Rock	KCUZ
+72683	1490	Urban Gospel	WSIR
+72779	1490	Classic hits	KYZS
+73076	1490	Christian	WITA
+73380	1490	Sports radio	WOLF (AM)
+73962	1490	Beach music	WRMT
+73992	1490	Classic Country	WTIQ
+74075	1490	Classic country	WSTP
+74104	1490	Oldies	KIBM
+74289	1490	News Talk Information	WZOE (AM)
+74441	1490	Country	KIBL
+74456	1490	Talk radio	WDEP
+74472	1490	Talk radio / Brokered programming	WERE
+74609	1490	Classic rock	WKYW (AM)
+76979	1490	Country music	KPKE
+103686	1490	Talk radio	XECJC-AM
+103714	1490	Silent	XEMS-AM
+103723	1490	Community radio	XEYTM-AM
+105845	1490	Classic hits	CJSN (AM)
+129317	1490	Country music	WCOR
+129862	1490	News/talk	WUVR
+160163	1490	Classic hits and classic rock	WKDR
+160277	1490	Sports	KLZN
+160278	1490	Oldies	KZEZ
+160408	1490	News/talk	KCPX
+160492	1490	Oldies (KKVT-HD2 simulcast)	KNAM
+160804	1490	Talk radio	WTQS
+685	1500	Greek variety	WPSO
+4136	1500	Contemporary Christian	WDEB (AM)
+14897	1500	Urban contemporary	KCLF
+17779	1500	Sports	KPGM
+23005	1500	Adult hits, local news and sports	WZZQ
+24682	1500	Contemporary Christian	WSMX (AM)
+31435	1500	Silent	WMJL (AM)
+31600	1500	News–Sports	KHKA
+33246	1500	Christian talk and teaching	WFIF
+35641	1500	Sports	KSTP (AM)
+39772	1500	News Talk/Latin Pop	WMNT (AM)
+40078	1500	Full-service radio	WGHT
+40487	1500	Gospel	KANI
+42081	1500	Christian talk and teaching	WLQV
+42091	1500	Adult contemporary	WPMB
+49293	1500	Heavy metal	WPJX
+51961	1500	Oldies	KBRN
+53057	1500	Oldies	WAKE (AM)
+54325	1500	Sports	WQMS
+54706	1500	Christian radio	WBRI
+55244	1500	Christian radio	KMXO
+57623	1500	Urban Gospel	WKAX
+58943	1500	Southern Gospel/Contemporary Christian (At Night 103.1 FM)	WVSM
+69992	1500	Classic country	WBZI
+72131	1500	Spanish Adult Hits	WQCR
+73032	1500	Country (WJPJ simulcast)	WPOT
+73871	1500	Christian talk and teaching	WDPC
+74120	1500	News/talk	WFED
+103739	1500	Talk radio	XEFL-AM
+3071	1510	Religious	WWBC
+4028	1510	Religious (Catholic)	WPGR (AM)
+7991	1510	Classic hits	KLQR
+8545	1510	Full service	KWJB
+9746	1510	Spanish Variety	KSTV (AM)
+11234	1510	Sports	KGA
+13899	1510	Punjabi Talk and Punjabi Music	KSPA
+14382	1510	Progressive talk radio	KFNN
+16983	1510	Urban adult contemporary	KAGC
+21487	1510	classic hits	WLKR (AM)
+25186	1510	Hot adult contemporary	KCTX (AM)
+26465	1510	Urban adult contemporary	WWHN
+28148	1510	Classic country	KTTT
+28201	1510	Sports	KMND
+29658	1510	Classic hits	WQUL
+34391	1510	Talk radio	WLAC
+38266	1510	Classic hits	WLGN
+40137	1510	Regional Mexican	KSFN
+43127	1510	Swamp Pop	KAGY
+48513	1510	Christian radio	KIRV
+48536	1510	Gospel music	KMRF
+49315	1510	Contemporary Christian	WEAL
+52021	1510	Classic hits	KIFG (AM)
+52249	1510	Christian radio	KPLS (AM)
+52768	1510	Contemporary hit radio	WOCQ (AM)
+53629	1510	Spanish variety	WBSG
+60017	1510	Farm / country	WCAZ
+63599	1510	Classic hits	KMSD
+64637	1510	Sports	KCTE
+65167	1510	Tejano and conjunto	KROB
+65389	1510	Urban oldies	KOAZ
+70771	1510	Black talk radio	WGKB
+76913	1510	Adult contemporary	WRNJ
+103768	1510	Public radio	XEQI-AM
+2255	1520	Conservative Christian radio	WLUV
+2431	1520	Regional Mexican	KGDD (AM)
+2872	1520	Country	WSVX
+2918	1520	Brokered programming	WXYB
+6649	1520	Progressive talk	WZBU
+9730	1520	Gospel; brokered programming	WEXY
+13900	1520	farm news and talk radio	WHOW
+16550	1520	Classic Country	KRHW
+22876	1520	Urban gospel	WTLM
+22964	1520	Classic hits	KSIB (AM)
+25091	1520	Talk and sports	KVEN
+31897	1520	African American Variety	WARR (AM)
+33325	1520	WKVI: All news / WKVI-FM: Oldies	WKVI
+34383	1520	Sports gambling	WWKB
+40696	1520	Christian	KYND
+40858	1520	Catholic talk	WPAY (AM)
+41054	1520	News/talk	KFXZ (AM)
+48026	1520	1980s hits	KZOY
+53658	1520	Regional Mexican	KMPG
+54336	1520	Sports, Classic hits	KMSR
+54779	1520	Oldies	WIZZ
+54958	1520	Talk radio	WRSJ
+66660	1520	Soft adult contemporary	WNWS (AM)
+67285	1520	Brokered Programming	KQQB
+70462	1520	Classic Country	WRCI
+71279	1520	Talk radio	WCHE
+71354	1520	Classic country/Bluegrass	WDSL (AM)
+72784	1520	Classic hits	WQCT
+73693	1520	Christian talk and teaching	WDCY
+73981	1520	Talk radio	KOKC (AM)
+103803	1520	Variety	XEEH-AM
+160891	1520	Classic country	KKXA
+9791	1530	Spanish variety	WUPR
+10145	1530	News–talk	KFBK (AM)
+11127	1530	Caribbean	WYMM
+14225	1530	Instrumental music	WLCO
+26610	1530	Conservative talk radio	WZTE
+32227	1530	Sports	WCKG
+33731	1530	Classic hits	KQSC
+34030	1530	Classic hits	WCTR (AM)
+38906	1530	Regional Mexican	KZNX
+40745	1530	Southern Gospel/Talk	KVDW
+47073	1530	Talk radio	WENG
+48629	1530	Urban Oldies	WASC (AM)
+51722	1530	Sports radio	WCKY (AM)
+52576	1530	Classic country	WLIQ
+52681	1530	Country	KQNK (AM)
+53957	1530	Christian	WTTI
+61985	1530	Regional Mexican	KXTD
+63403	1530	Talk and radio reading service programming	WVBF
+68957	1530	Christian radio	WJDM
+74248	1530	Classic country	WYGR
+103816	1530	Tropical music	XEUR-AM
+103820	1530	Contemporary hit radio	XESD-AM
+1027	1540	Christian talk and teaching	WNWR
+6425	1540	Easy listening	WBNL
+7111	1540	Classic country	WBCO
+11752	1540	Brokered Time Ethnic (days and evenings) / Adult Standards (late nights)	KXPA
+12832	1540	News/Talk, Sports	KLKC (AM)
+14538	1540	Hot adult contemporary	WFNO (AM)
+14892	1540	Tejano and Conjunto	KEDA (AM)
+15530	1540	country music	WBRY
+15840	1540	Classic hits	KMCP
+16668	1540	Christian talk and teaching	WKVQ
+21434	1540	Spanish CHR	WVNZ (AM)
+22133	1540	Christian radio	WVOA (AM)
+26002	1540	Stunting / brokered	KGBC
+33674	1540	Adult standards–MOR	KBOA (AM)
+34302	1540	Oldies	WPTT (AM)
+35950	1540	Talk radio	KXEL
+36542	1540	Classic rock	WLOI
+38439	1540	Catholic	WDON (AM)
+51097	1540	Country	KLYR (AM)
+53386	1540	Contemporary Christian	WPKC (AM)
+55710	1540	Country	WECZ
+57356	1540	Adult contemporary	WMYJ (AM)
+59673	1540	Gospel	WYNC
+61647	1540	Korean programming	KMPC
+61993	1540	Christian radio	KTGG
+62232	1540	Classic hits	WTXY
+63551	1540	Alternative	KAMM (AM)
+64565	1540	Classic country	WSMI (AM)
+68132	1540	Gospel	WJJT
+68425	1540	Classic hits	WBTC (AM)
+70092	1540	Urban Gospel / Christian talk and teaching	WOGR (AM)
+72384	1540	Spanish Variety	WIBS
+73308	1540	Progressive talk	WYOH
+103850	1540	News/talk, contemporary music in English	XESTN-AM
+790681	1540	Multilingual	CHIN (AM)
+2723	1550	Public radio	KUAZ
+2866	1550	News	KCOM
+4705	1550	Catholic radio	KQNM
+8504	1550	Soft Classic rock	WCGR
+8767	1550	Classic hits	KESJ
+15843	1550	Urban gospel	WTHB
+17137	1550	Adult hits	KBOB (AM)
+17306	1550	Variety	WKTF
+19055	1550	Regional Mexican	WAMA (AM)
+19622	1550	Classic country	WHIT
+21416	1550	South Asian (Hindi, Punjabi and other languages)	KRPI
+21530	1550	Spanish Christian	KXTO
+21621	1550	Urban gospel	WSRY
+25405	1550	Oldies	KOSL
+25458	1550	South Asian	KZDG
+25992	1550	Adult contemporary	WEVR (AM)
+26651	1550	Sports	KICS
+27003	1550	Sports radio	WMRE
+31172	1550	Urban Gospel, Talk	WPFC (AM)
+31892	1550	Classic Rock	KKLE
+33393	1550	Regional Mexican	KWRN
+34248	1550	Oldies	WIRV
+35974	1550	Sports	KYAL (AM)
+37804	1550	Christian talk and teaching	WSDK
+40912	1550	Classic country	KWBC
+43772	1550	News/Talk	WJIL
+48781	1550	Community, ethnic	WNTN
+52942	1550	Spanish News Talk Information (daytime) / Spanish Religious (nighttime)	WKFE
+54550	1550	Classic country	WOCC
+54557	1550	Classic rock	WQCD (AM)
+54811	1550	Christian radio	KMAD (AM)
+54960	1550	Talk radio	KXEX
+60088	1550	News/Talk	KIWA (AM)
+63979	1550	Bluegrass Music, Southern Gospel and Christian talk and teaching	WIGN
+67180	1550	Classic country	WKBA
+68613	1550	Adult top 40	WTXW
+68808	1550	Sports	WUCO
+68903	1550	NPR, jazz	WZUM (AM)
+69812	1550	Silent (was Brokered Foreign language)	KKOV
+70594	1550	News/Talk	KAPE
+70868	1550	Christian radio	WITK
+73708	1550	Christian radio	WBFJ (AM)
+73945	1550	Christian radio	WRHC (AM)
+103879	1550	English Classic	XEBG-AM
+134066	1550	News/talk	WNZF
+161314	1550	Adult contemporary and adult album alternative	KKCL (AM)
+1000000275	1550	News/Talk	CBEF (AM)
+295	1560	Contemporary Christian	WBYM
+6747	1560	Sports	KEBC
+7308	1560	Classic country	WRIN
+7715	1560	Conservative talk radio	KNZR (AM)
+13981	1560	Country music	WTNS (AM)
+17047	1560	Christian Radio	WYZD
+17389	1560	Full service	KGOW
+17803	1560	News/talk / Solid Gold Oldies	KZQQ
+18054	1560	Classic country	KABI (AM)
+22672	1560	Christian radio	WWYC
+22898	1560	Full-service country	WBYS
+24482	1560	Sports radio	WAHT
+28601	1560	Oldies	WSEZ
+29024	1560	Christian radio	WFME (AM)
+33650	1560	Oldies	KBEW (AM)
+34524	1560	Country	KHBR (AM)
+34941	1560	Regional Mexican	KIQS
+35550	1560	South Asian	KZIZ
+39849	1560	News/Talk, Sports	WSLA
+41171	1560	Talk radio	KTUI (AM)
+43535	1560	Country	KLTI
+54720	1560	Sports	WPAD
+59278	1560	Tejano	KTXZ
+60029	1560	Oldies	WBOL
+64646	1560	Black Gospel	WSBV
+70624	1560	Talk radio	WFSP (AM)
+72464	1560	Christian radio	KLNG
+72493	1560	Sports radio	WMBH
+73050	1560	Urban contemporary gospel	WGLB
+103908	1560	Talk radio	XEJPV-AM
+132714	1560	Spanish Religious (Family Oriented)	KVAN (AM)
+158834	1560	News/talk	XEMAS-AM
+2128	1570	Classic hits	WABL
+2270	1570	Talk, sports and classic hits	WTAY
+5888	1570	Classic hits	WCRL
+7319	1570	Country music	WKKS (AM)
+7904	1570	Full service / (Featuring Classic hits)	WLBQ
+8076	1570	Religious	WGLL
+10664	1570	Full-service radio	WNCA
+10828	1570	Conservative talk	KDIZ (AM)
+14022	1570	Country	WIZK
+14553	1570	Oldies	WLRS (AM)
+14709	1570	Sports	KVTK (AM)
+18238	1570	Dance radio	WDRE (AM)
+21238	1570	Country music	KVLG
+22798	1570	Hispanic rhythmic; regional Mexican	WUBG (AM)
+22916	1570	Christian radio	WFUR (AM)
+23040	1570	Classic country	KMCD
+24660	1570	Soft oldies	KZWC
+25523	1570	Sports radio	WNST
+27139	1570	Country	WMAK
+28655	1570	Sports	KAKK
+28974	1570	Southern Gospel	WTLK
+33468	1570	Classic hits	WILO
+35517	1570	Regional Mexican	KXJJ
+36115	1570	Adult contemporary	WXVE
+36407	1570	Country	WFLR
+36689	1570	Country	WTRB
+36893	1570	Country music	WSWV (AM)
+39679	1570	Adult contemporary	WWCK (AM)
+40147	1570	Gospel	WBGX
+41384	1570	Talk	WBGZ
+43433	1570	Adult standards	KPYK
+43662	1570	Religious	WPGM (AM)
+48310	1570	Religious	WISP (AM)
+49214	1570	Regional Mexican	WVOJ
+50166	1570	Classic country	WOKC
+52139	1570	Oldies	KLLA
+52948	1570	Religious	WPPC
+55098	1570	Oldies	WCLE (AM)
+55210	1570	Soft oldies	WLKD
+56617	1570	Catholic radio	WKBH (AM)
+59978	1570	Regional Mexican	KTUZ (AM)
+60424	1570	Punjabi Language	KCVR (AM)
+60918	1570	Urban adult contemporary	WIGO (AM)
+61280	1570	Country	WLEE (AM)
+63135	1570	Classic country	WFRL
+65375	1570	Regional Mexican	KTGE
+70521	1570	Classic hits	WPTW
+70531	1570	News/talk	WYWO
+72941	1570	Sports	WSCO
+74153	1570	Regional Mexican	WTWB
+74280	1570	Full-service	WYTI
+135909	1570	Sports	WECU
+189823	1570	Oldies/Full Service	CJLV-AM
+6447	1580	Sports radio	WPJK
+7701	1580	Rhythmic oldies	KAJM
+11191	1580	Urban Adult Contemporary/Gospel	WNPZ
+14556	1580	Caribbean	WNTF
+17748	1580	Soft oldies	WDQN (AM)
+18039	1580	Talk radio	KGAL
+21600	1580	Gold-based Adult Contemporary	KGAF
+22341	1580	Classic rock	WXGT
+25210	1580	Country	WAMW (AM)
+25819	1580	Silent: was Spanish Christian radio	WVZN
+27632	1580	Classic country	WLIJ
+28638	1580	Sports gambling	WJFK (AM)
+28897	1580	Talk radio	WCCF (AM)
+32850	1580	Sports	WPMO
+34246	1580	Active rock/alternative rock	WWTF
+34385	1580	Urban/progressive talk	KBLA
+36891	1580	Classic hits	WPGY
+38333	1580	Christian radio	WNYG
+41102	1580	Oldies	KCHA (AM)
+43733	1580	Sports	KOKB
+47088	1580	Top 40 (CHR)	WIOL (AM)
+49044	1580	Oldies	WZKY
+50637	1580	Classic hits	WPKY
+51816	1580	Regional Mexican	KFCS
+52427	1580	Red Dirt country	KAGE (AM)
+52671	1580	Full service / Country music	KWED
+57352	1580	Classic hits	WLPK
+61110	1580	Catholic radio	WGYM
+62223	1580	Classic country	WAMY (AM)
+67133	1580	Regional Mexican	WHLY
+67269	1580	Classic hits	WWDN
+69845	1580	Classic Country	KAMI (AM)
+71092	1580	Progressive talk	WMDX
+72452	1580	Talk radio	WVOZ (AM)
+72905	1580	Classic country	KDOM (AM)
+73608	1580	Sports radio	WTAZ (AM)
+74002	1580	Urban contemporary gospel	WWSJ
+74584	1580	Sports	KTGR
+103974	1580	News / talk	XELI-AM
+161152	1580	Hot AC	KKTS (AM)
+166158	1580	Classic hits–oldies	CKDO (AM)
+102	1590	Talk radio; brokered programming	WSMN
+3152	1590	Classic hits/Oldies	WABV
+5882	1590	Christian radio	WARV (AM)
+7746	1590	Sports	KVTA
+9409	1590	Catholic	WGGO
+12031	1590	Catholic radio	KLFE
+15960	1590	News Talk Information	WDBL
+16831	1590	Classic hits	KDEX (AM)
+18419	1590	Gospel music/Urban Adult Contemporary	WVOE
+19457	1590	Conservative talk	WVNA (AM)
+19673	1590	Brokered multilingual	WFBR (AM)
+20491	1590	South Asian / Bollywood	KMIC
+21493	1590	Classic country	KBHT (AM)
+22150	1590	Talk radio	KVGB (AM)
+22978	1590	Talk and sports	KWBG
+25531	1590	Spanish talk	WXRF
+27498	1590	Sports	WKTP
+29226	1590	Regional Mexican	KVTR
+30615	1590	Christian radio	WHPY (AM)
+31065	1590	Sports	KGAS (AM)
+33000	1590	Classic rock	KGFK (AM)
+33311	1590	Sports	KDJS (AM)
+33663	1590	News/Talk	KBJT
+34294	1590	Classic country	WCAM
+34353	1590	Spanish Variety	WYSR
+35447	1590	Brokered programming (English, Korean, Russian, Assyrian)	WCGO
+35514	1590	Sports	WPVL (AM)
+35656	1590	Country	WCSL (AM)
+35658	1590	Classic hits	KCTY (AM)
+36203	1590	Classic hits	WXRS (AM)
+36232	1590	Christian and urban gospel	KKAY
+36883	1590	Oldies	WLBN
+36953	1590	Silent	KDAV
+39494	1590	Christian radio	WHGT
+40831	1590	Christian radio	KELP (AM)
+43791	1590	Talk radio	WAUB
+43871	1590	Full-service radio / Classic hits	WAKR
+50554	1590	Classic rock	KTIL (AM)
+53044	1590	Talk radio	WPSL (AM)
+53088	1590	Classic country	WPIW
+53704	1590	Smooth jazz	WDJZ
+54703	1590	News/talk	WALG
+54912	1590	Country	WQCH
+57478	1590	Talk	WHOT (AM)
+58320	1590	Classic Regional Mexican	WNTS
+60643	1590	Hmong language programming	WIXK
+62338	1590	Classic Country	WBHN
+63346	1590	Spanish Religious	KDAE
+65700	1590	Classic hits	WSRW (AM)
+67683	1590	Adult album alternative; public radio	WNRN (AM)
+67757	1590	Full service/Classic hits	WTVB
+71345	1590	News/talk	WPSN
+71702	1590	Sports	KYNG (AM)
+74127	1590	Oldies	WGBW
+104007	1590	Tropical music	XEVOZ-AM
+506	1600	Christian preaching	WZZW
+841	1600	Public Radio and talk	KOPB (AM)
+5350	1600	South Asian (Hindi, Punjabi and other languages)	KVRI
+6142	1600	Regional Mexican	KTAP
+8144	1600	Tejano music	KXEW
+8381	1600	Swamp Pop, Cajun music, Zydeco	KLEB
+9718	1600	Sports	KGYM
+10118	1600	Ethnic	WUNR
+11201	1600	Full-service	KUSH
+14223	1600	Classic country	WEJS
+15767	1600	Tropical	WRSB (AM)
+22097	1600	Classic country	KMDO
+24696	1600	Urban gospel	WKZK
+26241	1600	Classic country	KNWA (AM)
+28118	1600	Urban oldies and Blues	WHIY
+30823	1600	Sports radio	KEPN
+31636	1600	Classic Jazz Standards	WKWF
+32974	1600	Oldies	WPDC
+35429	1600	Country	KLGZ
+35866	1600	Soft oldies – Adult standards	KYBC
+36157	1600	Regional Mexican music	WAOS
+36987	1600	Rhythmic contemporary	WHOL
+39145	1600	Spanish Tropical	WCMA (AM)
+39167	1600	Adult contemporary	KTTN (AM)
+39797	1600	News/Talk	WUCT
+42369	1600	Christian radio	WMQM
+48393	1600	Catholic talk radio	WZNZ
+48968	1600	Urban gospel	KATZ (AM)
+51881	1600	Adult standards	WRAX (AM)
+54489	1600	Full-service, soft oldies and AC and talk	WRPN (AM)
+54506	1600	Spanish music	WLXE
+54661	1600	Tejano	KOKE (AM)
+55006	1600	Urban gospel / Christian talk and teaching	WOKB (AM)
+55232	1600	Christian radio (Catholic)	WULM
+55271	1600	Contemporary hits	WLVY (AM)
+56365	1600	Classic hits/News	KUBA
+63941	1600	Classic country	KNCY (AM)
+63977	1600	Gospel	WXVI
+64003	1600	Contemporary Christian music	WCPK
+64014	1600	Adult contemporary	KRFS (AM)
+64024	1600	Urban adult contemporary	WLUE (AM)
+65257	1600	talk radio	KIVA (AM)
+68632	1600	Classic hits	KDAK
+68831	1600	Oldies/Adult standards	WTZQ
+68906	1600	All-news radio	WWRL
+69557	1600	Christian Radio	KTUB
+70467	1600	News–talk–sports	KOHI
+70516	1600	Gospel music	WIDU
+70527	1600	Oldies	WTTF
+70890	1600	Adult contemporary	WMCR (AM)
+72172	1600	News/Talk/Sports	WKKX
+72276	1600	Talk radio	WAAM
+199745	1610	Multilingual	CHRN (AM)
+792535	1610	Multilingual	CHHA (AM)
+86941	1620	Urban adult contemporary–talk radio	KYIZ
+87034	1620	News/talk	WNRP
+87036	1620	Catholic radio	KSMH
+87117	1620	Variety format: news, talk, gospel and country	WDHP
+87145	1620	Talk radio	WTAW (AM)
+87182	1620	Sports	KOZN
+87115	1630	Full service radio; hot adult contemporary	KCJJ
+87147	1630	Black-oriented news	KKGM
+87155	1630	Religious	KFBU
+86618	1640	Conservative talk	KDZR
+87108	1640	Christian talk and teaching	KDIA
+87119	1640	Talk / Brokered programming	KBJA
+87121	1640	Catholic radio	WSJP (AM)
+87168	1640	Sports	KZLS (AM)
+87151	1650	Christian	KBJD
+87158	1650	Sports radio	KCNZ (AM)
+87170	1650	Conservative talk radio	WJFV
+87242	1650	Korean language	KFOX (AM)
+169565	1650	South Asian community	CINA (AM)
+792081	1650	News, talk, Jewish radio, French gospel	CKZW
+86909	1660	Catholic–talk radio	WCNZ
+87143	1660	Sports gambling	KWOD
+87146	1660	Sports	KQWB (AM)
+87150	1660	Spanish Religious	WGIT
+87179	1660	Sports	KRZI
+87180	1660	Active and alternative rock	KBRE
+87325	1660	Urban AC	WTOU
+87110	1670	All-news radio	WMGE (AM)
+87154	1670	Sports	WOZN (AM)
+87156	1670	Catholic talk and teaching	KHPY
+87171	1670	Conservative talk	KQMS (AM)
+169566	1670	community / children's radio	CJEU (AM)
+791296	1670	University radio	XEANAH-AM
+87106	1680	Urban adult contemporary	WPRR (AM)
+87111	1680	Latin music–Spanish talk radio	WTTM
+87153	1680	South Asian music and talk	KNTS (AM)
+87164	1680	Haitian music, news, and culture	WLAA
+87167	1680	Classic country	KRJO
+87176	1680	Regional Mexican	KGED
+86619	1690	Catholic radio	KDMT (AM)
+87109	1690	Oldies	WPTX
+87118	1690	Progressive talk radio	WMLB
+87177	1690	Religious broadcasting	KFSG
+87178	1690	African-American-oriented talk	WVON
+165289	1690	Greek language talk and music	CHTO (AM)
+165290	1690	campus / community	CJLO (AM)
+64556	1700	Conservative talk radio	WRCR
+86684	1700	Tejano	KTNO (AM)
+87141	1700	Urban contemporary gospel and Urban adult contemporary	WEUP (AM)
+87142	1700	Sports radio	KVNS
+87169	1700	Haitian Creole talk music and news / World Ethnic	WJCC (AM)
