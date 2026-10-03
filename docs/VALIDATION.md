@@ -105,6 +105,14 @@ Use an authorized receiver on the phone's network. Start with low media volume.
 7. Repeat on an API-26-era and a current Android device. Verify a valid HTTPS/WSS receiver and rejection of an invalid certificate.
 8. Enable RSSI beeps at low volume, mute receiver audio, center the map with RSSI → C5, and compare known signal/cable changes. Confirm louder RSSI produces higher notes, custom scale/cadence controls work, stale tones cease, radio can be restored without reconnecting, and both sounds stop from the notification.
 
+## MW stations and logbook — 0.6.0
+
+- `./tools/check.sh`: passed; 102 core JVM tests, 15 app JVM tests, Android lint, debug APK.
+- `./tools/test-phone.sh`: all nine phone tests passed on Pixel 8 Pro / Android 17, including two offline MW station tests (panel only in band, tune by station, permit filter, receiver location entry, ranking text, favorites from another band, hiding and restoring an entry) and the offline logbook test (log, logged mark, tune back, edit, delete). The tests restore the user's receiver location, favorites, hidden entries, and log.
+- The user confirmed the logbook working on the phone.
+- Station table: FCC AM Query, FCC LMS (2026-10-02), ISED extract (2026-09-22), CRT March 2026 list; formats from Wikipedia (2026-10-03). Import decisions are reviewable in `build/mw-import-report.txt`.
+- Not covered automatically: fetching a location from a live receiver's `/status` (mock-server test only), CSV export through the system save dialog, RSSI range capture during live playback, and ranking accuracy against real reception.
+
 ## Remaining implementation/validation risks
 
 - Actual receivers must confirm the 48 kHz rate acknowledgement and server sample-rate behavior. PCM is resampled from the reported floating-point rate to 48 kHz; there is no drift-control PLL.
@@ -114,3 +122,4 @@ Use an authorized receiver on the phone's network. Start with low media volume.
 - Passwords, ADPCM, public directory discovery, and waterfall are intentionally excluded. Background playback was added in 0.2.0 at the user's request.
 - Source-rate changes after setup require reconnecting. Pre-setup SND packets are discarded; unsupported post-setup flags cause a visible error rather than noise.
 - A basic radio icon is included, but no store-ready branding, release signing, publishing configuration, or release-size optimization yet.
+- MW likelihood ranking is a coarse heuristic (no directional patterns, ground conductivity, or conditions). Mexican rows the CRT list omits, and 11 US stations whose LMS frequency differs from the AM Query, need periodic review; Cuban entries cannot be verified.

@@ -4,6 +4,8 @@
 
 > Implementation amendment (0.3.0): the user requested audible RSSI for cable troubleshooting. Independent radio mute and RSSI beeps now share the background audio service, with a default 10 dB/octave musical mapping and configurable mapping points/scales/sound parameters. See `docs/RSSI_SOUND.md`.
 
+> Implementation amendment (0.6.0): the user requested a North American MW station database. A bundled FCC table, vetted against FCC LMS, ISED (Canada), and the CRT list (Mexico), now lists the stations inside the passband between 520 and 1710 kHz, supports search and tune-by-station, ranks stations by a day/night likelihood heuristic from the receiver's location, and offers favorites, Wikipedia programming formats (CC BY-SA 4.0), and user hiding of bad entries. A reception logbook with CSV export works on every band. The original exclusions of public-directory discovery and decoding still apply. See `docs/MW_STATIONS.md` and `docs/LOGBOOK.md`.
+
 > Implementation amendment (0.5.1): transient audio-focus interruptions now silence output and restore it on focus gain while retaining the live connection; permanent loss and route disconnection still stop. Edit fields select all on focus entry, and CWN follows CW.
 
 > Implementation amendment (0.5.0): per-mode lower/upper passband editing and SAM/SAU/SAL/SAS/IQ/CWN are now implemented, including stereo SND decoding and playback. The original IQ/stereo exclusions below are superseded for playback only, not raw capture/export. See `docs/MODES_AND_FILTERS.md`.
