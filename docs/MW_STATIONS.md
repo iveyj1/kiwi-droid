@@ -1,6 +1,6 @@
 # MW (AM broadcast) station list
 
-North American MW station database: a bundled FCC table vetted against the US, Canadian, and Mexican regulators' lists, with Wikipedia programming formats; the stations inside the current passband, search, tune-by-station, receiver locations, likelihood ranking, favorites, and hiding bad entries. Logging is a later phase.
+North American MW station database: a bundled FCC table vetted against the US, Canadian, and Mexican regulators' lists, with Wikipedia programming formats; the stations inside the current passband, search, tune-by-station, receiver locations, likelihood ranking, favorites, and hiding bad entries. Reception logging is described in [LOGBOOK.md](LOGBOOK.md).
 
 ## Using it
 

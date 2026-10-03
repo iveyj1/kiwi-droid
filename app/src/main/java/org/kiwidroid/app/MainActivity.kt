@@ -1,6 +1,10 @@
 package org.kiwidroid.app
 
 import android.media.AudioManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -39,14 +43,15 @@ class MainActivity : ComponentActivity() {
                 val model: RadioViewModel = viewModel()
                 val state by model.state.collectAsStateWithLifecycle()
                 val stations by model.stations.collectAsStateWithLifecycle()
-                RadioScreen(state, stations, model)
+                val log by model.logEntries.collectAsStateWithLifecycle()
+                RadioScreen(state, stations, log, model)
             }
         }
     }
 }
 
 @Composable
-private fun RadioScreen(state: RadioUiState, stations: StationDirectoryState, model: RadioViewModel) {
+private fun RadioScreen(state: RadioUiState, stations: StationDirectoryState, log: List<LogEntry>, model: RadioViewModel) {
     val settings = state.settings
     var frequency by rememberSaveable(settings.tuning.frequencyHz) { mutableStateOf(formatKhz(settings.tuning.frequencyHz)) }
     var serversOpen by rememberSaveable { mutableStateOf(false) }
@@ -56,6 +61,12 @@ private fun RadioScreen(state: RadioUiState, stations: StationDirectoryState, mo
     var soundOpen by rememberSaveable { mutableStateOf(false) }
     var passbandOpen by rememberSaveable { mutableStateOf(false) }
     var stationsOpen by rememberSaveable { mutableStateOf(false) }
+    var logbookOpen by rememberSaveable { mutableStateOf(false) }
+    // Draft or entry being edited, and whether it is new; not saveable across process death (drafts are cheap to redo).
+    var editing by remember { mutableStateOf<Pair<LogEntry, Boolean>?>(null) }
+    val export = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/csv")) { uri ->
+        uri?.let(model::exportLog)
+    }
     val focus = LocalFocusManager.current
     // Station day/night authorization and sky-wave darkness change with time; re-rank once a minute.
     val now by produceState(Instant.now()) { while (true) { delay(60_000); value = Instant.now() } }
@@ -114,6 +125,12 @@ private fun RadioScreen(state: RadioUiState, stations: StationDirectoryState, mo
             if (metrics != null) Text(String.format(Locale.ROOT,
                 "Source %.2f Hz · %d ch · missing frames %d · ADC overloads %d",
                 metrics.sourceRate, metrics.channels, metrics.missingFrames, metrics.adcOverflows), style = MaterialTheme.typography.bodySmall)
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedButton(onClick = { editing = model.draftLog() to true }, enabled = state.loaded,
+                    modifier = Modifier.weight(1f).testTag("logButton")) { Text("Log…") }
+                OutlinedButton(onClick = { logbookOpen = true }, enabled = state.loaded,
+                    modifier = Modifier.weight(1f).testTag("logbookButton")) { Text("Logbook (${log.size})") }
+            }
             metrics?.playback?.let { audio ->
                 if (audio.focusSilenced) Text("Temporarily silenced by other audio; resumes automatically.",
                     style = MaterialTheme.typography.bodySmall)
@@ -123,6 +140,7 @@ private fun RadioScreen(state: RadioUiState, stations: StationDirectoryState, mo
                     if (audio.buffering) " · buffering" else "", style = MaterialTheme.typography.bodySmall)
             }
             state.message?.let { Text(it, color = MaterialTheme.colorScheme.error, modifier = Modifier.testTag("error")) }
+            state.notice?.let { Text(it, modifier = Modifier.testTag("notice")) }
             HorizontalDivider()
             SoundSwitch("Receiver audio", settings.sound.radioEnabled, state.loaded, "radioAudioSwitch") { model.setRadioAudio(it) }
             SoundSwitch("RSSI beeps", settings.sound.tones.enabled, state.loaded, "rssiToneSwitch") { model.setRssiTones(it) }
@@ -169,12 +187,22 @@ private fun RadioScreen(state: RadioUiState, stations: StationDirectoryState, mo
         onDismiss = { passbandOpen = false }, onSave = model::setPassband)
 
     if (stationsOpen) stations.db?.let { db ->
-        MwStationPicker(db, settings.tuning, settings.mwVisibility, settings.favorites, settings.receiverLocation, now,
+        MwStationPicker(db, settings.tuning, settings.mwVisibility, settings.favorites, settings.receiverLocation, now, heardStations(log),
             MwPickerActions(model::setMwIncludePermits, model::setMwIncludeSilent, model::setMwIncludeUnverified,
                 { model.toggleFavorite(it) }, { model.toggleHidden(it) }),
             onDismiss = { stationsOpen = false }) { station ->
             if (model.tuneToStation(station.khz)) stationsOpen = false
         }
+    }
+
+    if (logbookOpen) LogbookDialog(log, onDismiss = { logbookOpen = false }, onEdit = { editing = it to false },
+        onTune = { e -> if (model.tuneTo(e.frequencyHz, e.mode)) logbookOpen = false },
+        onExport = { export.launch("kiwidroid-log-${DateTimeFormatter.BASIC_ISO_DATE.withZone(ZoneOffset.UTC).format(Instant.now())}.csv") })
+
+    editing?.let { (entry, isNew) ->
+        LogEditor(entry, isNew, logCandidates(stations.db, entry, settings.mwVisibility, entry.utc),
+            onDismiss = { editing = null }, onSave = { model.saveLog(it); editing = null },
+            onDelete = { model.deleteLog(entry.id); editing = null })
     }
 
     if (soundOpen) SoundEditor(settings.sound,

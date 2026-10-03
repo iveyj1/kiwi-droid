@@ -83,7 +83,8 @@ internal class MwPickerActions(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun MwStationPicker(db: MwStationDb, tuning: Tuning, visibility: MwVisibility, favorites: List<MwFavorite>,
-                             location: GeoPoint?, now: Instant, actions: MwPickerActions,
+                             location: GeoPoint?, now: Instant, heard: Map<Pair<Int, Int>, LogConfidence>,
+                             actions: MwPickerActions,
                              onDismiss: () -> Unit, onSelect: (MwStation) -> Unit) {
     val channels = remember(tuning) { mwChannelsInPassband(tuning) }
     var query by rememberSaveable { mutableStateOf("") }
@@ -134,7 +135,8 @@ internal fun MwStationPicker(db: MwStationDb, tuning: Tuning, visibility: MwVisi
                         Column(Modifier.weight(1f).clickable { onSelect(station) }.padding(vertical = 6.dp)) {
                             Text("${station.khz} ${station.label}", style = MaterialTheme.typography.titleSmall)
                             station.format?.let { Text(it, style = MaterialTheme.typography.bodySmall) }
-                            Text(detailText(station), style = MaterialTheme.typography.bodySmall)
+                            Text(detailText(station) + (heardMark(station, heard)?.let { " · $it" } ?: ""),
+                                style = MaterialTheme.typography.bodySmall)
                             ranking?.let { Text(rankingText(it, bestDb), style = MaterialTheme.typography.bodySmall) }
                         }
                         val favoriteAction = if (favorite) "Remove ${station.label} ${station.khz} from favorites"

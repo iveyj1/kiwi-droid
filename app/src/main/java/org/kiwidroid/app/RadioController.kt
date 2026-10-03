@@ -2,6 +2,10 @@ package org.kiwidroid.app
 
 import android.app.Application
 import android.content.Intent
+import android.net.Uri
+import android.os.SystemClock
+import java.io.File
+import java.time.Instant
 import androidx.core.content.ContextCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -19,6 +23,8 @@ data class RadioUiState(
     val status: String = "Loading settings…",
     val metrics: SessionMetrics? = null,
     val message: String? = null,
+    /** Neutral confirmation (not an error), e.g. a finished export. */
+    val notice: String? = null,
 )
 
 /** Process-scoped controls/settings; playback resources belong exclusively to PlaybackService. */
@@ -34,6 +40,9 @@ class RadioController(private val application: Application) {
     private val mutableRequests = MutableStateFlow<PlaybackRequest?>(null)
     internal val requests = mutableRequests.asStateFlow()
     private val saves = Channel<Settings>(Channel.CONFLATED)
+    /** Fresh RSSI readings for the current tuning only; cleared on retune and stop. */
+    private val rssiWindow = RssiWindow()
+    val logbook = Logbook(File(application.filesDir, "logbook.jsonl"))
 
     init {
         scope.launch {
@@ -45,6 +54,12 @@ class RadioController(private val application: Application) {
                 if (e is CancellationException) throw e
                 mutableState.update { it.copy(loaded = true, status = "Stopped",
                     message = "Could not restore settings; using defaults: ${e.message}") }
+            }
+        }
+        scope.launch {
+            try { logbook.load() } catch (e: Exception) {
+                if (e is CancellationException) throw e
+                mutableState.update { it.copy(message = "Could not read the logbook: ${e.message}") }
             }
         }
         scope.launch {
@@ -72,11 +87,13 @@ class RadioController(private val application: Application) {
 
     fun stop(reason: String = "Stopped") {
         mutableRequests.value = null
+        rssiWindow.clear()
         mutableState.update { it.copy(running = false, status = reason, metrics = null) }
     }
 
     internal fun received(request: PlaybackRequest, metrics: SessionMetrics) {
         if (requests.value == request && state.value.running) {
+            if (!metrics.stale) metrics.rssiDbm?.let { rssiWindow.add(SystemClock.elapsedRealtime(), it) }
             mutableState.update { it.copy(status = "Playing", metrics = metrics) }
         }
     }
@@ -93,7 +110,8 @@ class RadioController(private val application: Application) {
         val previous = state.value.settings
         val next = transform(previous)
         mutableTuning.value = next.tuning
-        mutableState.update { it.copy(settings = next, message = null) }
+        if (next.tuning != previous.tuning || next.receiver != previous.receiver) rssiWindow.clear()
+        mutableState.update { it.copy(settings = next, message = null, notice = null) }
         saves.trySend(next)
         if (state.value.running && next.receiver != previous.receiver) {
             mutableState.update { it.copy(status = "Connecting…", metrics = null) }
@@ -111,6 +129,39 @@ class RadioController(private val application: Application) {
     fun tune(text: String): Boolean = change { it.copy(tuning = it.tuning.copy(frequencyHz = parseFrequencyKhz(text))) }
     fun step(direction: Int) = change { it.copy(tuning = it.tuning.step(it.stepHz * direction)) }
     fun tuneToStation(khz: Int) = change { it.copy(tuning = it.tuning.toBroadcastChannel(khz)) }
+    fun tuneTo(frequencyHz: Long, mode: Mode) = change { it.copy(tuning = it.tuning.copy(frequencyHz = frequencyHz, mode = mode)) }
+
+    /** Snapshot of what is being heard now; the editor adds station, confidence and notes. */
+    fun draftLog(): LogEntry {
+        val settings = state.value.settings
+        val rssi = rssiWindow.snapshot(SystemClock.elapsedRealtime())
+        return LogEntry(utc = Instant.now(), receiverName = settings.receiver.name, receiverUrl = settings.receiver.url,
+            receiverLocation = settings.receiverLocation, frequencyHz = settings.tuning.frequencyHz, mode = settings.tuning.mode,
+            passband = settings.tuning.passband, rssiDbm = rssi?.first, rssiMinDbm = rssi?.second, rssiMaxDbm = rssi?.third,
+            station = null, confidence = LogConfidence.UNIDENTIFIED)
+    }
+
+    private fun logbookAction(failure: String, action: suspend () -> Unit) = scope.launch {
+        try { action() } catch (e: Exception) {
+            if (e is CancellationException) throw e
+            mutableState.update { it.copy(message = "$failure: ${e.message ?: e.javaClass.simpleName}") }
+        }
+    }
+
+    fun saveLog(entry: LogEntry) = logbookAction("Could not save the log entry") {
+        if (logbook.entries.value.any { it.id == entry.id }) logbook.replace(entry) else logbook.add(entry)
+    }
+    fun deleteLog(id: String) = logbookAction("Could not delete the log entry") { logbook.delete(id) }
+
+    /** Writes every entry as CSV to a document the user chose through the system file picker. */
+    fun exportLog(uri: Uri) = logbookAction("Could not export the logbook") {
+        val entries = logbook.entries.value
+        kotlinx.coroutines.withContext(Dispatchers.IO) {
+            val stream = checkNotNull(application.contentResolver.openOutputStream(uri, "wt")) { "No output stream" }
+            stream.bufferedWriter(Charsets.UTF_8).use { LogCsv.write(entries, it) }
+        }
+        mutableState.update { it.copy(notice = "Exported ${entries.size} log entries", message = null) }
+    }
     fun setMode(mode: Mode) = change { it.copy(tuning = it.tuning.copy(mode = mode)) }
     fun setPassband(band: Passband) = change { it.copy(tuning = it.tuning.withPassband(band)) }
     fun setStep(text: String): Boolean = change {

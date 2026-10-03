@@ -17,6 +17,12 @@ class RadioViewModel(application: Application) : AndroidViewModel(application) {
     fun tune(text: String) = radio.tune(text)
     fun step(direction: Int) = radio.step(direction)
     fun tuneToStation(khz: Int) = radio.tuneToStation(khz)
+    fun tuneTo(frequencyHz: Long, mode: Mode) = radio.tuneTo(frequencyHz, mode)
+    val logEntries = radio.logbook.entries
+    fun draftLog() = radio.draftLog()
+    fun saveLog(entry: org.kiwidroid.core.LogEntry) = radio.saveLog(entry)
+    fun deleteLog(id: String) = radio.deleteLog(id)
+    fun exportLog(uri: android.net.Uri) = radio.exportLog(uri)
     fun setMode(mode: Mode) = radio.setMode(mode)
     fun setPassband(band: Passband) = radio.setPassband(band)
     fun setStep(text: String) = radio.setStep(text)

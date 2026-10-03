@@ -20,6 +20,10 @@ Stations are checked against FCC LMS, ISED (Canada), and the Mexican regulator's
 
 Set each receiver's antenna location under **Servers → Edit** (or fetch it from the receiver's published GPS) to rank stations by a coarse day/night ground- and sky-wave estimate, with distance and bearing. Starred stations appear as favorite chips on every band. See [docs/MW_STATIONS.md](docs/MW_STATIONS.md).
 
+## Logbook
+
+**Log…** records the time (UTC), receiver, frequency, mode, passband, RSSI with its 10-second range, the station (chosen from the in-passband MW candidates or typed), identification confidence, and notes. **Logbook** lists, searches, edits, and tunes back to entries, and exports CSV through the system save dialog. See [docs/LOGBOOK.md](docs/LOGBOOK.md).
+
 ## Audible RSSI
 
 Enable **RSSI beeps** and disable **Receiver audio** for tone-only cable troubleshooting. Default pitch rises one octave per 10 dB. **Sound settings** offers editable dBm-to-note points, musical scales/root/custom intervals, beep and receiver gains, timing/fades, smoothing, hysteresis, and sine/triangle waveforms. **RSSI → C5** centers the map on the current reading. Settings persist and changes apply without reconnecting.
@@ -70,7 +74,7 @@ The phone script installs in place to preserve settings, then runs control/filte
 
 Edit boxes select their existing text when first focused; subsequent taps let you place the cursor normally. CWN appears directly below CW.
 
-Validated: 97 core JVM tests, 11 settings tests, Android lint (no errors), debug APK build, and eight phone tests, including two offline MW station tests (Pixel 8 Pro / Android 17). The full phone suite last ran before database vetting; both MW tests, now independent of the user's own favorites, hidden entries, and receiver location, pass on the Pixel 8 Pro. Fetching a location from a live receiver's `/status` is covered only by a mock-server test. Device coverage includes Pixel 3 XL / Android 12 (earlier builds) and Pixel 8 Pro / Android 17 over Bluetooth (0.5.1). The latter passed a 20-second silent mono/stereo test with zero local/device underruns or dropped audio. The user confirmed the previous Bluetooth fix works. Live listening checks of the newly added modes and longer/background/Doze testing remain; see [docs/VALIDATION.md](docs/VALIDATION.md).
+Validated: 102 core JVM tests, 15 app JVM tests, Android lint (no errors), debug APK build, and nine phone tests, including two offline MW station tests and the offline logbook test, all passing on the Pixel 8 Pro / Android 17. Fetching a location from a live receiver's `/status` is covered only by a mock-server test. Device coverage includes Pixel 3 XL / Android 12 (earlier builds) and Pixel 8 Pro / Android 17 over Bluetooth (0.5.1). The latter passed a 20-second silent mono/stereo test with zero local/device underruns or dropped audio. The user confirmed the previous Bluetooth fix works. Live listening checks of the newly added modes and longer/background/Doze testing remain; see [docs/VALIDATION.md](docs/VALIDATION.md).
 
 Source layout: `core/` is Android-independent protocol/transport/PCM code; `app/` contains Compose controls, process-scoped settings/state, and a media playback service owning the session, audio focus, notification, power locks, and AudioTrack output. The implementation follows `~/kiwi` protocol documentation; test vectors are independently generated, not copied receiver captures.
 
