@@ -6,7 +6,7 @@ North American MW station database: a bundled FCC table vetted against the US, C
 
 The MW section appears only while the tuned frequency is **520–1710 kHz**; other bands keep the plain tuning screen.
 
-- Below **Tuned:**, each 10 kHz channel (530–1700 kHz) whose carrier lies inside the current RF passband is listed with its strongest licensed station, e.g. `1030 kHz: WBZ Boston, MA, US · 50 kW`. `(+n)` counts other stations on that channel. Wide AM tuned between channels shows both neighbours; narrow CW/CWN between channels shows none.
+- Below **Tuned:**, each 10 kHz channel (530–1700 kHz) whose carrier lies inside the current RF passband is listed with its strongest licensed station, e.g. `1030 kHz: WBZ Boston, MA, US · 50 kW`. `(+n)` counts other stations on that channel. Wide AM tuned between channels shows both neighbours. When no carrier is inside the passband (a sideband filter such as USB +250…+2700 Hz, or narrow CW/CWN between channels), the channels whose ±5 kHz signal overlaps the passband are shown instead, nearest first.
 - Tap a channel line or **MW stations** to open the list. **In passband** limits it to those channels; **All** covers the band. Search matches a kHz prefix (`10` → 1000–1090), a call-sign prefix, or part of the city/state/country.
 - Tapping a station tunes to its carrier. AM, SAM/SAU/SAL/SAS, USB, and LSB are kept; CW, CWN, and IQ switch to AM.
 - Without a receiver location, stations on a channel are ordered by peak licensed power, then night power, then class (A first). With a location, they are ranked by the likelihood heuristic below.

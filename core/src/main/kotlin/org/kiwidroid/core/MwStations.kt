@@ -86,14 +86,23 @@ fun distanceKm(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
     return 2 * 6371.0088 * Math.asin(Math.sqrt(a.coerceIn(0.0, 1.0)))
 }
 
-/** Channels whose carrier lies inside the current RF passband (inclusive), nearest the passband center first. */
+/** Half-width of an AM broadcast signal's main sidebands, for passbands that exclude the carrier. */
+const val MW_SIDEBAND_HZ = 5000
+
+/**
+ * Channels heard in the current RF passband, nearest the passband center first: those whose carrier lies inside it
+ * (inclusive); otherwise, as with a sideband passband such as USB +250…+2700 Hz that leaves out the carrier, those
+ * whose ±[MW_SIDEBAND_HZ] signal overlaps it.
+ */
 fun mwChannelsInPassband(tuning: Tuning): List<Int> {
     val lowHalfHz = tuning.radioFrequencyHalfHz + 2L * tuning.passband.lowHz
     val highHalfHz = tuning.radioFrequencyHalfHz + 2L * tuning.passband.highHz
     val centerHalfHz = (lowHalfHz + highHalfHz) / 2
-    return (MW_FIRST_CHANNEL_KHZ..MW_LAST_CHANNEL_KHZ step MW_CHANNEL_SPACING_KHZ)
-        .filter { it * 2000L in lowHalfHz..highHalfHz }
+    val channels = (MW_FIRST_CHANNEL_KHZ..MW_LAST_CHANNEL_KHZ step MW_CHANNEL_SPACING_KHZ)
         .sortedBy { Math.abs(it * 2000L - centerHalfHz) }
+    return channels.filter { it * 2000L in lowHalfHz..highHalfHz }.ifEmpty {
+        channels.filter { it * 2000L - 2L * MW_SIDEBAND_HZ < highHalfHz && it * 2000L + 2L * MW_SIDEBAND_HZ > lowHalfHz }
+    }
 }
 
 /** Tunes the displayed frequency to a carrier; modes that cannot sensibly receive AM switch to AM. */

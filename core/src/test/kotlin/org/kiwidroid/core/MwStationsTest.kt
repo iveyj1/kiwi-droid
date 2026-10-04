@@ -100,12 +100,24 @@ class MwStationsTest {
         assertEquals(listOf(1010), mwChannelsInPassband(Tuning(1_007_000, Mode.AM)))
         assertEquals(listOf(1010, 1000), mwChannelsInPassband(Tuning(1_006_000, Mode.AM).withPassband(Passband(-6000, 6000))))
         assertEquals(listOf(1000), mwChannelsInPassband(Tuning(999_500, Mode.USB)))
-        assertEquals(emptyList(), mwChannelsInPassband(Tuning(1_000_500, Mode.USB)))
+        assertEquals(listOf(1000), mwChannelsInPassband(Tuning(1_000_500, Mode.USB)))
         assertEquals(listOf(1000), mwChannelsInPassband(Tuning(1_002_000, Mode.LSB)))
         assertEquals(listOf(1000), mwChannelsInPassband(Tuning(1_000_000, Mode.CW)))
-        assertEquals(emptyList(), mwChannelsInPassband(Tuning(1_001_000, Mode.CWN)))
+        assertEquals(listOf(1000), mwChannelsInPassband(Tuning(1_001_000, Mode.CWN)))
         assertEquals(listOf(530), mwChannelsInPassband(Tuning(527_000, Mode.AM)))
         assertEquals(emptyList(), mwChannelsInPassband(Tuning(5_000_000, Mode.AM)))
+    }
+
+    @Test fun `sideband passbands that exclude the carrier still find the channel being heard`() {
+        listOf(Mode.USB to Passband(250, 2700), Mode.LSB to Passband(-2700, -250), Mode.SAM to Passband(100, 4000),
+            Mode.AM to Passband(-3000, -100), Mode.SAU to Passband(300, 5000)).forEach { (mode, band) ->
+            assertEquals(listOf(760), mwChannelsInPassband(Tuning(760_000, mode).withPassband(band)), "$mode $band")
+        }
+        // Upper sideband of 760 heard 3 kHz up; nearest carrier first when two signals overlap.
+        assertEquals(listOf(760), mwChannelsInPassband(Tuning(763_000, Mode.USB).withPassband(Passband(250, 1500))))
+        assertEquals(listOf(770, 760), mwChannelsInPassband(Tuning(764_000, Mode.USB).withPassband(Passband(500, 2700))))
+        // ±5 kHz signals on the 10 kHz raster abut, so any MW passband touches one: 755.05–755.25 kHz is 760's lower edge.
+        assertEquals(listOf(760), mwChannelsInPassband(Tuning(754_800, Mode.USB).withPassband(Passband(250, 450))))
     }
 
     @Test fun `tuning to a station keeps AM-family and sideband modes but leaves CW and IQ`() {
