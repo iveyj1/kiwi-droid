@@ -18,6 +18,14 @@ Choose the station:
 
 Then set **Heard ID**, **Tentative**, or **Unidentified**, add notes (up to 2,000 characters), and **Save**. A chosen MW station is stored as a snapshot (call, place, format, distance, bearing, facility ID), so later database refreshes do not rewrite history.
 
+## Logging from the MW station dialog
+
+Each station has a **+ log** or **✓ log** action. With no matching entry it opens a draft at that station's frequency with the station selected. Otherwise it edits the **latest reception timestamp**, regardless of confidence. Matching uses facility ID plus channel, including merged IDs, not call-sign text. A station-associated unidentified entry also counts as an existing log.
+
+This action does not tune the receiver. A draft for a different frequency omits the current RSSI measurements. Drafts on the currently heard channel preserve its mode/passband; existing entries preserve their original receiver, time, tuning, RSSI, and station snapshot. The selected station stays in the editor even when hidden or outside the top 20 candidates. Saving/cancelling returns to the MW list and its search. The main **Log…** action remains available to create another reception instead of editing the latest one.
+
+During receiver handover, drafts and RSSI belong to the audible source, not the receiver still connecting. The RSSI window resets at transfer. See `RECEIVER_SWITCHING.md`.
+
 ## Logbook
 
 **Logbook (n)** lists entries newest first, with totals: entries, distinct stations identified (plus tentative), states/provinces, and countries. Search matches kHz, call, place, format, notes, receiver, or date. Each entry offers **Tune** (frequency and mode) and **Edit**; delete from the editor with a second tap to confirm.

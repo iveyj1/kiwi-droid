@@ -12,8 +12,11 @@ import org.kiwidroid.core.*
 /** A single clocked output mixes independent radio and RSSI sounds, including in the background. */
 class AndroidAudioSink(
     private val focusAllowed: () -> Boolean = { true },
+    private val externalRender: ((Int) -> ShortArray)? = null,
     private val settings: () -> SoundSettings = { SoundSettings() },
 ) : AudioSink {
+    var outputBufferFrames: Int = 0
+        private set
     private var radioBuffer: RadioJitterBuffer? = null
     @Volatile private var focusSilenced = false
     @Volatile private var deviceUnderruns = 0
@@ -44,6 +47,7 @@ class AndroidAudioSink(
             throw IOException("AudioTrack initialization failed")
         }
         val actualFrames = output.bufferSizeInFrames
+        outputBufferFrames = actualFrames
         deviceBufferMs = actualFrames * 1000 / Protocol.OUTPUT_RATE
         val buffer = RadioJitterBuffer(Protocol.OUTPUT_RATE, actualFrames, channels = 2)
         radioBuffer = buffer
@@ -70,9 +74,11 @@ class AndroidAudioSink(
                     }
                     // Consume live PCM while silenced: no stale backlog or reconnect on focus gain.
                     val sound = settings()
-                    val radioPcm = buffer.render(blockSize, sound.radioEnabled)
-                    val tonePcm = tones.render(blockSize, sound.tones, monotonicMs())
-                    val samples = mixStereoSound(radioPcm, tonePcm, sound)
+                    val samples = externalRender?.invoke(blockSize) ?: run {
+                        val radioPcm = buffer.render(blockSize, sound.radioEnabled)
+                        val tonePcm = tones.render(blockSize, sound.tones, monotonicMs())
+                        mixStereoSound(radioPcm, tonePcm, sound)
+                    }
                     var offset = 0
                     while (offset < samples.size && !closed) {
                         val written = output.write(samples, offset, samples.size - offset, AudioTrack.WRITE_BLOCKING)

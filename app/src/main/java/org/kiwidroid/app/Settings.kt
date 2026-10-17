@@ -15,6 +15,7 @@ data class Settings(
     val selected: Int = 0,
     val tuning: Tuning = Tuning(),
     val stepHz: Long = 100,
+    val keepReceiverSeconds: Int = 0,
     val sound: SoundSettings = SoundSettings(),
     /** Show US construction permits (not yet on air) alongside licensed and notified MW stations. */
     val mwIncludePermits: Boolean = false,
@@ -32,6 +33,7 @@ data class Settings(
         require(receivers.isNotEmpty() && receivers.size <= 50)
         require(selected in receivers.indices)
         require(stepHz in 1..MAX_FREQUENCY_HZ)
+        require(keepReceiverSeconds in 0..600) { "Receiver retention must be 0–600 seconds" }
         require(receivers.map { it.baseUrl }.distinct().size == receivers.size) { "Receiver URL already exists" }
         require(favorites.size <= MAX_FAVORITES) { "At most $MAX_FAVORITES favorites" }
         require(favorites.map { it.facilityId to it.khz }.distinct().size == favorites.size) { "Duplicate favorite" }
@@ -69,6 +71,7 @@ internal object SettingsCodec {
             }) }
         })
         put("stepHz", settings.stepHz)
+        put("keepReceiverSeconds", settings.keepReceiverSeconds)
         put("mwIncludePermits", settings.mwIncludePermits)
         put("receiverLocations", buildJsonObject {
             settings.receiverLocations.forEach { (url, point) -> put(url, buildJsonObject {
@@ -120,6 +123,7 @@ internal object SettingsCodec {
                     } ?: mode.defaultPassband
                 }),
             stepHz = obj.getValue("stepHz").jsonPrimitive.long,
+            keepReceiverSeconds = obj["keepReceiverSeconds"]?.jsonPrimitive?.int ?: 0,
             sound = obj["sound"]?.jsonObject?.let(::decodeSound) ?: SoundSettings(),
             mwIncludePermits = obj["mwIncludePermits"]?.jsonPrimitive?.boolean ?: false,
             receiverLocations = obj["receiverLocations"]?.jsonObject?.entries?.associate { (url, value) ->

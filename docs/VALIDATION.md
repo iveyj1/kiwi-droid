@@ -92,6 +92,16 @@
 - Final 0.5.2 build: 61 core tests, 8 settings tests, lint, app/test APK builds passed; APK manifest verified `debuggable=false`, installed in place. The full six-test UI suite was not rerun because the phone remained locked after the paired background test (last complete suite: 0.5.1).
 - This is a device-confirmed regression fix, not a guarantee against all scheduling/network/Bluetooth issues. Live listening confirmation and longer endurance checks remain.
 
+## Log actions and two-stream receiver handover — 0.7.0
+
+- MW row actions create station-selected drafts or edit the latest matching reception, including facility aliases. Editing preserves the original entry and measurements; browsing another frequency omits unrelated RSSI and never retunes. Chosen stations remain selectable outside the top 20 or visibility filters.
+- Added a serialized two-session coordinator and a single-output mixer. Buffer-ready transfer crossfades radio and tones for 50 ms; rapid reversal preserves the fade. Slow/failed candidates leave the old source playing. UI/notification/RSSI/log snapshots identify the output source independently of the requested destination.
+- Retention defaults Off; configurable presets through 600 seconds. Reuse retained streams, expire them, close them on active tuning changes, and close a retained session before opening a third receiver. Stop/focus loss releases both. Existing runtime-debugging and device-sized buffering fixes remain intact.
+- JVM coverage: 113 core tests and 16 app tests; APK/test APK builds and lint passed. State-machine tests cover readiness, failure/timeout, cancellation, retained expiry/reuse, retuning, third-receiver replacement, foreground fallback without automatic reconnect, and background failure. Mixer tests cover bounded inputs and continuous crossfade reversal.
+- Ten phone tests passed on Pixel 8 Pro / Android 17 using the current audio route. New two-receiver test verifies old-source log attribution during setup, retained switch-back without reconnect, 15 seconds behind Home with both streams and no growth in device underruns, then retuning/Stop cleanup. UI test creates and edits via the MW log action, retains entry ID/time, does not retune, and removes its test entries.
+- Full mixer-path background test: 60 seconds behind Home plus 60 seconds screen-off; zero radio/device underruns and zero dropped PCM. Final queued audio 324 ms, target 300 ms, native ring 200 ms. No real receivers were contacted by these tests.
+- Subjective real-receiver handover, Bluetooth-specific two-stream endurance, and extended network-failure testing remain. See `RECEIVER_SWITCHING.md`.
+
 ## Next manual checks
 
 Use an authorized receiver on the phone's network. Start with low media volume.

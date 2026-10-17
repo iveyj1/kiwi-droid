@@ -28,8 +28,10 @@ private fun stationKey(station: MwStation) = "${station.facilityId}/${station.kh
 /** MW stations inside the logged passband, most likely first when the receiver location is known. */
 internal fun logCandidates(db: MwStationDb?, entry: LogEntry, visibility: MwVisibility, now: Instant): List<Pair<MwStation, MwRanking?>> {
     if (db == null || entry.frequencyHz !in MW_BAND_HZ) return emptyList()
-    val tuning = Tuning(entry.frequencyHz, entry.mode).withPassband(entry.passband)
-    val stations = mwChannelsInPassband(tuning).flatMap { db.onChannel(it, visibility) }
+    val tuning = Tuning(entry.frequencyHz, entry.mode, defaultPassbands() + (entry.mode to entry.passband))
+    val chosen = entry.station?.let { s -> s.facilityId?.let { id -> s.khz?.let { db.station(id, it) } } }
+    val stations = (listOfNotNull(chosen) + mwChannelsInPassband(tuning).flatMap { db.onChannel(it, visibility) })
+        .distinctBy { it.facilityId to it.khz }
     val location = entry.receiverLocation
     return if (location == null) stations.map { it to null } else MwRanker.rank(stations, location, now).map { it.station to it }
 }
@@ -39,8 +41,9 @@ internal fun logCandidates(db: MwStationDb?, entry: LogEntry, visibility: MwVisi
 @Composable
 internal fun LogEditor(entry: LogEntry, isNew: Boolean, candidates: List<Pair<MwStation, MwRanking?>>,
                        onDismiss: () -> Unit, onSave: (LogEntry) -> Unit, onDelete: () -> Unit) {
-    val shown = candidates.take(MAX_CANDIDATES)
     val logged = entry.station
+    val shown = (candidates.filter { logged?.matches(it.first) == true } + candidates)
+        .distinctBy { it.first.facilityId to it.first.khz }.take(MAX_CANDIDATES)
     val initial = when {
         logged == null -> if (isNew) shown.firstOrNull()?.first?.let(::stationKey) ?: NO_STATION else NO_STATION
         else -> shown.firstOrNull { logged.matches(it.first) }?.first?.let(::stationKey) ?: OTHER_STATION
@@ -105,7 +108,8 @@ internal fun LogEditor(entry: LogEntry, isNew: Boolean, candidates: List<Pair<Mw
             try {
                 val station = when (selected) {
                     NO_STATION -> null
-                    OTHER_STATION -> LoggedStation(null, null, other.trim())
+                    OTHER_STATION -> if (logged != null && logged.call == other.trim()) logged
+                        else LoggedStation(null, null, other.trim())
                     else -> shown.first { stationKey(it.first) == selected }.let { (s, r) ->
                         // Keep the original snapshot when editing an entry whose station is unchanged.
                         if (logged != null && logged.matches(s)) logged else LoggedStation.of(s, r)

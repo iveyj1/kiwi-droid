@@ -5,6 +5,15 @@ import kotlinx.serialization.json.*
 import org.kiwidroid.core.*
 
 class SettingsTest {
+    @Test fun `receiver retention persists defaults off and rejects unbounded connections`() {
+        val settings = Settings(keepReceiverSeconds = 120)
+        assertEquals(settings, SettingsCodec.decode(SettingsCodec.encode(settings)))
+        val older = Json.parseToJsonElement(SettingsCodec.encode(settings)).jsonObject - "keepReceiverSeconds"
+        assertEquals(0, SettingsCodec.decode(JsonObject(older).toString()).keepReceiverSeconds)
+        assertFailsWith<IllegalArgumentException> { Settings(keepReceiverSeconds = -1) }
+        assertFailsWith<IllegalArgumentException> { Settings(keepReceiverSeconds = 601) }
+    }
+
     @Test fun `settings round trip includes receiver set tuning mode and custom step`() {
         val settings = Settings(listOf(Receiver("Test", "https://example.com:8073")),
             tuning = Tuning(335001, Mode.CW), stepHz = 17)

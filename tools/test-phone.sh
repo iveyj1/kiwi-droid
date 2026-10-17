@@ -7,13 +7,13 @@ if [[ $# -gt 1 ]]; then echo "Usage: $0 [adb-serial]" >&2; exit 1; fi
 args=()
 if [[ $# == 1 ]]; then args=(-s "$1"); fi
 adb "${args[@]}" get-state
-printf 'Unlock the phone before running. Allow about 3 minutes; tests interrupt playback and finish with the phone locked.\n'
+printf 'Unlock the phone before running. Allow about 4 minutes; tests interrupt playback and finish with the phone locked.\n'
 ./gradlew :app:assembleDebug :app:assembleDebugAndroidTest
 adb "${args[@]}" install -r app/build/outputs/apk/debug/app-debug.apk
 adb "${args[@]}" install -r app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
 log=$(mktemp)
 trap 'rm -f "$log"' EXIT
-for test in ReplacementTextFieldTest AudioFocusTest RadioScreenTest PassbandScreenTest MwStationScreenTest LogbookScreenTest AudioPlaybackTest BackgroundPlaybackTest; do
+for test in ReplacementTextFieldTest AudioFocusTest RadioScreenTest PassbandScreenTest MwStationScreenTest LogbookScreenTest AudioPlaybackTest HandoverPlaybackTest BackgroundPlaybackTest; do
     adb "${args[@]}" shell am instrument -w -r -e class "org.kiwidroid.app.$test" \
         org.kiwidroid.app.test/androidx.test.runner.AndroidJUnitRunner | tee "$log"
     # am instrument may return exit status 0 even when JUnit fails.

@@ -73,6 +73,32 @@ class LogbookScreenTest {
             rule.onNodeWithText("Tap again to delete").performClick()
             rule.waitUntil(5000) { ours().isEmpty() }
             rule.onAllNodesWithTag("logEntry").assertCountEquals(0)
+            rule.onNodeWithText("Close").performClick()
+
+            // Log action on a different channel must not retune or edit anyone else's entry.
+            val db = app.stations.state.value.db!!
+            val calls = db.stations.groupingBy { it.call }.eachCount()
+            val station = db.stations.first { s -> s.khz != 1030 && s.call.isNotBlank() && calls[s.call] == 1 &&
+                radio.state.value.settings.mwVisibility.shows(s) && radio.logbook.entries.value.none { it.station?.matches(s) == true } }
+            rule.onNodeWithTag("mwStations").performScrollTo().performClick()
+            rule.onNodeWithTag("mwScopeAll").performClick()
+            rule.onNodeWithTag("mwSearch").performTextReplacement(station.call)
+            rule.onNodeWithContentDescription("Log ${station.call}").performScrollTo().performClick()
+            rule.onNodeWithTag("logStation-${station.call}").assertIsSelected()
+            rule.onNodeWithTag("logNotes").performScrollTo().performTextReplacement("$marker from station")
+            rule.onNodeWithTag("logSave").performClick()
+            rule.waitUntil(5000) { ours().size == 1 }
+            val saved = ours().single()
+            assertEquals(station.khz * 1000L, saved.frequencyHz)
+            assertNull(saved.rssiDbm)
+            assertEquals(1030000L, radio.state.value.settings.tuning.frequencyHz)
+            rule.onNodeWithContentDescription("Edit latest log for ${station.call}").performScrollTo().performClick()
+            rule.onNodeWithTag("logNotes").performScrollTo().assertTextContains("$marker from station")
+            rule.onNodeWithTag("logNotes").performTextReplacement("$marker station edit")
+            rule.onNodeWithTag("logSave").performClick()
+            rule.waitUntil(5000) { ours().singleOrNull()?.notes == "$marker station edit" }
+            assertEquals(saved.id, ours().single().id)
+            assertEquals(saved.utc, ours().single().utc)
         } finally {
             instrumentation.runOnMainSync {
                 ours().forEach { radio.deleteLog(it.id) }
@@ -83,6 +109,7 @@ class LogbookScreenTest {
                 radio.tune(formatKhz(original.tuning.frequencyHz))
                 radio.setMode(original.tuning.mode)
             }
+            rule.waitUntil(5000) { ours().isEmpty() }
         }
     }
 }

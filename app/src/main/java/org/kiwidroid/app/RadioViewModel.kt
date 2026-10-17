@@ -26,6 +26,7 @@ class RadioViewModel(application: Application) : AndroidViewModel(application) {
     fun setMode(mode: Mode) = radio.setMode(mode)
     fun setPassband(band: Passband) = radio.setPassband(band)
     fun setStep(text: String) = radio.setStep(text)
+    fun setKeepReceiverSeconds(seconds: Int) = radio.setKeepReceiverSeconds(seconds)
     fun setSound(sound: SoundSettings) = radio.setSound(sound)
     fun setMwIncludePermits(include: Boolean) = radio.setMwIncludePermits(include)
     fun setMwIncludeSilent(include: Boolean) = radio.setMwIncludeSilent(include)

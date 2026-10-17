@@ -25,6 +25,9 @@ data class RadioUiState(
     val message: String? = null,
     /** Neutral confirmation (not an error), e.g. a finished export. */
     val notice: String? = null,
+    val audibleReceiver: Receiver? = null,
+    val audibleTuning: Tuning? = null,
+    val retainedReceiver: Receiver? = null,
 )
 
 /** Process-scoped controls/settings; playback resources belong exclusively to PlaybackService. */
@@ -33,10 +36,9 @@ class RadioController(private val application: Application) {
     private val store = SettingsStore(application)
     private val mutableState = MutableStateFlow(RadioUiState())
     val state = mutableState.asStateFlow()
-    private val mutableTuning = MutableStateFlow(Tuning())
-    internal val tuning = mutableTuning.asStateFlow()
-    internal data class PlaybackRequest(val receiver: Receiver, val generation: Long)
+    internal data class PlaybackRequest(val receiver: Receiver, val generation: Long, val cycle: Long)
     private var generation = 0L
+    private var playbackCycle = 0L
     private val mutableRequests = MutableStateFlow<PlaybackRequest?>(null)
     internal val requests = mutableRequests.asStateFlow()
     private val saves = Channel<Settings>(Channel.CONFLATED)
@@ -48,7 +50,6 @@ class RadioController(private val application: Application) {
         scope.launch {
             try {
                 val settings = store.load()
-                mutableTuning.value = settings.tuning
                 mutableState.update { it.copy(settings = settings, loaded = true, status = "Stopped") }
             } catch (e: Exception) {
                 if (e is CancellationException) throw e
@@ -76,7 +77,7 @@ class RadioController(private val application: Application) {
     fun play() {
         if (!state.value.loaded || state.value.running) return
         mutableState.update { it.copy(running = true, status = "Connecting…", metrics = null, message = null) }
-        mutableRequests.value = PlaybackRequest(state.value.settings.receiver, ++generation)
+        mutableRequests.value = PlaybackRequest(state.value.settings.receiver, ++generation, ++playbackCycle)
         try {
             ContextCompat.startForegroundService(application, Intent(application, PlaybackService::class.java)
                 .setAction(PlaybackService.ACTION_PLAY))
@@ -88,20 +89,44 @@ class RadioController(private val application: Application) {
     fun stop(reason: String = "Stopped") {
         mutableRequests.value = null
         rssiWindow.clear()
-        mutableState.update { it.copy(running = false, status = reason, metrics = null) }
+        mutableState.update { it.copy(running = false, status = reason, metrics = null,
+            audibleReceiver = null, audibleTuning = null, retainedReceiver = null) }
     }
 
-    internal fun received(request: PlaybackRequest, metrics: SessionMetrics) {
-        if (requests.value == request && state.value.running) {
-            if (!metrics.stale) metrics.rssiDbm?.let { rssiWindow.add(SystemClock.elapsedRealtime(), it) }
-            mutableState.update { it.copy(status = "Playing", metrics = metrics) }
+    internal fun playbackChanged(playback: ReceiverPlayback) {
+        if (!state.value.running) return
+        if (playback.receiver == null && playback.connecting == null && playback.error != null) {
+            requests.value?.let { failed(it, checkNotNull(playback.error)) }
+            return
         }
+        val old = state.value
+        if (old.audibleReceiver != playback.receiver || old.audibleTuning?.command() != playback.tuning?.command()) rssiWindow.clear()
+        val metrics = playback.metrics
+        if (metrics != null && !metrics.stale) metrics.rssiDbm?.let { rssiWindow.add(SystemClock.elapsedRealtime(), it) }
+        var settings = old.settings
+        if (playback.error != null && playback.receiver != null && playback.connecting == null) {
+            val index = settings.receivers.indexOf(playback.receiver)
+            if (index >= 0) {
+                val audible = playback.tuning ?: settings.tuning
+                val bands = settings.tuning.passbands + (audible.mode to audible.passband)
+                settings = settings.copy(selected = index, tuning = audible.copy(passbands = bands))
+                saves.trySend(settings)
+            }
+        }
+        mutableState.update { it.copy(settings = settings, metrics = metrics,
+            audibleReceiver = playback.receiver, audibleTuning = playback.tuning, retainedReceiver = playback.retained,
+            status = if (playback.connecting != null) {
+                (playback.receiver?.let { receiver -> "Listening to ${receiver.name} · " } ?: "") + "Connecting to ${playback.connecting?.name}…"
+            } else if (playback.receiver != null) "Playing" else "Connecting…",
+            message = playback.error ?: it.message) }
     }
 
     internal fun failed(request: PlaybackRequest, message: String) {
         if (requests.value == request) {
             mutableRequests.value = null
-            mutableState.update { it.copy(running = false, metrics = null, status = "Error", message = message) }
+            rssiWindow.clear()
+            mutableState.update { it.copy(running = false, metrics = null, status = "Error", message = message,
+                audibleReceiver = null, audibleTuning = null, retainedReceiver = null) }
         }
     }
 
@@ -109,13 +134,12 @@ class RadioController(private val application: Application) {
         check(state.value.loaded) { "Settings are still loading" }
         val previous = state.value.settings
         val next = transform(previous)
-        mutableTuning.value = next.tuning
-        if (next.tuning != previous.tuning || next.receiver != previous.receiver) rssiWindow.clear()
+        if (next.tuning.command() != previous.tuning.command()) rssiWindow.clear()
         mutableState.update { it.copy(settings = next, message = null, notice = null) }
         saves.trySend(next)
         if (state.value.running && next.receiver != previous.receiver) {
-            mutableState.update { it.copy(status = "Connecting…", metrics = null) }
-            mutableRequests.value = PlaybackRequest(next.receiver, ++generation)
+            mutableState.update { it.copy(status = "Connecting to ${next.receiver.name}…") }
+            mutableRequests.value = PlaybackRequest(next.receiver, ++generation, playbackCycle)
         }
         true
     } catch (e: IllegalArgumentException) {
@@ -134,10 +158,12 @@ class RadioController(private val application: Application) {
     /** Snapshot of what is being heard now; the editor adds station, confidence and notes. */
     fun draftLog(): LogEntry {
         val settings = state.value.settings
+        val receiver = state.value.audibleReceiver ?: settings.receiver
+        val tuning = state.value.audibleTuning ?: settings.tuning
         val rssi = rssiWindow.snapshot(SystemClock.elapsedRealtime())
-        return LogEntry(utc = Instant.now(), receiverName = settings.receiver.name, receiverUrl = settings.receiver.url,
-            receiverLocation = settings.receiverLocation, frequencyHz = settings.tuning.frequencyHz, mode = settings.tuning.mode,
-            passband = settings.tuning.passband, rssiDbm = rssi?.first, rssiMinDbm = rssi?.second, rssiMaxDbm = rssi?.third,
+        return LogEntry(utc = Instant.now(), receiverName = receiver.name, receiverUrl = receiver.url,
+            receiverLocation = settings.locationOf(receiver), frequencyHz = tuning.frequencyHz, mode = tuning.mode,
+            passband = tuning.passband, rssiDbm = rssi?.first, rssiMinDbm = rssi?.second, rssiMaxDbm = rssi?.third,
             station = null, confidence = LogConfidence.UNIDENTIFIED)
     }
 
@@ -169,6 +195,7 @@ class RadioController(private val application: Application) {
         require(step != null && step in 1..MAX_FREQUENCY_HZ) { "Step must be a whole number from 1 to 30000000 Hz" }
         it.copy(stepHz = step)
     }
+    fun setKeepReceiverSeconds(seconds: Int) = change { it.copy(keepReceiverSeconds = seconds) }
     fun setSound(sound: SoundSettings) = change { it.copy(sound = sound) }
     fun setMwIncludePermits(include: Boolean) = change { it.copy(mwIncludePermits = include) }
     fun setMwIncludeSilent(include: Boolean) = change { it.copy(mwIncludeSilent = include) }

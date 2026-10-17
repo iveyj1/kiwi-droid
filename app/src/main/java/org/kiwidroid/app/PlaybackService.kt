@@ -19,7 +19,10 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import org.kiwidroid.core.KiwiSession
+import java.util.concurrent.atomic.AtomicReference
+import org.kiwidroid.core.ReceiverMixer
+import org.kiwidroid.core.ReceiverHandover
+import org.kiwidroid.core.ReceiverSelection
 import org.kiwidroid.core.formatKhz
 
 /** Owns the connection, audio focus, notification, and screen-off resource lifetime. */
@@ -66,35 +69,45 @@ class PlaybackService : Service() {
         } else startForeground(NOTIFICATION_ID, initial)
         foreground = true
         if (sessions == null) {
-            val session = KiwiSession()
             sessions = scope.launch {
-                // Cancellation is joined before another receiver can own AudioTrack/the network slot.
-                radio.requests.collectLatest { request ->
-                    if (request == null) {
+                radio.requests.map { it?.cycle }.distinctUntilChanged().collectLatest { cycle ->
+                    if (cycle == null) {
                         finishPlayback()
                         return@collectLatest
+                    }
+                    val renderer = AtomicReference<ReceiverMixer?>()
+                    val output = AndroidAudioSink(focusAllowed = { !focus.interrupted },
+                        externalRender = { count -> renderer.get()?.render(count) ?: ShortArray(count * 2) }) {
+                        radio.state.value.settings.sound
                     }
                     try {
                         acquireLocks()
                         focus.acquire()
-                        withContext(Dispatchers.IO) {
-                            session.run(request.receiver, radio.tuning,
-                                AndroidAudioSink(focusAllowed = { !focus.interrupted }) { radio.state.value.settings.sound }) { metrics ->
-                                scope.launch { radio.received(request, metrics) }
-                            }
+                        output.start(12000.0)
+                        val mixer = ReceiverMixer(output.outputBufferFrames) { radio.state.value.settings.sound }
+                        renderer.set(mixer)
+                        ReceiverHandover(mixer).run(radio.state.map {
+                            ReceiverSelection(it.settings.receiver, it.settings.tuning, it.settings.keepReceiverSeconds)
+                        }, output::checkHealth) { playback ->
+                            val device = output.playbackDiagnostics()
+                            val metrics = playback.metrics?.let { m -> m.copy(playback = m.playback?.copy(
+                                deviceUnderruns = device?.deviceUnderruns ?: 0,
+                                deviceBufferMs = device?.deviceBufferMs ?: 0,
+                                focusSilenced = device?.focusSilenced ?: false)) }
+                            radio.playbackChanged(playback.copy(metrics = metrics))
                         }
                     } catch (e: Exception) {
                         if (e is CancellationException) throw e
-                        radio.failed(request, e.message ?: "Playback failed")
+                        radio.requests.value?.let { radio.failed(it, e.message ?: "Playback failed") }
                     } finally {
+                        withContext(Dispatchers.IO + NonCancellable) { output.close() }
                         focus.release()
                     }
                 }
             }
             notifications = scope.launch {
                 // Do not rebuild notifications at RSSI frame cadence.
-                radio.state.map { Summary(it.settings.receiver.name,
-                    "${formatKhz(it.settings.tuning.frequencyHz)} kHz · ${it.settings.tuning.mode.name}", it.status) }
+                radio.state.map { summary() }
                     .distinctUntilChanged().collect { info ->
                         if (foreground) updateNotification(info)
                     }
@@ -113,8 +126,9 @@ class PlaybackService : Service() {
 
     private data class Summary(val receiver: String, val tune: String, val status: String)
     private fun summary(): Summary = radio.state.value.let {
-        Summary(it.settings.receiver.name,
-            "${formatKhz(it.settings.tuning.frequencyHz)} kHz · ${it.settings.tuning.mode.name}", it.status)
+        val tune = it.audibleTuning ?: it.settings.tuning
+        Summary((it.audibleReceiver ?: it.settings.receiver).name,
+            "${formatKhz(tune.frequencyHz)} kHz · ${tune.mode.name}", it.status)
     }
 
     private fun notification(info: Summary): Notification {
@@ -124,7 +138,7 @@ class PlaybackService : Service() {
             .putString(MediaMetadata.METADATA_KEY_DISPLAY_SUBTITLE, info.tune).build())
         mediaSession.setPlaybackState(PlaybackState.Builder()
             .setActions(PlaybackState.ACTION_STOP or PlaybackState.ACTION_PAUSE)
-            .setState(if (info.status == "Playing") PlaybackState.STATE_PLAYING else PlaybackState.STATE_BUFFERING,
+            .setState(if (radio.state.value.audibleReceiver != null) PlaybackState.STATE_PLAYING else PlaybackState.STATE_BUFFERING,
                 PlaybackState.PLAYBACK_POSITION_UNKNOWN, 1f).build())
         val open = PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java)
             .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)

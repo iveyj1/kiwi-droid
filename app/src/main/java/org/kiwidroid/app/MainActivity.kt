@@ -83,6 +83,12 @@ private fun RadioScreen(state: RadioUiState, stations: StationDirectoryState, lo
             }
             Text(settings.receiver.url, style = MaterialTheme.typography.bodySmall)
             Text(state.status, Modifier.testTag("status"), style = MaterialTheme.typography.titleMedium)
+            state.audibleReceiver?.let { receiver ->
+                val tune = state.audibleTuning ?: settings.tuning
+                Text("Listening: ${receiver.name} · ${formatKhz(tune.frequencyHz)} kHz ${tune.mode.name}",
+                    style = MaterialTheme.typography.bodySmall)
+            }
+            state.retainedReceiver?.let { Text("Retained: ${it.name}", style = MaterialTheme.typography.bodySmall) }
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 ReplacementTextField(value = frequency, onValueChange = { frequency = it },
                     label = { Text("Frequency (kHz)") }, singleLine = true,
@@ -145,6 +151,13 @@ private fun RadioScreen(state: RadioUiState, stations: StationDirectoryState, lo
             SoundSwitch("Receiver audio", settings.sound.radioEnabled, state.loaded, "radioAudioSwitch") { model.setRadioAudio(it) }
             SoundSwitch("RSSI beeps", settings.sound.tones.enabled, state.loaded, "rssiToneSwitch") { model.setRssiTones(it) }
             OutlinedButton(onClick = { soundOpen = true }, enabled = state.loaded, modifier = Modifier.fillMaxWidth()) { Text("Sound settings") }
+            val retention = listOf(0, 15, 30, 60, 120, 300, 600)
+            Choice("Keep previous receiver", if (settings.keepReceiverSeconds == 0) "Off" else "${settings.keepReceiverSeconds} s",
+                retention.map { if (it == 0) "Off" else "$it s" }, state.loaded, Modifier.fillMaxWidth()) {
+                model.setKeepReceiverSeconds(retention[it])
+            }
+            Text("Switches keep the old audio playing until the new receiver is ready. Retaining it afterwards uses a second receiver slot and stream; retuning drops it.",
+                style = MaterialTheme.typography.bodySmall)
             if (!settings.sound.radioEnabled) Text("Receiver audio muted locally; RSSI and the network stream remain active.",
                 style = MaterialTheme.typography.bodySmall)
             HorizontalDivider()
@@ -189,7 +202,12 @@ private fun RadioScreen(state: RadioUiState, stations: StationDirectoryState, lo
     if (stationsOpen) stations.db?.let { db ->
         MwStationPicker(db, settings.tuning, settings.mwVisibility, settings.favorites, settings.receiverLocation, now, heardStations(log),
             MwPickerActions(model::setMwIncludePermits, model::setMwIncludeSilent, model::setMwIncludeUnverified,
-                { model.toggleFavorite(it) }, { model.toggleHidden(it) }),
+                { model.toggleFavorite(it) }, { model.toggleHidden(it) }, onLog = { station ->
+                    val latest = latestStationLog(log, station)
+                    editing = if (latest != null) latest to false else model.draftLog().forStation(station) to true
+                }, logged = log.mapNotNull { it.station?.let { s ->
+                    s.facilityId?.let { id -> s.khz?.let { khz -> id to khz } }
+                } }.toSet()),
             onDismiss = { stationsOpen = false }) { station ->
             if (model.tuneToStation(station.khz)) stationsOpen = false
         }

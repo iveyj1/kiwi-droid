@@ -78,6 +78,8 @@ internal class MwPickerActions(
     val onIncludeUnverified: (Boolean) -> Unit,
     val onToggleFavorite: (MwStation) -> Unit,
     val onToggleHidden: (MwStation) -> Unit,
+    val onLog: (MwStation) -> Unit = {},
+    val logged: Set<Pair<Int, Int>> = emptySet(),
 )
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -139,6 +141,10 @@ internal fun MwStationPicker(db: MwStationDb, tuning: Tuning, visibility: MwVisi
                                 style = MaterialTheme.typography.bodySmall)
                             ranking?.let { Text(rankingText(it, bestDb), style = MaterialTheme.typography.bodySmall) }
                         }
+                        val logged = station.facilityIds.any { (it to station.khz) in actions.logged }
+                        TextButton(onClick = { actions.onLog(station) }, modifier = Modifier.semantics {
+                            contentDescription = if (logged) "Edit latest log for ${station.label}" else "Log ${station.label}"
+                        }) { Text(if (logged) "✓ log" else "+ log") }
                         val favoriteAction = if (favorite) "Remove ${station.label} ${station.khz} from favorites"
                             else "Add ${station.label} ${station.khz} to favorites"
                         TextButton(onClick = { actions.onToggleFavorite(station) },
