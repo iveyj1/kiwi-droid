@@ -14,6 +14,32 @@ class LogbookTest {
         mode = Mode.SAM, passband = Passband(-4000, 4000), rssiDbm = -62.5, rssiMinDbm = -71.0, rssiMaxDbm = -58.25,
         station = station, confidence = LogConfidence.HEARD_ID, notes = notes)
 
+    private val station = MwStation(25444, "WBZ", 1030, "US", "MA", "Boston", "A", 50.0, 50.0, null,
+        false, false, 42.0, -71.0, MwStation.LICENSED, mergedFacilityIds = listOf(111))
+
+    @Test fun `station log action uses latest timestamp including aliases regardless of confidence`() {
+        val old = entry()
+        val latest = entry("new").copy(utc = old.utc.plusSeconds(60), confidence = LogConfidence.UNIDENTIFIED,
+            station = wbz.copy(facilityId = 111))
+        val wrongChannel = entry("other").copy(utc = old.utc.plusSeconds(120), station = wbz.copy(khz = 1040))
+        assertEquals(latest, latestStationLog(listOf(old, wrongChannel, latest), station))
+        assertNull(latestStationLog(listOf(wrongChannel), station))
+    }
+
+    @Test fun `station draft prefills identity and frequency without misattributing RSSI`() {
+        val same = entry(station = null).forStation(station)
+        assertEquals("WBZ", same.station!!.call)
+        assertEquals(-62.5, same.rssiDbm)
+        val narrow = entry().copy(mode = Mode.CWN, passband = Passband(470, 530)).forStation(station)
+        assertEquals(Mode.CWN, narrow.mode)
+        assertEquals(Passband(470, 530), narrow.passband)
+        val other = entry(station = null).forStation(station.copy(khz = 950))
+        assertEquals(950000, other.frequencyHz)
+        assertNull(other.rssiDbm)
+        assertNull(other.rssiMinDbm)
+        assertNull(other.rssiMaxDbm)
+    }
+
     @Test fun `entries round trip through JSON lines, including absent optional fields`() {
         val full = entry(notes = "Line one\nline \"two\", with comma")
         assertEquals(full, LogCodec.decode(LogCodec.encode(full)))
