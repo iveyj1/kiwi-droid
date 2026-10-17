@@ -27,6 +27,12 @@ A stronger silent loopback test reproduced the failure with receiver audio **ena
 
 Normal sideload builds now set `android:debuggable=false`, retaining the original debug signing key, package ID, and `app-debug.apk` path for in-place updates. For debugger development only, opt in with `-Pdebuggable=true`. Do not use that build to judge background audio performance. No buffer/latency increase, network-queue enlargement, or battery-policy bypass was needed for this fix. Longer runs and live listening still matter; the test does not prove every route or Android version is immune to underruns.
 
+## Retune gaps in 0.7.1
+
+The original handover implementation cleared the foreground PCM queue on every retune, before the session's next 200 ms command check. This could produce silence/refill, followed by more old-frequency audio, then new-frequency audio. Ordinary retunes now preserve the queue and wake the command sender immediately. Only mono/stereo layout changes still clear/reprime channel audio. All previously 50 ms playback fades/crossfades are now 20 ms; configurable beep envelopes are separate.
+
+This eliminates the deliberate retune gap, not all end-to-end latency. Existing queued samples still drain normally; reducing the native/jitter buffers would trade away the resilience achieved by earlier fixes. The new frequency dot estimates settling from command identity, fresh audio, and buffer drain; it cannot prove the server has applied a frequency or measure downstream Bluetooth latency.
+
 ## Counters on the main screen
 
 | Counter | Meaning |

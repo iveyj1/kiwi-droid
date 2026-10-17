@@ -28,7 +28,14 @@ data class RadioUiState(
     val audibleReceiver: Receiver? = null,
     val audibleTuning: Tuning? = null,
     val retainedReceiver: Receiver? = null,
-)
+    val previousFrequencyHz: Long? = null,
+    val previousReceiverUrl: String? = null,
+) {
+    val transitioning: Boolean get() = running && (
+        audibleReceiver?.baseUrl != settings.receiver.baseUrl || audibleTuning?.command() != settings.tuning.command() ||
+            metrics == null || metrics.tuningCommand != settings.tuning.command() || metrics.settling || metrics.stale ||
+            metrics.playback?.buffering == true)
+}
 
 /** Process-scoped controls/settings; playback resources belong exclusively to PlaybackService. */
 class RadioController(private val application: Application) {
@@ -102,7 +109,7 @@ class RadioController(private val application: Application) {
         val old = state.value
         if (old.audibleReceiver != playback.receiver || old.audibleTuning?.command() != playback.tuning?.command()) rssiWindow.clear()
         val metrics = playback.metrics
-        if (metrics != null && !metrics.stale) metrics.rssiDbm?.let { rssiWindow.add(SystemClock.elapsedRealtime(), it) }
+        if (metrics != null && !metrics.stale && !metrics.settling && metrics.tuningCommand == playback.tuning?.command()) metrics.rssiDbm?.let { rssiWindow.add(SystemClock.elapsedRealtime(), it) }
         var settings = old.settings
         if (playback.error != null && playback.receiver != null && playback.connecting == null) {
             val index = settings.receivers.indexOf(playback.receiver)
@@ -114,6 +121,8 @@ class RadioController(private val application: Application) {
             }
         }
         mutableState.update { it.copy(settings = settings, metrics = metrics,
+            previousReceiverUrl = if (settings.receiver.baseUrl != old.settings.receiver.baseUrl) old.settings.receiver.locationKey else it.previousReceiverUrl,
+            previousFrequencyHz = if (settings.tuning.frequencyHz != old.settings.tuning.frequencyHz) old.settings.tuning.frequencyHz else it.previousFrequencyHz,
             audibleReceiver = playback.receiver, audibleTuning = playback.tuning, retainedReceiver = playback.retained,
             status = if (playback.connecting != null) {
                 (playback.receiver?.let { receiver -> "Listening to ${receiver.name} · " } ?: "") + "Connecting to ${playback.connecting?.name}…"
@@ -135,7 +144,9 @@ class RadioController(private val application: Application) {
         val previous = state.value.settings
         val next = transform(previous)
         if (next.tuning.command() != previous.tuning.command()) rssiWindow.clear()
-        mutableState.update { it.copy(settings = next, message = null, notice = null) }
+        mutableState.update { it.copy(settings = next, message = null, notice = null,
+            previousFrequencyHz = if (next.tuning.frequencyHz != previous.tuning.frequencyHz) previous.tuning.frequencyHz else it.previousFrequencyHz,
+            previousReceiverUrl = if (next.receiver.baseUrl != previous.receiver.baseUrl) previous.receiver.locationKey else it.previousReceiverUrl) }
         saves.trySend(next)
         if (state.value.running && next.receiver != previous.receiver) {
             mutableState.update { it.copy(status = "Connecting to ${next.receiver.name}…") }
@@ -148,6 +159,19 @@ class RadioController(private val application: Application) {
     } catch (e: ArithmeticException) {
         mutableState.update { it.copy(message = "Frequency is out of range") }
         false
+    }
+
+    fun previousFrequency(): Boolean = state.value.previousFrequencyHz?.let { hz ->
+        change { it.copy(tuning = it.tuning.copy(frequencyHz = hz)) }
+    } ?: false
+    fun previousReceiver(): Boolean {
+        val index = state.value.settings.receivers.indexOfFirst { it.locationKey == state.value.previousReceiverUrl }
+        return if (index >= 0) selectReceiver(index) else false
+    }
+    fun complementMode(): Boolean = when (state.value.settings.tuning.mode) {
+        Mode.USB -> setMode(Mode.LSB)
+        Mode.LSB -> setMode(Mode.USB)
+        else -> false
     }
 
     fun tune(text: String): Boolean = change { it.copy(tuning = it.tuning.copy(frequencyHz = parseFrequencyKhz(text))) }

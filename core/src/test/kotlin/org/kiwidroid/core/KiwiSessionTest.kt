@@ -12,6 +12,45 @@ import okhttp3.mockwebserver.MockWebServer
 import okio.ByteString.Companion.toByteString
 
 class KiwiSessionTest {
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test fun `tuning commands do not wait for the periodic timer`() = kotlinx.coroutines.test.runTest {
+        MockWebServer().use { server ->
+            server.enqueue(MockResponse().setBody("""{"ts":123}"""))
+            val commands = CopyOnWriteArrayList<String>()
+            server.enqueue(MockResponse().withWebSocketUpgrade(object : WebSocketListener() {
+                override fun onMessage(ws: WebSocket, text: String) {
+                    commands += text
+                    if (text.startsWith("SET auth")) ws.send("MSG badp=0 audio_rate=12000 sample_rate=12000")
+                    if (text == "SET compression=0") ws.send(sndPacket().toByteString())
+                }
+                override fun onClosing(ws: WebSocket, code: Int, reason: String) { ws.close(code, reason) }
+            }))
+            val tuning = MutableStateFlow(Tuning())
+            val sink = FakeSink()
+            val receiver = Receiver("Mock", server.url("/").toString())
+            val job = launch { KiwiSession().run(receiver, tuning, sink) {} }
+            // Pump network callbacks, but deliberately never advance the coroutine timer clock.
+            fun pumpUntil(condition: () -> Boolean) {
+                val deadline = System.nanoTime() + 5_000_000_000L
+                while (!condition() && System.nanoTime() < deadline) {
+                    testScheduler.runCurrent()
+                    Thread.sleep(5)
+                }
+                assertTrue(condition())
+            }
+            try {
+                pumpUntil { sink.rate != null }
+                tuning.value = tuning.value.step(100)
+                pumpUntil { tuning.value.command() in commands }
+                assertEquals(0L, testScheduler.currentTime)
+            } finally {
+                job.cancel()
+                testScheduler.runCurrent()
+                job.join()
+            }
+        }
+    }
+
     private class FakeSink : AudioSink {
         var rate: Double? = null
         var closed = false

@@ -34,6 +34,24 @@ class RadioScreenTest {
             rule.onNodeWithTag("tuned").assertTextEquals("Tuned: 5000.100 kHz")
             rule.onNodeWithTag("stepDown").performClick()
             rule.onNodeWithTag("tuned").assertTextEquals("Tuned: 5000.000 kHz")
+            rule.onNodeWithTag("lastFrequency").performClick()
+            rule.onNodeWithTag("tuned").assertTextEquals("Tuned: 5000.100 kHz")
+            rule.onNodeWithTag("lastFrequency").performClick()
+            rule.onNodeWithTag("tuned").assertTextEquals("Tuned: 5000.000 kHz")
+            rule.onNodeWithTag("complementMode").assertIsNotEnabled()
+            instrumentation.runOnMainSync { radio.setMode(Mode.USB) }
+            rule.onNodeWithTag("complementMode").performClick()
+            rule.onNodeWithText("Mode: LSB ▾").assertExists()
+            rule.onNodeWithTag("complementMode").performClick()
+            rule.onNodeWithText("Mode: USB ▾").assertExists()
+            if (original.receivers.size > 1) {
+                instrumentation.runOnMainSync { radio.selectReceiver(0); radio.selectReceiver(1) }
+                rule.onNodeWithTag("lastReceiver").performClick()
+                org.junit.Assert.assertEquals(0, radio.state.value.settings.selected)
+                rule.onNodeWithTag("lastReceiver").performClick()
+                org.junit.Assert.assertEquals(1, radio.state.value.settings.selected)
+            }
+            rule.onNodeWithContentDescription("Radio stopped").assertExists()
             rule.onNodeWithText("Mode:", substring = true).performClick()
             rule.onNodeWithText("CW", useUnmergedTree = true).performClick()
             rule.onNodeWithText("Mode: CW ▾").assertExists()
@@ -69,6 +87,7 @@ class RadioScreenTest {
             rule.onNodeWithTag("rssiToneSwitch").performScrollTo().assertIsOn()
         } finally {
             instrumentation.runOnMainSync {
+                radio.selectReceiver(original.selected)
                 radio.setMode(Mode.AM)
                 radio.tune(formatKhz(original.tuning.frequencyHz))
                 radio.setMode(original.tuning.mode)

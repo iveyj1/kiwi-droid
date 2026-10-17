@@ -89,7 +89,7 @@ class MwStationScreenTest {
             rule.onNodeWithText("Set this receiver's location", substring = true).performScrollTo().assertExists()
 
             // Location is edited with the receiver and shown in the list; it does not change the receiver itself.
-            rule.onNodeWithText("Servers").performClick()
+            rule.onNodeWithText("Servers").performScrollTo().performClick()
             rule.onAllNodesWithText("Edit")[original.selected].performScrollTo().performClick()
             rule.onNodeWithTag("receiverLatitude").performTextReplacement("44.1")
             rule.onNodeWithTag("receiverLongitude").performTextReplacement("-85.5")

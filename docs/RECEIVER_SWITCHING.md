@@ -1,8 +1,8 @@
-# Receiver handover and retention (0.7.0)
+# Receiver handover and retention (0.7.1)
 
 ## Controls
 
-Selecting another receiver while playing keeps the old receiver audible until the new receiver has authenticated, delivered PCM, and filled its device-sized radio buffer. The output then crossfades for 50 ms through **one AudioTrack**, including receiver audio and RSSI tones. A slow or failed connection does not immediately silence the old source. New connections have a bounded setup/buffering timeout.
+Selecting another receiver while playing keeps the old receiver audible until the new receiver has authenticated, delivered PCM, and filled its device-sized radio buffer. The output then crossfades for 20 ms through **one AudioTrack**, including receiver audio and RSSI tones. A slow or failed connection does not immediately silence the old source. New connections have a bounded setup/buffering timeout.
 
 The receiver picker shows the requested destination. **Listening** shows the output source and its tuning; during setup the status says **Listening to A · Connecting to B**. RSSI, notification metadata, and new reception logs remain attached to A until the transfer to B. Hardware/Bluetooth buffering still delays when newly rendered samples reach the ear; the switch is not sample-aligned across different receivers and may repeat or skip program audio because receiver delays differ.
 
@@ -15,6 +15,14 @@ The receiver picker shows the requested destination. **Listening** shows the out
 - Changing the retention setting restarts the retained source's timeout; Off closes it after a short fade allowance.
 - Changing frequency, mode, or the **active** passband immediately closes the retained connection. Volume, RSSI sound controls, receiver location, and step-size changes do not invalidate it. Editing cuts for an inactive mode does not change the live tuning.
 - During connection setup each session has an independent tuning snapshot. Changing the desired tuning cancels/replaces the candidate, leaving the old audible source unchanged until a replacement is ready. Returning to the audible receiver cancels the candidate.
+
+## Retuning and quick controls
+
+Ordinary frequency/passband changes and mode changes with the same mono/stereo layout now preserve the radio PCM queue. Commands are sent when tuning changes, not on the former 200 ms housekeeping timer. This removes the client-created silence/reprime cycle; already buffered old-frequency audio still plays before the new samples arrive. Mono↔stereo transitions still reset the channel processing and rebuffer. Startup, underrun recovery, and format-transition fade-ins are now 20 ms, as is receiver crossfade. RSSI beep attack/release settings are unchanged.
+
+Near Tune, **lf** recalls the previous committed frequency and **lr** selects the previous receiver; repeated presses toggle back and forth. They do not start stopped playback. Receiver recall uses the current tuning and reuses a retained stream when available. History lasts for the app process (including activity recreation), not across process restart; unavailable history is disabled. A removed receiver cannot be recalled. Near Mode, **cm** swaps USB↔LSB, using each mode's saved passband; it is disabled in other modes.
+
+The unlabelled dot beside the frequency is orange during connection, retuning, stale audio, or rebuffering; blue when the selected source/command has fresh, buffered audio and its estimated settling interval has elapsed; grey when stopped. Accessibility descriptions identify each state. Settling allows for queued radio/native audio and a short margin (or the native output delay plus crossfade for a receiver switch). It is an estimate, not a frequency acknowledgement from the receiver or an exact measurement of Bluetooth latency. New RSSI log-window samples are withheld while tuning is settling.
 
 ## Failure and resource handling
 

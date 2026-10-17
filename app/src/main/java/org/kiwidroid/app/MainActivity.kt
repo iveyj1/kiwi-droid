@@ -10,6 +10,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
@@ -96,9 +102,29 @@ private fun RadioScreen(state: RadioUiState, stations: StationDirectoryState, lo
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Go),
                     keyboardActions = KeyboardActions(onGo = { tune() }),
                     modifier = Modifier.weight(1f).testTag("frequency"))
-                Button(onClick = { tune() }, enabled = state.loaded, modifier = Modifier.padding(top = 8.dp)) { Text("Tune") }
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Button(onClick = { tune() }, enabled = state.loaded, modifier = Modifier.padding(top = 8.dp)) { Text("Tune") }
+                    Row {
+                        TextButton(onClick = { model.previousFrequency() }, enabled = state.loaded && state.previousFrequencyHz != null,
+                            contentPadding = PaddingValues(4.dp), modifier = Modifier.width(44.dp).testTag("lastFrequency")
+                                .semantics { contentDescription = "Previous frequency" }) { Text("lf") }
+                        TextButton(onClick = { model.previousReceiver() }, enabled = state.loaded &&
+                            settings.receivers.any { it.locationKey == state.previousReceiverUrl },
+                            contentPadding = PaddingValues(4.dp), modifier = Modifier.width(44.dp).testTag("lastReceiver")
+                                .semantics { contentDescription = "Previous receiver" }) { Text("lr") }
+                    }
+                }
             }
-            Text("Tuned: ${formatKhz(settings.tuning.frequencyHz)} kHz", Modifier.testTag("tuned"))
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Box(Modifier.size(10.dp).background(when {
+                    state.transitioning -> Color(0xFFFF9800)
+                    state.running -> Color(0xFF2196F3)
+                    else -> Color.Gray
+                }, CircleShape).testTag("tuningIndicator").semantics {
+                    contentDescription = if (state.transitioning) "Radio transitioning" else if (state.running) "Radio settled" else "Radio stopped"
+                })
+                Text("Tuned: ${formatKhz(settings.tuning.frequencyHz)} kHz", Modifier.testTag("tuned"))
+            }
             MwFavoriteChips(settings.favorites, stations.db, state.loaded) { model.tuneToStation(it) }
             if (settings.tuning.frequencyHz in MW_BAND_HZ) MwStationPanel(settings.tuning, stations,
                 settings.mwVisibility, settings.receiverLocation, now, state.loaded) { stationsOpen = true }
@@ -110,8 +136,13 @@ private fun RadioScreen(state: RadioUiState, stations: StationDirectoryState, lo
                 Button(onClick = { model.step(1) }, enabled = state.loaded,
                     modifier = Modifier.weight(1f).heightIn(min = 56.dp).testTag("stepUp")) { Text("+") }
             }
-            Choice("Mode", settings.tuning.mode.name, Mode.entries.map { it.name }, state.loaded,
-                Modifier.fillMaxWidth()) { model.setMode(Mode.entries[it]) }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Choice("Mode", settings.tuning.mode.name, Mode.entries.map { it.name }, state.loaded,
+                    Modifier.weight(1f)) { model.setMode(Mode.entries[it]) }
+                TextButton(onClick = { model.complementMode() }, enabled = state.loaded && settings.tuning.mode in listOf(Mode.USB, Mode.LSB),
+                    modifier = Modifier.width(48.dp).testTag("complementMode")
+                        .semantics { contentDescription = "Swap USB and LSB" }, contentPadding = PaddingValues(4.dp)) { Text("cm") }
+            }
             OutlinedButton(onClick = { passbandOpen = true }, enabled = state.loaded,
                 modifier = Modifier.fillMaxWidth().testTag("passband")) {
                 Text("Passband: ${settings.tuning.passband.lowHz} … ${settings.tuning.passband.highHz} Hz")

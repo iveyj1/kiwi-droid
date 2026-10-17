@@ -75,7 +75,7 @@ class HandoverPlaybackTest {
                     radio.setSound(SoundSettings(radioEnabled = true, tones = RssiToneSettings(enabled = true, volumePercent = 0)))
                     radio.play()
                 }
-                await { radio.state.value.status == "Playing" }
+                await { radio.state.value.status == "Playing" && !radio.state.value.transitioning }
                 SystemClock.sleep(1000)
                 val baseline = radio.state.value.metrics!!.playback!!.deviceUnderruns
                 b.audio.set(false)
@@ -85,6 +85,7 @@ class HandoverPlaybackTest {
                 assertEquals("Handover A", radio.state.value.audibleReceiver!!.name)
                 assertEquals(urlA, radio.draftLog().receiverUrl)
                 assertFalse(a.closed.get())
+                assertTrue(radio.state.value.transitioning)
                 b.audio.set(true)
                 await { radio.state.value.audibleReceiver?.name == "Handover B" }
                 assertEquals("Handover A", radio.state.value.retainedReceiver!!.name)
@@ -96,8 +97,12 @@ class HandoverPlaybackTest {
                 assertEquals(2, a.server.requestCount)
                 assertEquals(2, b.server.requestCount)
                 assertFalse(b.closed.get())
+                val beforeTune = radio.state.value.metrics!!.playback!!
                 instrumentation.runOnMainSync { radio.tune("960") }
-                await { b.closed.get() && radio.state.value.retainedReceiver == null }
+                assertTrue(radio.state.value.transitioning)
+                await { b.closed.get() && radio.state.value.retainedReceiver == null && !radio.state.value.transitioning }
+                assertEquals(beforeTune.radioUnderruns, radio.state.value.metrics!!.playback!!.radioUnderruns)
+                assertEquals(beforeTune.deviceUnderruns, radio.state.value.metrics!!.playback!!.deviceUnderruns)
                 assertTrue(radio.state.value.running)
                 instrumentation.runOnMainSync { radio.stop() }
                 await { a.closed.get() }

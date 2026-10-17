@@ -8,6 +8,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.selects.select
@@ -40,6 +41,9 @@ data class SessionMetrics(
     val sourceRate: Double,
     val playback: PlaybackDiagnostics? = null,
     val channels: Int = 1,
+    val tuningCommand: String? = null,
+    /** Estimated buffer drain after a command, not a receiver acknowledgement. */
+    val settling: Boolean = false,
 )
 
 /** One run == one connection. Caller cancels and joins it before switching receivers. */
@@ -64,6 +68,8 @@ class KiwiSession(
         val events = Channel<Event>(64)
         val ticks = Channel<Unit>(Channel.CONFLATED)
         var timer: kotlinx.coroutines.Job? = null
+        var tuningWatcher: kotlinx.coroutines.Job? = null
+        val changes = Channel<Unit>(Channel.CONFLATED)
         try {
             val stamp = fetchTimestamp(receiver)
             val url = receiver.baseUrl.newBuilder().encodedPath("/ws/kiwi/$stamp/SND").build()
@@ -102,6 +108,8 @@ class KiwiSession(
             val handshake = Handshake()
             val sequences = SequenceTracker()
             var sentTuning: Tuning? = null
+            var sentAt = 0L
+            var settleUntil = 0L
             var started = false
             val connectedAt = monotonicMs()
             var lastAudio = connectedAt
@@ -109,6 +117,18 @@ class KiwiSession(
             var lastRssi: Double? = null
             var lastChannels = 1
             var overflowCount = 0L
+            fun applyTuning() {
+                if (!handshake.ready) return
+                val current = tuning.value
+                if (current.command() != sentTuning?.command()) {
+                    send(current.command())
+                    sentTuning = current
+                    sentAt = monotonicMs()
+                    val buffers = sink.playbackDiagnostics()
+                    settleUntil = sentAt + maxOf(200, (buffers?.queuedAudioMs ?: 0) + (buffers?.deviceBufferMs ?: 0) + 100)
+                }
+            }
+            tuningWatcher = launch { tuning.collect { changes.trySend(Unit) } }
             timer = launch {
                 while (isActive) {
                     delay(200)
@@ -117,6 +137,7 @@ class KiwiSession(
             }
             while (isActive) {
                 select<Unit> {
+                    changes.onReceive { applyTuning() }
                     events.onReceive { event ->
                         when (event) {
                             Event.Open -> send("SET auth t=kiwi p=")
@@ -159,11 +180,6 @@ class KiwiSession(
                         }
                         if (started && now - lastAudio > 10_000) throw IOException("Audio stream timed out")
                         if (handshake.ready) {
-                            val current = tuning.value
-                            if (current != sentTuning) {
-                                send(current.command())
-                                sentTuning = current
-                            }
                             if (now - lastKeepalive >= 30_000) {
                                 send("SET keepalive")
                                 lastKeepalive = now
@@ -172,13 +188,16 @@ class KiwiSession(
                         if (started) {
                             sink.checkHealth()
                             onMetrics(SessionMetrics(lastRssi, now - lastAudio >= 2000,
-                                sequences.missing, overflowCount, checkNotNull(handshake.sampleRate), sink.playbackDiagnostics(), lastChannels))
+                                sequences.missing, overflowCount, checkNotNull(handshake.sampleRate), sink.playbackDiagnostics(), lastChannels,
+                                sentTuning?.command(), now < settleUntil || lastAudio <= sentAt))
                         }
                     }
                 }
             }
         } finally {
             timer?.cancel()
+            tuningWatcher?.cancel()
+            changes.cancel()
             events.cancel()
             ticks.cancel()
             // Hard cancellation also interrupts a half-open handshake and releases the slot promptly.

@@ -19,6 +19,9 @@ class RadioViewModel(application: Application) : AndroidViewModel(application) {
     fun tuneToStation(khz: Int) = radio.tuneToStation(khz)
     fun tuneTo(frequencyHz: Long, mode: Mode) = radio.tuneTo(frequencyHz, mode)
     val logEntries = radio.logbook.entries
+    fun previousFrequency() = radio.previousFrequency()
+    fun previousReceiver() = radio.previousReceiver()
+    fun complementMode() = radio.complementMode()
     fun draftLog() = radio.draftLog()
     fun saveLog(entry: org.kiwidroid.core.LogEntry) = radio.saveLog(entry)
     fun deleteLog(id: String) = radio.deleteLog(id)

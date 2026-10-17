@@ -48,6 +48,7 @@ class ReceiverHandover(
         var error: String? = null
         var previous: ReceiverPlayback? = null
         var finished = false
+        var transferSettledAt = 0L
 
         suspend fun remove(slot: Slot) {
             mixer.remove(slot.input)
@@ -70,6 +71,7 @@ class ReceiverHandover(
         fun promote(slot: Slot) {
             val old = active
             mixer.select(slot.input)
+            transferSettledAt = clock() + (slot.metrics?.playback?.deviceBufferMs ?: 0) + 20
             active = slot
             other = old
             pending = false
@@ -133,14 +135,14 @@ class ReceiverHandover(
                     val slot = active!!
                     if (slot.tuning.value.command() != want.tuning.command()) {
                         other?.let { remove(it) }
-                        slot.input.invalidate()
+                        slot.input.retuned()
                         slot.metrics = null
                         slot.tuning.value = want.tuning
                     }
                 } else {
                     val candidate = other
                     if (candidate != null && (candidate.receiver != want.receiver || candidate.tuning.value.command() != want.tuning.command())) {
-                        // Finish the 50 ms fade before reusing its old input for a third receiver.
+                        // Finish the 20 ms fade before reusing its old input for a third receiver.
                         if (mixer.transitioning) continue
                         remove(candidate)
                     }
@@ -161,7 +163,8 @@ class ReceiverHandover(
                     }
                 }
                 if (!pending && other != null && clock() >= other!!.expires) remove(other!!)
-                val state = ReceiverPlayback(active?.receiver, active?.tuning?.value, active?.metrics,
+                val metrics = active?.metrics?.let { it.copy(settling = it.settling || clock() < transferSettledAt) }
+                val state = ReceiverPlayback(active?.receiver, active?.tuning?.value, metrics,
                     connecting = other?.receiver?.takeIf { pending },
                     retained = other?.receiver?.takeIf { !pending && want.keepSeconds > 0 }, error = error)
                 if (state != previous) { previous = state; onPlayback(state) }

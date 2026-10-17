@@ -102,6 +102,14 @@
 - Full mixer-path background test: 60 seconds behind Home plus 60 seconds screen-off; zero radio/device underruns and zero dropped PCM. Final queued audio 324 ms, target 300 ms, native ring 200 ms. No real receivers were contacted by these tests.
 - Subjective real-receiver handover, Bluetooth-specific two-stream endurance, and extended network-failure testing remain. See `RECEIVER_SWITCHING.md`.
 
+## Continuous retuning and quick controls — 0.7.1
+
+- Ordinary retunes keep queued PCM; only format changes/real starvation rebuffer. Tuning StateFlow changes wake the session immediately instead of waiting for the 200 ms housekeeping tick. Startup/recovery/format fades and receiver crossfades shortened to 20 ms; beep envelopes unchanged.
+- Added process-lifetime previous-frequency/receiver toggles and USB↔LSB complement control. Added accessible orange/blue/grey transition dot, based on source/command matching, fresh PCM, buffering and estimated output-drain timing. It is not a receiver acknowledgement. RSSI log samples are withheld during settling.
+- 114 core and 17 app JVM tests, lint, app/test APK builds passed. New virtual-clock mock-WebSocket regression verifies retuning sends its command without advancing the periodic timer; mixer regression verifies retuning retains queued PCM and inserts no silence. Indicator unit tests cover source/tuning mismatch, stale audio, rebuffering and stopped state.
+- All ten phone tests passed on Pixel 8 Pro / Android 17. UI tests exercise lf/lr toggling and cm enabled/disabled behavior; live loopback transfer/retune test verifies transition→settled and no underrun growth on retune. Background test again passed 60 seconds behind Home plus 60 seconds screen-off, with zero radio/device underruns or dropped audio (335 ms queued, 300 ms target, 200 ms native buffer).
+- One older MW UI test needed an explicit scroll back to the Servers button after the added control row changed its position; the final full suite passed. No real receivers were contacted. Audible old-frequency tail remains bounded by existing network/device buffers; subjective retune listening is still a manual check.
+
 ## Next manual checks
 
 Use an authorized receiver on the phone's network. Start with low media volume.

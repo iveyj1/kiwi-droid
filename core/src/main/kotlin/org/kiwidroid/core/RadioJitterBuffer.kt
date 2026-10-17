@@ -32,7 +32,7 @@ class RadioJitterBuffer(
     private var closed = false
     private var fadePosition = 0
     private var underruns = 0L
-    private val fadeFrames = sampleRate / 20 // 50 ms on first play / actual rebuffer only
+    private val fadeFrames = sampleRate / 50 // 20 ms on first play / actual rebuffer only
 
     init {
         require(sampleRate in 8000..192000)

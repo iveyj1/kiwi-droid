@@ -6,7 +6,7 @@ class ReceiverMixer(private val deviceFrames: Int, private val settings: () -> S
     private var selected: Input? = null
     private var fading: Input? = null
     private var fadeFrame = 0
-    private val fadeLength = Protocol.OUTPUT_RATE / 20
+    private val fadeLength = Protocol.OUTPUT_RATE / 50 // 20 ms
 
     inner class Input internal constructor() : AudioSink {
         private val buffer = RadioJitterBuffer(Protocol.OUTPUT_RATE, deviceFrames, 2)
@@ -35,8 +35,8 @@ class ReceiverMixer(private val deviceFrames: Int, private val settings: () -> S
             tones = RssiToneSynth()
             reading?.let { tones.observe(it, settings().tones) }
         }
-        @Synchronized fun invalidate() { buffer.clear(); reading = null; resetTone(); lastReceived = 0 }
-        override fun playbackDiagnostics() = buffer.diagnostics()
+        @Synchronized fun retuned() { reading = null; resetTone() }
+        override fun playbackDiagnostics() = buffer.diagnostics().copy(deviceBufferMs = deviceFrames * 1000 / Protocol.OUTPUT_RATE)
         @Synchronized override fun close() { closed = true; buffer.close() }
     }
 
